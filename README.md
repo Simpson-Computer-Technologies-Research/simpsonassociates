@@ -1,4 +1,4 @@
-# simpsonassociates.ca ![Stars](https://img.shields.io/github/stars/Simpson-Computer-Technologies-Research/simpsonassociates.ca?color=brightgreen) ![Watchers](https://img.shields.io/github/watchers/Simpson-Computer-Technologies-Research/simpsonassociates.ca?label=Watchers)
+# simpsonassociates ![Stars](https://img.shields.io/github/stars/Simpson-Computer-Technologies-Research/simpsonassociates?color=brightgreen) ![Watchers](https://img.shields.io/github/watchers/Simpson-Computer-Technologies-Research/simpsonassociates?label=Watchers)
 
 # License
 MIT License
