@@ -1,0 +1,70 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom Fonts */
+@font-face {
+  font-family: "Montserrat", sans-serif;
+  src: url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+}
+
+/* Handle overflow */
+html,
+body {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Striped background design pattern */
+.bg-stripes-landing {
+  background-color: #004282;
+  background: repeating-linear-gradient(
+    0deg,
+    #004289,
+    #004289 5px,
+    #004282 5px,
+    #004282 35px
+  );
+}
+
+/* Triangle clip path */
+.btm_clip-poly {
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%);
+}
+.top_clip-poly {
+  clip-path: polygon(0 35%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Text Selection (Highlight) */
+::-moz-selection {
+  background: #2cc1ec; /* #fbbf24 */
+}
+
+::selection {
+  background: #2cc1ec;
+}
+
+/* Fade-in effect for when page loads */
+.fade-in {
+  animation: fadeIn ease 1s;
+  -webkit-animation: fadeIn ease-in-out 2s;
+  -moz-animation: fadeIn ease-in-out 2s;
+  -o-animation: fadeIn ease-in-out 2s;
+  -ms-animation: fadeIn ease-in-out 2s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
