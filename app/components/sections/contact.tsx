@@ -49,7 +49,7 @@ const ContactForm = (): JSX.Element => {
         <input
           id="contact-name"
           className="w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
-          type="text"
+          type="text" 
           placeholder="Name"
           onChange={(e) => {
             if (e.target.value.length < 2) {
