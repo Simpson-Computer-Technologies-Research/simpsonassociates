@@ -12,7 +12,7 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="group relative flex w-full flex-col items-center justify-center bg-gray-50 p-10 pb-16 pt-20 text-center"
+      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 pb-16 pt-20 text-center"
     >
       <div className="relative z-[2] mb-[7%] rounded-3xl bg-white/20 p-10 backdrop-blur-3xl md:mr-[45%] lg:mr-[55%] lg:bg-transparent lg:backdrop-blur-none">
         <Header />

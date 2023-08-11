@@ -8,7 +8,7 @@ export default function Cards(): JSX.Element {
   return (
     <div
       id="cards"
-      className="relative z-0 flex flex-col items-center justify-center bg-gray-50"
+      className="relative z-0 flex flex-col items-center justify-center bg-slate-50"
     >
       <div className="grid grid-cols-1 px-10 py-16 md:grid-cols-2 md:px-14 lg:grid-cols-3">
         <Card
