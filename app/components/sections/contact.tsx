@@ -42,7 +42,7 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="backdrop-blur-md p-6 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-14 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="backdrop-blur-md px-6 py-4 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
       <div className="mb-2 flex flex-col items-start justify-start">
         <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
@@ -250,7 +250,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <button
-          className="mb-2 w-60 text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="mb-2 mt-2 w-60 text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => {
             setSending(true);
             checkSessionAndSendEmail(session).then(() => setSending(false));
@@ -272,7 +272,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <Link
-          className="w-60  text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="w-60 text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => signOut({ redirect: false })}
           href="/contact/login"
           target="_blank"
