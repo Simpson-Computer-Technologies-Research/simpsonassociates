@@ -19,22 +19,6 @@ import ScrollIndicator from "./components/scrollIndicator";
  * Home Page Component
  */
 export default function Home() {
-  /*
-
-    Page Layout:
-
-      * Landing (Main Section)
-      * Cards (Small Section)
-      * Services (Main Section)
-      * Lenders (Small Section)
-      * About (Main Section)
-      * Agents (Small Section)
-      * Contact (Email Form) (Main Section)
-      * Testimonials (Small Section)
-      * Join Us (Small Section)
-      * Bottom (Small Section)
-  */
-
   // Create state for loading
   const [loading, setLoading] = React.useState(true);
 
@@ -60,9 +44,9 @@ export default function Home() {
       <section className="flex flex-col items-center justify-center">
         <Cards />
         <Services />
-        <Lenders />
         <About />
         <Agents />
+        <Lenders />
         <Contact />
         <Testimonials />
         <Bottom />

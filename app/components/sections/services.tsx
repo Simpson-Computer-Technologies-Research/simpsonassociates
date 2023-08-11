@@ -14,12 +14,14 @@ export default function Services(): JSX.Element {
     >
       <Header />
       <Image
-        src="/images/house_transparent_bg.png"
+        src="/images/holding_house_transparent.png"
+        // src="/images/house_transparent.png"
         alt="..."
-        width={1920}
-        height={1080}
+        width={600}
+        height={600}
         loading="lazy"
-        className="mt-1 w-full h-[45%] lg:h-[50%] xl:h-[55%] bottom-0 -z-10 absolute"
+        className="absolute -z-10 bottom-0 right-0 top-1/2"
+        // className="mt-1 w-full h-[45%] lg:h-[50%] xl:h-[55%] bottom-0 -z-10 absolute"
       />
 
       {/* Grid of info cards */}
