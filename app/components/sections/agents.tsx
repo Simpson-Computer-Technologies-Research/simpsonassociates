@@ -59,7 +59,7 @@ const InputAndButtons = (): JSX.Element => {
       <div className="flex flex-row items-center justify-center space-x-4">
         <div className="text-start">
           <input
-            className="mb-4 w-60 rounded-md border-2 border-gray-200/80 p-2 text-xs text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96 sm:text-base"
+            className="mb-4 w-60 rounded-md border-2 border-gray-200 p-2 text-xs xs:text-sm text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96 sm:text-base"
             type="text"
             placeholder="Enter an agent name, city, or language"
             onChange={(e) => setInput(e.target.value)}
@@ -75,7 +75,7 @@ const InputAndButtons = (): JSX.Element => {
         </Link>
         <Link
           href="/agents"
-          className="mb-4 w-60 rounded-md bg-tertiary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
+          className="mb-4 w-60 rounded-lg bg-tertiary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
         >
           See all agents
         </Link>

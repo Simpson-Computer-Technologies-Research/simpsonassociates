@@ -45,10 +45,12 @@ const ContactForm = (): JSX.Element => {
     <section className="backdrop-blur-md p-6 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-14 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium">Name</p>
+        <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
+          Name
+        </p>
         <input
           id="contact-name"
-          className="w-60 rounded-lg border-2 border-gray-100 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (e.target.value.length < 2) {
@@ -59,7 +61,7 @@ const ContactForm = (): JSX.Element => {
           }}
         />
         <p
-          className={`ml-2 mt-2 text-sm text-red-500 ${
+          className={`mt-2 text-sm text-red-500 ${
             nameError ? "block" : "hidden"
           }`}
         >
@@ -69,10 +71,12 @@ const ContactForm = (): JSX.Element => {
 
       {/* Phone number input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium">Phone Number</p>
+        <p className="mb-1 text-gray-400/80 font-medium  text-xs xs:text-sm sm:text-base">
+          Phone Number
+        </p>
         <input
           id="contact-phone"
-          className="w-60 rounded-lg border-2 border-gray-100 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (!/^[0-9- ]*$/.test(e.target.value)) {
@@ -93,10 +97,12 @@ const ContactForm = (): JSX.Element => {
 
       {/* Message input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium">Message</p>
+        <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
+          Message
+        </p>
         <textarea
           id="contact-message"
-          className="h-20 w-60 rounded-lg border-2 border-gray-100 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="h-20 w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setMessageError("Message is required");
@@ -229,13 +235,13 @@ function SubmitButtons(props: {
       {/* If the user is not logged in */}
       {!session && (
         <Link
-          className="mb-2 mt-2 w-60 rounded-lg bg-white shadow-lg items-center justify-center flex flex-row py-3 duration-500 ease-in-out border-2 border-transparent hover:border-primary xs:w-96"
+          className="mb-2 mt-2 w-60 rounded-md bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out border-2 border-transparent hover:border-primary xs:w-96"
           href="/contact/login"
           target="_blank"
           rel="noopener noreferrer"
         >
           <GoogleSvg />
-          <p className="font-medium text-gray-500/80 text-base">
+          <p className="font-medium text-gray-500/80 text-xs xs:text-sm sm:text-base">
             Sign in to send email
           </p>
         </Link>
@@ -244,7 +250,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <button
-          className="mb-2 w-60 rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="mb-2 w-60 text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => {
             setSending(true);
             checkSessionAndSendEmail(session).then(() => setSending(false));
@@ -266,7 +272,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <Link
-          className="w-60 rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="w-60  text-xs xs:text-sm sm:text-base rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => signOut({ redirect: false })}
           href="/contact/login"
           target="_blank"
@@ -341,10 +347,8 @@ const clearFormValues = (): void => {
 const GoogleSvg = (): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="27"
-    height="27"
     viewBox="0 0 186.69 190.5"
-    className="mx-3"
+    className="mx-3 h-6 w-6 xs:w-7 xs:h-7"
   >
     <g transform="translate(1184.583 765.171)">
       <path
