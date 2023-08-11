@@ -38,9 +38,7 @@ export default function Agents(): JSX.Element {
  */
 const Header = (): JSX.Element => (
   <div className="z-[2] flex flex-col items-center justify-center">
-    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
-      Agents
-    </h2>
+    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">Agents</h2>
     <span className="mx-10 mb-6 mt-6 sm:mt-8 block h-1 w-3/5 rounded-full bg-secondary xs:w-2/5 sm:mb-10 lg:w-52"></span>
     <p className="w-60 text-sm text-primary xs:w-96 lg:text-base px-5 pb-7">
       Our agents are here to help you find the perfect home. Use the search
@@ -61,7 +59,7 @@ const InputAndButtons = (): JSX.Element => {
       <div className="flex flex-row items-center justify-center space-x-4">
         <div className="text-start">
           <input
-            className="mb-4 w-60 rounded-md border-2 border-gray-300 p-2 text-xs text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96 sm:text-base"
+            className="mb-4 w-60 rounded-md border-2 border-gray-200/80 p-2 text-xs text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96 sm:text-base"
             type="text"
             placeholder="Enter an agent name, city, or language"
             onChange={(e) => setInput(e.target.value)}

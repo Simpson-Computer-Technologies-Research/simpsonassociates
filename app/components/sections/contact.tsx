@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
-
 /**
  * Contact Component
  * @returns JSX.Element
@@ -43,13 +42,13 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="mt-4 flex flex-col items-center justify-center xs:mt-14 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="backdrop-blur-md p-6 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-14 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400 font-medium">Name</p>
+        <p className="mb-1 text-gray-400/80 font-medium">Name</p>
         <input
           id="contact-name"
-          className="w-60 rounded-md border-2 border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
+          className="w-60 rounded-lg border-2 border-gray-100 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (e.target.value.length < 2) {
@@ -70,10 +69,10 @@ const ContactForm = (): JSX.Element => {
 
       {/* Phone number input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-      <p className="mb-1 text-gray-400 font-medium">Phone Number</p>
+        <p className="mb-1 text-gray-400/80 font-medium">Phone Number</p>
         <input
           id="contact-phone"
-          className="w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
+          className="w-60 rounded-lg border-2 border-gray-100 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (!/^[0-9- ]*$/.test(e.target.value)) {
@@ -94,10 +93,10 @@ const ContactForm = (): JSX.Element => {
 
       {/* Message input */}
       <div className="mb-2 flex flex-col items-start justify-start">
-      <p className="mb-1 text-gray-400 font-medium">Message</p>
+        <p className="mb-1 text-gray-400/80 font-medium">Message</p>
         <textarea
           id="contact-message"
-          className="h-20 w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
+          className="h-20 w-60 rounded-lg border-2 border-gray-100 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setMessageError("Message is required");
@@ -141,6 +140,12 @@ const Header = (): JSX.Element => (
 );
 
 /**
+ * Get an element value via id
+ */
+const getElementValue = (id: string): string =>
+  (document.getElementById(id) as HTMLInputElement).value;
+
+/**
  * Submit Button Component
  * @param {string} props.className
  * @param {string} props.text
@@ -164,49 +169,30 @@ function SubmitButtons(props: {
    */
   const sendEmail = async (email: string) => {
     // Get the form values
-    const name = (document.getElementById("contact-name") as HTMLInputElement)
-      .value;
-    const phone = (document.getElementById("contact-phone") as HTMLInputElement)
-      .value;
-    const message = (
-      document.getElementById("contact-message") as HTMLInputElement
-    ).value;
+    const name = getElementValue("contact-name");
+    const phone = getElementValue("contact-phone");
+    const message = getElementValue("contact-message");
 
     // Make sure the values are valid
-    if (name.length < 2) {
-      props.setNameError("Name is required");
-      return;
+    if (!isValidName(name)) {
+      return props.setNameError("Name is required");
     }
-    if (!/^[0-9- ]*$/.test(phone)) {
-      props.setPhoneError("Please enter a valid phone number");
-      return;
+    if (!isValidPhone(phone)) {
+      return props.setPhoneError("Please enter a valid phone number");
     }
-    if (message.length < 2) {
-      props.setMessageError("Message is required");
-      return;
+    if (!isValidMessage(message)) {
+      return props.setMessageError("Message is required");
     }
 
-    // Send the email using the api
-    await fetch("/api/contact/email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, phone, message }),
-    }).then((res) => {
-      // If the email was sent successfully
-      if (res.status === 200) {
-        if (sendEmailError) setSendEmailError("");
-        (document.getElementById("contact-name") as HTMLInputElement).value =
-          "";
-        (document.getElementById("contact-phone") as HTMLInputElement).value =
-          "";
-        (document.getElementById("contact-message") as HTMLInputElement).value =
-          "";
-      } else {
-        setSendEmailError("Failed to send email");
-      }
-    });
+    // Post the email
+    await postEmail(
+      name,
+      email,
+      phone,
+      message,
+      sendEmailError,
+      setSendEmailError
+    );
   };
 
   /**
@@ -243,19 +229,22 @@ function SubmitButtons(props: {
       {/* If the user is not logged in */}
       {!session && (
         <Link
-          className="mb-2 w-60 rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="mb-2 mt-2 w-60 rounded-lg bg-white shadow-lg items-center justify-center flex flex-row py-3 duration-500 ease-in-out border-2 border-transparent hover:border-primary xs:w-96"
           href="/contact/login"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Sign in to send email
+          <GoogleSvg />
+          <p className="font-medium text-gray-500/80 text-base">
+            Sign in to send email
+          </p>
         </Link>
       )}
 
       {/* If the user is logged in */}
       {session && (
         <button
-          className="mb-2 w-60 rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="mb-2 w-60 rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => {
             setSending(true);
             checkSessionAndSendEmail(session).then(() => setSending(false));
@@ -277,7 +266,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <Link
-          className="w-60 rounded-md bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="w-60 rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => signOut({ redirect: false })}
           href="/contact/login"
           target="_blank"
@@ -289,3 +278,99 @@ function SubmitButtons(props: {
     </div>
   );
 }
+
+/**
+ * Is valid phone number
+ * @return bool
+ */
+const isValidPhone = (phone: string): boolean => /^[0-9- ]*$/.test(phone);
+
+/**
+ * Is valid message
+ * @return bool
+ */
+const isValidMessage = (message: string): boolean => message.length > 2;
+
+/**
+ * Is valid name
+ * @return bool
+ */
+const isValidName = (name: string): boolean => name.length > 2;
+
+/**
+ * Post the email to the api
+ */
+const postEmail = async (
+  name: string,
+  email: string,
+  phone: string,
+  message: string,
+  sendEmailError: string,
+  setSendEmailError: React.Dispatch<React.SetStateAction<string>>
+) => {
+  // Send the email using the api
+  await fetch("/api/contact/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, phone, message }),
+  }).then((res) =>
+    res.status === 200
+      ? () => {
+          if (sendEmailError) setSendEmailError("");
+          clearFormValues();
+        }
+      : setSendEmailError("Failed to send email")
+  );
+};
+
+/**
+ * Clear the form values
+ * @return void
+ */
+const clearFormValues = (): void => {
+  (document.getElementById("contact-name") as HTMLInputElement).value = "";
+  (document.getElementById("contact-phone") as HTMLInputElement).value = "";
+  (document.getElementById("contact-message") as HTMLInputElement).value = "";
+};
+
+/**
+ * Google Svg
+ */
+const GoogleSvg = (): JSX.Element => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="27"
+    height="27"
+    viewBox="0 0 186.69 190.5"
+    className="mx-3"
+  >
+    <g transform="translate(1184.583 765.171)">
+      <path
+        clip-path="none"
+        mask="none"
+        d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"
+        fill="#4285f4"
+      />
+      <path
+        clip-path="none"
+        mask="none"
+        d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z"
+        fill="#34a853"
+      />
+      <path
+        clip-path="none"
+        mask="none"
+        d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z"
+        fill="#fbbc05"
+      />
+      <path
+        d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z"
+        fill="#ea4335"
+        clip-path="none"
+        mask="none"
+      />
+    </g>
+  </svg>
+);
