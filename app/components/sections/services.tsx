@@ -104,7 +104,7 @@ const Card = (props: {
     href={props.href}
     rel="noreferrer"
     target="_blank"
-    className="group relative flex h-32 w-36 flex-col backdrop-blur-md items-center bg-blend-lighten hover:scale-105 rounded-lg bg-white/80 p-2 px-4 duration-500 ease-in-outhover:duration-100 xs:h-40 xs:w-48 xs:p-4 m-2 md:m-4 sm:h-52 sm:w-44 sm:p-5 lg:h-[17rem] lg:w-64 lg:p-7 xl:h-[19rem] xl:w-72"
+    className="group hover:bg-slate-50/90 relative flex h-32 w-36 flex-col backdrop-blur-md items-center bg-blend-lighten hover:scale-105 rounded-xl bg-white/80 p-2 px-4 duration-500 ease-in-outhover:duration-100 xs:h-40 xs:w-48 xs:p-4 m-2 md:m-4 sm:h-52 sm:w-44 sm:p-5 lg:h-[17rem] lg:w-64 lg:p-7 xl:h-[19rem] xl:w-72"
   >
     <Image
       src={props.icon}
