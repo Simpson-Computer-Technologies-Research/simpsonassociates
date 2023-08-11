@@ -41,7 +41,7 @@ export default function Navbar() {
 
   // Return the component jsx
   return (
-    <nav className="fixed z-20 flex w-screen flex-row justify-between border-b-4 border-secondary bg-nav">
+    <nav className="fixed z-50 flex w-screen flex-row justify-between border-b-4 border-secondary bg-nav">
       <NavbarMenu />
       <Image
         key={Math.random()}

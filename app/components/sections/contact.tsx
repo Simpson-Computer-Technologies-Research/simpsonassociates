@@ -13,17 +13,17 @@ export default function Contact(): JSX.Element {
   return (
     <section
       id="contact"
-      className="group relative flex w-full flex-col p-10 py-16 pt-20 text-center"
+      className="group relative bg-slate-50 flex w-full flex-col p-10 sm:py-16 pt-14 sm:pt-20 text-center"
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center">
         <ContactForm />
         <Image
           src="/images/happy_couple_contact.png"
-          alt="Happy couple"
+          alt="..."
           width={500}
           height={500}
-          className="absolute -right-40 bottom-0 -z-10 lg:-right-20 xl:right-0"
+          className="absolute -right-40 bottom-0 z-10 lg:-right-20 xl:right-0"
         />
       </div>
     </section>
@@ -42,7 +42,7 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="backdrop-blur-md px-6 py-4 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="backdrop-blur-md px-6 py-4 rounded-lg bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0 z-20 relative">
       {/* Name input */}
       <div className="mb-2 flex flex-col items-start justify-start">
         <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
