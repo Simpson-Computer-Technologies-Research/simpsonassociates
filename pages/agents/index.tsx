@@ -124,7 +124,7 @@ const AgentsComponent = (props: {
 
   // Render the component jsx
   return (
-    <section>
+    <section className="relative z-10">
       <div className="mt-4 flex flex-col items-center justify-center">
         <div className="flex flex-row items-center justify-center space-x-4">
           <input

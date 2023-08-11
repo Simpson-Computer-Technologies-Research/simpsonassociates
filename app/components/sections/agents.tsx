@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import CirclesBackground from "../circlesBackground";
 
 /**
  * Agents Component
@@ -12,19 +13,23 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 pt-20 text-center"
+      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 text-center"
     >
-      <div className="relative z-[2] mb-10 rounded-3xl bg-white/20 p-10 backdrop-blur-3xl md:mr-[45%] lg:mr-[55%]">
+      <div className="relative z-[2] rounded-3xl bg-white/20 p-10 my-4 backdrop-blur-3xl">
         <Header />
-        <SearchFilters />
+        <InputAndButtons />
       </div>
       <Image
-        src="/images/holding_house_yellow_3.png"
+        src="/images/holding_house_transparent.png"
+        // src="/images/house_transparent.png"
         alt="..."
-        width={1920}
-        height={1080}
-        className="absolute bottom-0 max-h-full h-full w-screen lg:right-0 -right-16 md:-right-10 min-w-[95rem] lg:min-w-[110rem]"
+        width={600}
+        height={600}
+        loading="lazy"
+        className="absolute z-0 right-0 top-32"
+        // className="mt-1 w-full h-[45%] lg:h-[50%] xl:h-[55%] bottom-0 -z-10 absolute"
       />
+      <CirclesBackground />
     </section>
   );
 }
@@ -38,7 +43,7 @@ const Header = (): JSX.Element => (
     <h2 className="text-5xl font-extrabold text-primary md:text-6xl lg:text-7xl">
       Agents
     </h2>
-    <p className="mt-6 mb-4 w-60 text-sm text-primary xs:w-96 lg:text-base">
+    <p className="mt-6 w-60 text-sm text-primary xs:w-96 lg:text-base px-5 pb-7">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.
     </p>
@@ -46,14 +51,14 @@ const Header = (): JSX.Element => (
 );
 
 /**
- * Search Filters Component. Can use Postal COde, City, or Agent Name
+ * Input and Buttons
  * @returns JSX.Element
  */
-const SearchFilters = (): JSX.Element => {
+const InputAndButtons = (): JSX.Element => {
   const [input, setInput] = React.useState("");
 
   return (
-    <div className="z-[2] mt-4 flex flex-col items-center justify-center">
+    <div className="z-[2] flex flex-col items-center justify-center">
       <div className="flex flex-row items-center justify-center space-x-4">
         <div className="text-start">
           <input

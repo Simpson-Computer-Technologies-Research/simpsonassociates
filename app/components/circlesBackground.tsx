@@ -11,7 +11,7 @@ export default function CirclesBackground(): JSX.Element {
         width="900"
         height="600"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute -bottom-20 left-0 h-full w-full opacity-[15%]"
+        className="absolute left-0 bottom-0 h-full w-full opacity-[15%] z-0"
         version="1.1"
       >
         <g fill="#004282">
