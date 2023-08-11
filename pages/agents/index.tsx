@@ -8,6 +8,7 @@ import React from "react";
 import Navbar from "@/app/components/navbar/navbar";
 import Loading from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
+import CirclesBackground from "@/app/components/circlesBackground";
 
 // Import tailwind and global styles
 import "@/styles/globals.css";
@@ -301,33 +302,3 @@ const AgentCard = (props: {
     </p>
   </div>
 );
-
-/**
- * Circles Background
- * @returns JSX.Element
- */
-const CirclesBackground = (): JSX.Element => {
-  // Random opacity
-  const randomOpacity = (): number =>
-    Math.ceil(Math.random() * (100 - 10) + 10);
-
-  // Return the component jsx
-  return (
-    <svg
-      viewBox="0 0 900 600"
-      xmlns="http://www.w3.org/2000/svg"
-      width="900"
-      height="1200"
-      className="absolute bottom-0 left-0 -z-10 opacity-[5%] md:h-full md:w-full"
-      version="1.1"
-    >
-      <g fill="#004282">
-        <circle r="127" cx="848" cy="478"></circle>
-        <circle r="98" cx="72" cy="30"></circle>
-        <circle r="72" cx="500" cy="292"></circle>
-        <circle r="144" cx="19" cy="494"></circle>
-        <circle r="72" cx="808" cy="57"></circle>
-      </g>
-    </svg>
-  );
-};

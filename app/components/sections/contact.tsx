@@ -46,11 +46,11 @@ const ContactForm = (): JSX.Element => {
     <section className="mt-4 flex flex-col items-center justify-center xs:mt-14 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
       <div className="mb-2 flex flex-col items-start justify-start">
+        <p className="mb-1 text-gray-400 font-medium">Name</p>
         <input
           id="contact-name"
-          className="w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
-          type="text" 
-          placeholder="Name"
+          className="w-60 rounded-md border-2 border-gray-300 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
+          type="text"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setNameError("Name is required");
@@ -70,11 +70,11 @@ const ContactForm = (): JSX.Element => {
 
       {/* Phone number input */}
       <div className="mb-2 flex flex-col items-start justify-start">
+      <p className="mb-1 text-gray-400 font-medium">Phone Number</p>
         <input
           id="contact-phone"
           className="w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
           type="text"
-          placeholder="Phone Number"
           onChange={(e) => {
             if (!/^[0-9- ]*$/.test(e.target.value)) {
               setPhoneError("Please enter a valid phone number");
@@ -94,10 +94,10 @@ const ContactForm = (): JSX.Element => {
 
       {/* Message input */}
       <div className="mb-2 flex flex-col items-start justify-start">
+      <p className="mb-1 text-gray-400 font-medium">Message</p>
         <textarea
           id="contact-message"
           className="h-20 w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
-          placeholder="Message"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setMessageError("Message is required");

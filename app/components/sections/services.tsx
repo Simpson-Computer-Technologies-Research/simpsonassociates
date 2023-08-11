@@ -13,7 +13,14 @@ export default function Services(): JSX.Element {
       className="relative mt-10 flex w-full flex-col items-center justify-center pb-4 text-center sm:mt-20"
     >
       <Header />
-      <CirclesBackground />
+      <Image
+        src="/images/house_transparent_bg.png"
+        alt="..."
+        width={1920}
+        height={1080}
+        loading="lazy"
+        className="mt-1 w-full h-[45%] lg:h-[50%] xl:h-[55%] bottom-0 -z-10 absolute"
+      />
 
       {/* Grid of info cards */}
       <div className="z-[1] mt-4 grid grid-cols-2 gap-6 md:m-10 md:mt-4 lg:grid-cols-3">
@@ -95,7 +102,7 @@ const Card = (props: {
     href={props.href}
     rel="noreferrer"
     target="_blank"
-    className="relative flex h-48 w-36 flex-col shadow-2xl shadow-slate-300/40 items-center rounded-2xl border-2 border-transparent bg-slate-50 p-2 px-4 duration-500 ease-in-out hover:border-secondary hover:duration-0 xs:h-[12.5rem] xs:w-52 xs:p-4 sm:m-4 sm:h-56 sm:w-60 sm:p-5 md:h-64 lg:h-80 lg:w-64 lg:p-7 xl:h-[22rem] xl:w-72"
+    className="group relative flex hover:shadow-2xl shadow-slate-200/10 h-48 w-36 flex-col backdrop-blur-md items-center bg-blend-lighten hover:scale-105 rounded-2xl bg-white/70 p-2 px-4 duration-500 ease-in-outhover:duration-100 xs:h-[12.5rem] xs:w-52 xs:p-4 sm:m-4 sm:h-56 sm:w-60 sm:p-5 md:h-64 lg:h-80 lg:w-64 lg:p-7 xl:h-[21rem] xl:w-72"
   >
     <Image
       src={props.icon}
@@ -111,39 +118,8 @@ const Card = (props: {
     <p className="mt-1 text-[0.45rem] text-primary xs:text-[0.6rem] sm:mt-2 lg:text-xs xl:text-sm">
       {props.para}
     </p>
-    <button className="absolute bottom-3 rounded-full bg-tertiary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] xs:px-8 xs:py-3 xs:text-xs sm:bottom-4 sm:text-sm md:bottom-5 md:outline-none">
+    <button className="absolute bottom-3 rounded-full bg-tertiary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse group-hover:px-10 hover:brightness-[1.05] xs:px-8 xs:py-3 xs:text-xs sm:bottom-4 sm:text-sm md:bottom-5 md:outline-none">
       Learn More
     </button>
   </a>
 );
-
-/**
- * Circles Background
- * @returns JSX.Element
- */
-const CirclesBackground = (): JSX.Element => {
-  // Random opacity
-  const randomOpacity = (): number =>
-    Math.ceil(Math.random() * (100 - 10) + 10);
-
-  // Return the component jsx
-  return (
-    <svg
-      id="visual"
-      viewBox="0 0 900 600"
-      width="900"
-      height="600"
-      xmlns="http://www.w3.org/2000/svg"
-      className="absolute -bottom-20 left-0 h-full w-full opacity-[15%]"
-      version="1.1"
-    >
-      <g fill="#004282">
-        <circle r="127" cx="848" cy="478"></circle>
-        <circle r="98" cx="72" cy="30"></circle>
-        <circle r="72" cx="500" cy="292"></circle>
-        <circle r="144" cx="19" cy="494"></circle>
-        <circle r="72" cx="808" cy="57"></circle>
-      </g>
-    </svg>
-  );
-};
