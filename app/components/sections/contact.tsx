@@ -50,7 +50,7 @@ const ContactForm = (): JSX.Element => {
         </p>
         <input
           id="contact-name"
-          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (e.target.value.length < 2) {
@@ -76,7 +76,7 @@ const ContactForm = (): JSX.Element => {
         </p>
         <input
           id="contact-phone"
-          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-primary xs:w-96"
           type="text"
           onChange={(e) => {
             if (!/^[0-9- ]*$/.test(e.target.value)) {
@@ -102,7 +102,7 @@ const ContactForm = (): JSX.Element => {
         </p>
         <textarea
           id="contact-message"
-          className="h-20 w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96"
+          className="h-20 w-60 rounded-md text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 text-gray-800 focus:border-primary xs:w-96"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setMessageError("Message is required");
@@ -235,7 +235,7 @@ function SubmitButtons(props: {
       {/* If the user is not logged in */}
       {!session && (
         <Link
-          className="mb-2 mt-2 w-60 rounded-md bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out border-2 border-transparent hover:border-primary xs:w-96"
+          className="mb-2 mt-2 w-60 rounded-md bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:bg-slate-50 hover:animate-pulse"
           href="/contact/login"
           target="_blank"
           rel="noopener noreferrer"
