@@ -46,9 +46,9 @@ export default function Home() {
         <Services />
         <About />
         <Agents />
-        <Lenders />
-        <Contact />
         <Testimonials />
+        <Contact />
+        <Lenders />
         <Bottom />
       </section>
       <ScrollIndicator />

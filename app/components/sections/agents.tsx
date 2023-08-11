@@ -19,11 +19,11 @@ export default function Agents(): JSX.Element {
         <SearchFilters />
       </div>
       <Image
-        src="/images/holding_house_yellow.jpeg"
+        src="/images/holding_house_yellow_3.png"
         alt="..."
         width={1920}
         height={1080}
-        className="absolute right-0 bottom-0 max-h-full h-full w-screen min-w-[75rem]"
+        className="absolute bottom-0 max-h-full h-full w-screen lg:right-0 -right-16 md:-right-10 min-w-[95rem] lg:min-w-[110rem]"
       />
     </section>
   );
