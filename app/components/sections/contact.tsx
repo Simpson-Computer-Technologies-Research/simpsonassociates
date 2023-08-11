@@ -235,7 +235,7 @@ function SubmitButtons(props: {
       {/* If the user is not logged in */}
       {!session && (
         <Link
-          className="mb-2 mt-2 w-60 rounded-md bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:bg-slate-50 hover:animate-pulse"
+          className="mb-2 mt-2 w-60 rounded-md bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:animate-pulse"
           href="/contact/login"
           target="_blank"
           rel="noopener noreferrer"
