@@ -12,7 +12,7 @@ export default function Cards(): JSX.Element {
     >
       <div className="grid grid-cols-1 px-10 py-16 md:grid-cols-2 md:px-14 lg:grid-cols-3">
         <Card
-          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-r-none md:border-r-2 md:border-r-gray-100"
+          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-r-none md:border-r-2 md:border-r-slate-100"
           title="Calculators"
           description="Our Interactive Mortgage Calculators will allow you to explore 
             your Mortgage options to make the right home financing decision."
@@ -22,7 +22,7 @@ export default function Cards(): JSX.Element {
           }}
         />
         <Card
-          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-l-none lg:rounded-r-none lg:border-r-2 lg:border-r-gray-100"
+          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-l-none lg:rounded-r-none lg:border-r-2 lg:border-r-slate-100"
           title="Apply"
           description="Applying for a mortgage couldn’t be easier. 
             Just complete our secure application and we will be in touch shortly."
