@@ -13,7 +13,7 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 text-center"
+      className="relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 text-center"
     >
       <div className="relative z-[2] rounded-3xl bg-white/20 p-10 my-4 backdrop-blur-3xl">
         <Header />
@@ -21,13 +21,11 @@ export default function Agents(): JSX.Element {
       </div>
       <Image
         src="/images/holding_house_transparent.png"
-        // src="/images/house_transparent.png"
         alt="..."
         width={600}
         height={600}
         loading="lazy"
-        className="absolute z-0 right-0 top-32"
-        // className="mt-1 w-full h-[45%] lg:h-[50%] xl:h-[55%] bottom-0 -z-10 absolute"
+        className="absolute z-[1] right-0 top-32 hidden md:block"
       />
       <CirclesBackground />
     </section>
@@ -40,10 +38,11 @@ export default function Agents(): JSX.Element {
  */
 const Header = (): JSX.Element => (
   <div className="z-[2] flex flex-col items-center justify-center">
-    <h2 className="text-5xl font-extrabold text-primary md:text-6xl lg:text-7xl">
+    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Agents
     </h2>
-    <p className="mt-6 w-60 text-sm text-primary xs:w-96 lg:text-base px-5 pb-7">
+    <span className="mx-10 mb-6 mt-6 sm:mt-8 block h-1 w-3/5 rounded-full bg-secondary xs:w-2/5 sm:mb-10 lg:w-52"></span>
+    <p className="w-60 text-sm text-primary xs:w-96 lg:text-base px-5 pb-7">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.
     </p>
