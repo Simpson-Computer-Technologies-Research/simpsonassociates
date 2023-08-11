@@ -10,7 +10,7 @@ export default function Cards(): JSX.Element {
       id="cards"
       className="relative z-0 flex flex-col items-center justify-center bg-slate-50"
     >
-      <div className="grid grid-cols-1 px-10 py-4 sm:py-8 md:py-16 md:grid-cols-2 md:px-14 lg:grid-cols-3">
+      <div className="grid grid-cols-1 px-10 py-8 md:py-16 md:grid-cols-2 md:px-14 lg:grid-cols-3">
         <Card
           className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-r-none md:border-r-2 md:border-r-slate-100"
           title="Calculators"

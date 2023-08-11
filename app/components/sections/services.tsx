@@ -104,7 +104,7 @@ const Card = (props: {
     href={props.href}
     rel="noreferrer"
     target="_blank"
-    className="group relative flex hover:shadow-2xl shadow-slate-200/10 h-48 w-36 flex-col backdrop-blur-md items-center bg-blend-lighten hover:scale-105 rounded-2xl bg-white/70 p-2 px-4 duration-500 ease-in-outhover:duration-100 xs:h-[12.5rem] xs:w-52 xs:p-4 sm:m-4 sm:h-56 sm:w-60 sm:p-5 md:h-64 lg:h-80 lg:w-64 lg:p-7 xl:h-[21rem] xl:w-72"
+    className="group relative flex hover:shadow-2xl shadow-slate-200/10 h-44 w-36 flex-col backdrop-blur-md items-center bg-blend-lighten hover:scale-105 rounded-2xl bg-white/80 p-2 px-4 duration-500 ease-in-outhover:duration-100 xs:h-[12.5rem] xs:w-52 xs:p-4 sm:m-4 sm:h-56 sm:w-60 sm:p-5 md:h-64 lg:h-80 lg:w-64 lg:p-7 xl:h-[21rem] xl:w-72"
   >
     <Image
       src={props.icon}
@@ -120,7 +120,7 @@ const Card = (props: {
     <p className="mt-1 text-[0.45rem] text-primary xs:text-[0.6rem] sm:mt-2 lg:text-xs xl:text-sm">
       {props.para}
     </p>
-    <button className="absolute bottom-3 rounded-full bg-tertiary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse group-hover:px-10 hover:brightness-[1.05] xs:px-8 xs:py-3 xs:text-xs sm:bottom-4 sm:text-sm md:bottom-5 md:outline-none">
+    <button className="absolute bottom-3 rounded-full bg-tertiary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse group-hover:px-8 xs:group-hover:px-9 sm:group-hover:px-10 hover:brightness-[1.05] xs:px-7 xs:py-2.5 xs:text-xs sm:bottom-4 md:text-sm md:bottom-5 md:outline-none">
       Learn More
     </button>
   </a>
