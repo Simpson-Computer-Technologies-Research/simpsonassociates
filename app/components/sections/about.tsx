@@ -6,7 +6,7 @@ export default function About(): JSX.Element {
   return (
     <section
       id="about"
-      className="group relative flex w-full flex-col items-center justify-center p-10 py-16 pt-20 text-center bg-white"
+      className="group relative flex w-full flex-col items-center justify-center bg-white p-10 py-16 pt-20"
     >
       <Header />
     </section>
@@ -18,7 +18,7 @@ export default function About(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center">
+  <div className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       About Us
     </h2>

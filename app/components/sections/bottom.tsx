@@ -11,7 +11,7 @@ export default function Bottom(): JSX.Element {
   return (
     <section
       id="bottom"
-      className="flex h-auto w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-10 pb-20 md:items-center lg:flex-row lg:justify-center"
+      className="flex w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-10 pb-20 md:items-center lg:flex-row lg:justify-center"
     >
       {/* Before Image, Show on larger screens */}
       <div className="relative hidden justify-center lg:flex lg:flex-row">

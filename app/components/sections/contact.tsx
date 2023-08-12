@@ -13,7 +13,7 @@ export default function Contact(): JSX.Element {
   return (
     <section
       id="contact"
-      className="group relative bg-slate-50 flex w-full flex-col p-10 sm:py-16 pt-14 sm:pt-20 text-center"
+      className="group relative flex w-full flex-col bg-slate-50 p-10 pt-14 sm:py-16 sm:pt-20"
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center">
@@ -36,94 +36,99 @@ export default function Contact(): JSX.Element {
  */
 const ContactForm = (): JSX.Element => {
   // Keep track of errors
-  const [nameError, setNameError] = React.useState<string>("");
-  const [phoneError, setPhoneError] = React.useState<string>("");
-  const [messageError, setMessageError] = React.useState<string>("");
+  const [errors, setErrors] = React.useState<{
+    name: string;
+    phone: string;
+    message: string;
+  }>({
+    name: "",
+    phone: "",
+    message: "",
+  });
+
+  // Google session
+  const { data: session } = useSession();
 
   // Return the component jsx
   return (
-    <section className="backdrop-blur-sm p-6 bg-white/50 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0 z-20 relative">
+    <section className="relative z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
-      <div className="mb-4 flex flex-col items-start justify-start">
-        <input
-          id="contact-name"
-          className="w-60 text-xs xs:text-sm sm:text-base border-primary border-b-[2.5px] p-2 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
-          type="text"
-          placeholder="Name"
-          onChange={(e) => {
-            if (e.target.value.length < 2) {
-              setNameError("Name is required");
-            } else if (nameError) {
-              setNameError("");
-            }
-          }}
-        />
-        <p
-          className={`mt-2 text-sm text-red-500 ${
-            nameError ? "block" : "hidden"
-          }`}
-        >
-          {nameError}
-        </p>
-      </div>
+      <input
+        id="contact-name"
+        className="w-60 border-b-[2.5px] border-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        placeholder="Name"
+        onChange={(e) => {
+          if (!isValidName(e.target.value)) {
+            setErrors({ ...errors, name: "Name is required" });
+          } else if (errors.name) {
+            setErrors({ ...errors, name: "" });
+          }
+        }}
+      />
+      <ErrorMessage error={errors.name} />
 
       {/* Phone number input */}
-      <div className="mb-4 flex flex-col items-start justify-start">
-        <input
-          id="contact-phone"
-          className="w-60 text-xs xs:text-sm sm:text-base border-b-[2.5px] border-b-primary p-2 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
-          type="text"
-          placeholder="Phone Number"
-          onChange={(e) => {
-            if (!/^[0-9- ]*$/.test(e.target.value)) {
-              setPhoneError("Please enter a valid phone number");
-            } else if (phoneError) {
-              setPhoneError("");
-            }
-          }}
-        />
-        <p
-          className={`ml-2 mt-2 text-sm text-red-500 ${
-            phoneError ? "block" : "hidden"
-          }`}
-        >
-          {phoneError}
-        </p>
-      </div>
+      <input
+        id="contact-phone"
+        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        placeholder="Phone Number"
+        onChange={(e) => {
+          if (!isValidPhone(e.target.value))
+            setErrors({
+              ...errors,
+              phone: "Please enter a valid phone number",
+            });
+          else if (errors.phone) setErrors({ ...errors, phone: "" });
+        }}
+      />
+      <ErrorMessage error={errors.phone} />
 
       {/* Message input */}
-      <div className="mb-4 flex flex-col items-start justify-start">
-        <textarea
-          id="contact-message"
-          placeholder="Message"
-          className="h-20 w-60 text-xs xs:text-sm sm:text-base border-b-[2.5px] border-b-primary p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
-          onChange={(e) => {
-            if (e.target.value.length < 2) {
-              setMessageError("Message is required");
-            } else if (messageError) {
-              setMessageError("");
-            }
-          }}
-        ></textarea>
-        <p
-          className={`ml-2 mt-2 text-sm text-red-500 ${
-            messageError ? "block" : "hidden"
-          }`}
-        >
-          {messageError}
-        </p>
-      </div>
-      <SubmitButtons {...{ setNameError, setPhoneError, setMessageError }} />
+      <textarea
+        id="contact-message"
+        placeholder="Message"
+        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        onChange={(e) => {
+          if (!isValidMessage(e.target.value))
+            setErrors({ ...errors, message: "Message is required" });
+          else if (errors.message) setErrors({ ...errors, message: "" });
+        }}
+      ></textarea>
+      <ErrorMessage error={errors.message} />
+
+      {/* If the user is not logged in */}
+      {!session && <SignInButton />}
+
+      {/* If the user is logged in */}
+      {session && session.user && session.user.email && (
+        <SendEmailButton
+          email={session.user.email}
+          errors={errors}
+          setErrors={setErrors}
+        />
+      )}
+      {session && <ChangeEmailButton />}
     </section>
   );
 };
+
+/**
+ * Error message component
+ */
+const ErrorMessage = (props: { error: string }): JSX.Element => (
+  <p
+    className={`mt-2 text-sm text-red-500 ${props.error ? "block" : "hidden"}`}
+  >
+    {props.error}
+  </p>
+);
 
 /**
  * Header Component
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center">
+  <div className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Contact
     </h2>
@@ -140,34 +145,60 @@ const Header = (): JSX.Element => (
 );
 
 /**
- * Get an element value via id
+ * Sign in Button
  */
-const getElementValue = (id: string): string =>
-  (document.getElementById(id) as HTMLInputElement).value;
+const SignInButton = (): JSX.Element => (
+  <Link
+    className="mb-2 mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
+    href="/contact/login"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <GoogleSvg />
+    <p className="text-xs font-medium text-gray-500/80 xs:text-sm sm:text-base">
+      Sign in to send email
+    </p>
+  </Link>
+);
 
 /**
- * Submit Button Component
- * @param {string} props.className
- * @param {string} props.text
- * @returns JSX.Element
+ * Change email button
  */
-function SubmitButtons(props: {
-  setNameError: React.Dispatch<React.SetStateAction<string>>;
-  setPhoneError: React.Dispatch<React.SetStateAction<string>>;
-  setMessageError: React.Dispatch<React.SetStateAction<string>>;
-}): JSX.Element {
-  // Google session
-  const { data: session } = useSession();
+const ChangeEmailButton = (): JSX.Element => (
+  <Link
+    className="w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
+    onClick={() => signOut({ redirect: false })}
+    href="/contact/login"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Change Email
+  </Link>
+);
 
-  // Manage email and sending states
-  const [sendEmailError, setSendEmailError] = React.useState<string>("");
+/**
+ * Send email button
+ */
+const SendEmailButton = (props: {
+  email: string;
+  errors: {
+    name: string;
+    phone: string;
+    message: string;
+  };
+  setErrors: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      phone: string;
+      message: string;
+    }>
+  >;
+}): JSX.Element => {
+  // Manage sending state
   const [sending, setSending] = React.useState<boolean>(false);
 
-  /**
-   * Send an email
-   * @param {string} email
-   */
-  const sendEmail = async (email: string) => {
+  // Send the email
+  const sendEmail = async () => {
     // Get the form values
     const name = getElementValue("contact-name");
     const phone = getElementValue("contact-phone");
@@ -175,164 +206,45 @@ function SubmitButtons(props: {
 
     // Make sure the values are valid
     if (!isValidName(name)) {
-      return props.setNameError("Name is required");
+      return props.setErrors({ ...props.errors, name: "Name is required" });
     }
     if (!isValidPhone(phone)) {
-      return props.setPhoneError("Please enter a valid phone number");
+      return props.setErrors({
+        ...props.errors,
+        phone: "Invalid phone number",
+      });
     }
     if (!isValidMessage(message)) {
-      return props.setMessageError("Message is required");
+      return props.setErrors({
+        ...props.errors,
+        message: "Message is required",
+      });
     }
 
     // Post the email
-    await postEmail(
-      name,
-      email,
-      phone,
-      message,
-      sendEmailError,
-      setSendEmailError
-    );
+    const resp: string = await postEmail(name, props.email, phone, message);
+    props.setErrors({ ...props.errors, message: resp });
   };
-
-  /**
-   * Check the session and send the email
-   * @param {Session} session
-   */
-  const checkSessionAndSendEmail = async (session: any) => {
-    if (session && session.user && session.user.email)
-      await sendEmail(session.user.email);
-  };
-
-  /**
-   * Open the login window
-   */
-  /*
-  const openLoginWindow = () => {
-    const wnd = window.open("/contact/login", "_blank", "width=500,height=500");
-    if (!wnd) return;
-    wnd.focus();
-    let interval = window.setInterval(async () => {
-      if (wnd.closed) {
-        clearInterval(interval);
-        await update(session);
-      }
-    }, 100);
-  };*/
 
   // Return the component jsx
   return (
-    <div className="flex flex-col">
-      {/* If there is an error sending the email */}
-      {sendEmailError && <p className="mb-4 text-red-500">{sendEmailError}</p>}
-
-      {/* If the user is not logged in */}
-      {!session && (
-        <Link
-          className="mb-2 mt-2 w-60 bg-white shadow-xl items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:animate-pulse"
-          href="/contact/login"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <GoogleSvg />
-          <p className="font-medium text-gray-500/80 text-xs xs:text-sm sm:text-base">
-            Sign in to send email
-          </p>
-        </Link>
+    <button
+      className="mb-2 mt-2 w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
+      onClick={() => {
+        setSending(true);
+        sendEmail().then(() => setSending(false));
+      }}
+    >
+      {sending ? (
+        "Sending"
+      ) : (
+        <p>
+          Send Email as <br />{" "}
+          <strong className="font-medium tracking-wide">{props.email}</strong>
+        </p>
       )}
-
-      {/* If the user is logged in */}
-      {session && (
-        <button
-          className="mb-2 mt-2 w-60 text-xs xs:text-sm sm:text-base bg-primary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
-          onClick={() => {
-            setSending(true);
-            checkSessionAndSendEmail(session).then(() => setSending(false));
-          }}
-        >
-          {sending ? (
-            "Sending"
-          ) : (
-            <span>
-              Send Email as <br />{" "}
-              <strong className="font-semibold tracking-wide">
-                {session && session.user && session.user.email}
-              </strong>
-            </span>
-          )}
-        </button>
-      )}
-
-      {/* If the user is logged in */}
-      {session && (
-        <Link
-          className="w-60 text-xs xs:text-sm sm:text-base bg-primary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
-          onClick={() => signOut({ redirect: false })}
-          href="/contact/login"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Change Email
-        </Link>
-      )}
-    </div>
+    </button>
   );
-}
-
-/**
- * Is valid phone number
- * @return bool
- */
-const isValidPhone = (phone: string): boolean => /^[0-9- ]*$/.test(phone);
-
-/**
- * Is valid message
- * @return bool
- */
-const isValidMessage = (message: string): boolean => message.length > 2;
-
-/**
- * Is valid name
- * @return bool
- */
-const isValidName = (name: string): boolean => name.length > 2;
-
-/**
- * Post the email to the api
- */
-const postEmail = async (
-  name: string,
-  email: string,
-  phone: string,
-  message: string,
-  sendEmailError: string,
-  setSendEmailError: React.Dispatch<React.SetStateAction<string>>
-) => {
-  // Send the email using the api
-  await fetch("/api/contact/email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ name, email, phone, message }),
-  }).then((res) =>
-    res.status === 200
-      ? () => {
-          if (sendEmailError) setSendEmailError("");
-          clearFormValues();
-        }
-      : setSendEmailError("Failed to send email")
-  );
-};
-
-/**
- * Clear the form values
- * @return void
- */
-const clearFormValues = (): void => {
-  (document.getElementById("contact-name") as HTMLInputElement).value = "";
-  (document.getElementById("contact-phone") as HTMLInputElement).value = "";
-  (document.getElementById("contact-message") as HTMLInputElement).value = "";
 };
 
 /**
@@ -342,7 +254,7 @@ const GoogleSvg = (): JSX.Element => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 186.69 190.5"
-    className="mx-3 h-6 w-6 xs:w-7 xs:h-7"
+    className="mx-3 h-6 w-6 xs:h-7 xs:w-7"
   >
     <g transform="translate(1184.583 765.171)">
       <path
@@ -372,3 +284,62 @@ const GoogleSvg = (): JSX.Element => (
     </g>
   </svg>
 );
+
+/**
+ * Clear the form values
+ * @return void
+ */
+const clearFormValues = (): void => {
+  (document.getElementById("contact-name") as HTMLInputElement).value = "";
+  (document.getElementById("contact-phone") as HTMLInputElement).value = "";
+  (document.getElementById("contact-message") as HTMLInputElement).value = "";
+};
+
+/**
+ * Get an element value via id
+ */
+const getElementValue = (id: string): string =>
+  (document.getElementById(id) as HTMLInputElement).value;
+
+/**
+ * Is valid phone number
+ * @return bool
+ */
+const isValidPhone = (phone: string): boolean => /^[0-9- ]*$/.test(phone);
+
+/**
+ * Is valid message
+ * @return bool
+ */
+const isValidMessage = (message: string): boolean => message.length > 2;
+
+/**
+ * Is valid name
+ * @return bool
+ */
+const isValidName = (name: string): boolean => name.length > 2;
+
+/**
+ * Post the email to the api
+ */
+const postEmail = async (
+  name: string,
+  email: string,
+  phone: string,
+  message: string,
+): Promise<string> => {
+  // Send the email using the api
+  return await fetch("/api/contact/email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, email, phone, message }),
+  }).then((res) => {
+    if (res.status === 200) {
+      clearFormValues();
+      return "";
+    }
+    return "Failed to send email";
+  });
+};

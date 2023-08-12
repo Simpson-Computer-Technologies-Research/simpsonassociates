@@ -52,7 +52,7 @@ export default function Agents(): JSX.Element {
   return (
     <section>
       <Navbar />
-      <div className="fade-in relative flex w-full flex-col items-center justify-center px-12 pb-16 pt-20 text-center">
+      <div className="fade-in relative flex w-full flex-col items-center justify-center px-12 pb-16 pt-20">
         <Header />
         <AgentsComponent initialQuery={initialQuery} agents={agents} />
         <ScrollIndicator />
@@ -166,7 +166,7 @@ const AgentsComponent = (props: {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="mt-36 flex flex-col items-center justify-center">
+  <div className="mt-36 flex flex-col items-center justify-center text-center">
     <h2 className="text-7xl font-extrabold text-primary lg:text-8xl">Agents</h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-base text-primary sm:w-1/2">

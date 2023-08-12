@@ -6,20 +6,23 @@ import Image from "next/image";
 // Return the component
 export default function Testimonials(): JSX.Element {
   // Manage the testimonials state
-  const [testimonials, setTestimonials] = React.useState([]);
+  // const [testimonials, setTestimonials] = React.useState([]);
 
   // Fetch the testimonials from /api/testimonials
-  React.useEffect(() => {
+  /*React.useEffect(() => {
     fetch("/api/testimonials")
       .then((res) => res.json())
       .then((testimonials) => setTestimonials(testimonials));
-  }, []);
+  }, []);*/
+
+  // Get the testimonials
+  const testimonials: any[] = getTestimonials();
 
   // Return the component jsx
   return (
     <section
       id="testimonials"
-      className="group relative flex w-full flex-col items-center justify-center bg-white md:pb-7 pt-16 md:pt-20"
+      className="group relative flex w-full flex-col items-center justify-center bg-white pt-16 md:pb-7 md:pt-20"
     >
       <Header />
       <TestimonialCards testimonials={testimonials} />
@@ -32,12 +35,12 @@ export default function Testimonials(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center">
-    <h2 className="text-5xl font-extrabold text-primary sm:text-7xl">
+  <div className="flex flex-col items-center justify-center text-center">
+    <h2 className="text-5xl font-extrabold text-primary xs:text-6xl sm:text-7xl">
       Testimonials
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-center text-sm text-primary sm:w-1/2 sm:text-base">
+    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
       Trusting the right mortgage brokerage is vital. Because of our dedication
       to <strong>exceptional service</strong> and{" "}
       <strong>unwavering commitment</strong>, our clients have shared their
@@ -58,7 +61,7 @@ const TestimonialCards = (props: { testimonials: any }): JSX.Element => {
 
   // Return the component jsx
   return (
-    <div className="relative mt-2 flex h-auto w-11/12 flex-row overflow-hidden md:w-3/4">
+    <div className="relative mt-2 flex w-11/12 flex-row overflow-hidden md:w-3/4">
       <div className="flex animate-marquee-current-slow flex-row">
         {testimonialCards}
       </div>
@@ -74,7 +77,7 @@ const TestimonialCards = (props: { testimonials: any }): JSX.Element => {
  * @returns Testimonial Card Component JSX
  */
 const TestimonialCard = (props: { testimonial: any }) => (
-  <span className="mx-1 flex w-80 flex-col items-center p-4 text-center duration-500 ease-in-out hover:duration-0 xs:mx-3 md:mx-5 md:w-96 lg:w-[30rem]">
+  <div className="mx-1 flex w-80 flex-col items-center p-4 text-center duration-500 ease-in-out hover:duration-0 xs:mx-3 md:mx-5 md:w-96 lg:w-[30rem]">
     {" "}
     {/* hover:border-secondary */}
     <h2 className="mt-5 whitespace-nowrap text-base font-bold text-primary lg:text-lg">
@@ -91,7 +94,7 @@ const TestimonialCard = (props: { testimonial: any }) => (
       {props.testimonial.testimonial}
     </p>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-40"></span>
-  </span>
+  </div>
 );
 
 /**
@@ -112,3 +115,86 @@ const StarSVG = (): JSX.Element => (
     />
   </svg>
 );
+
+/**
+ * Get the testimonials.
+ */
+const getTestimonials = (): any[] => [
+  {
+    name: "Louise Macdonald",
+    testimonial:
+      "I have worked with Marita Talbot many times and she is a fabulous Mortgage agent. She is amazing with her clients and really works hard to put the deal together with the best possible rates. She's definitely the one to call in the Kitchener, Cambridge, Waterloo area and beyond!!",
+    image: "",
+    key: "d3y6vuhjn",
+  },
+  {
+    name: "M Margaret",
+    testimonial:
+      "Fil from Dominion and Lending has helped make buying our first home as easy and stress free as possible. She explained everything clearly and diligently, and she also pays close attention to detail. I’ve never come across someone with as incredible communication, knowledge, and patience, the way that Fil has so kindly shown us.",
+    image: "",
+    key: "emdlf8jeu",
+  },
+  {
+    name: "Elizabeth Chen",
+    testimonial:
+      "We just bought our first home with the help of Dan and his team for the mortgage. It was a great experience working with them. Dan is very knowledgeable and knows what he does. The team does a great job answering our questions and providing lots of information.",
+    image: "",
+    key: "fj3k4j3k4",
+  },
+  {
+    name: "Jilu James",
+    testimonial:
+      "I would like to thank Paula for all her help to get best interest rate with a reputed bank. I highly recommend Dan and Paula for all your mortgage needs.",
+    image: "",
+    key: "hdiue83in",
+  },
+  {
+    name: "Kelly Affeldt",
+    testimonial:
+      "Dan Simpson’s service is second to none! I have been sending my clients to Dan for their mortgage needs for over 10 years. Dan always has the time to assist his clients even on weekends, late evenings and even while he has been vacationing out of country!",
+    image: "",
+    key: "lpdkoeu3f",
+  },
+  {
+    name: "Madison Lee",
+    testimonial:
+      "Dan Simpson and his team preform at an exceptional level. They work around the clock to provide the best service in the region. I highly recommend this team for a seamless mortgage experience.",
+    image: "",
+    key: "uidp9d7zg",
+  },
+  {
+    name: "Keneisha Boreland",
+    testimonial:
+      "Thank you Richard for your great service. You were very patient and informative throughout the entire process. I appreciate your knowledge and the time you took to ensure we have the right  mortgage",
+    image: "",
+    key: "xlak267dj",
+  },
+  {
+    name: "A&S Prestige Auto Sales",
+    testimonial:
+      "Richard was very professional and efficient to find the mortgages for us without any inconvenience, especially with the stress that the banks have at this moment for approving a mortgage. Thank you very much.",
+    image: "",
+    key: "lp04ahgdw",
+  },
+  {
+    name: "Krystel Edwards",
+    testimonial:
+      "I couldn’t imagine a better team to work with. The speed, care, and dedication to their clients is unmatched. I refer all my friends and family here, and I know they are getting the absolute best service!! Thank you all for being you!",
+    image: "",
+    key: "qqrta18ji",
+  },
+  {
+    name: "Karyn Zimmermann",
+    testimonial:
+      "Aaron de Souza was a pleasure to work with. He was very kind, knowledgeable, and professional. He worked extremely hard to get us a better rate than what our current bank was offering. Although we decided to remain where we are, we will stay in touch and hopefully be able to make the switch when our current term is up.",
+    image: "",
+    key: "lp0z0ghju",
+  },
+  {
+    name: "Priscila Lopes",
+    testimonial:
+      "We are so happy we chose Paula to help us with our mortgage! The whole process was super smooth; she understood our scenario and our expectations and helped us with the information we needed to buy our first home! She was always available and remembered every detail previously discussed, making our discussions consistently productive.",
+    image: "",
+    key: "09jjkfise",
+  },
+];
