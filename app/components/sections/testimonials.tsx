@@ -90,7 +90,7 @@ const TestimonialCard = (props: { testimonial: any }) => (
       <StarSVG />
       <StarSVG />
     </div>
-    <p className="mb-7 mt-5 text-xs font-medium text-primary sm:text-sm lg:text-base">
+    <p className="mb-10 mt-5 text-xs font-medium text-primary sm:text-sm lg:text-base">
       {props.testimonial.testimonial}
     </p>
     <Link
