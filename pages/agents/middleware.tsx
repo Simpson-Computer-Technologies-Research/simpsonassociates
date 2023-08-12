@@ -1,6 +1,6 @@
 import React from "react";
 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -10,13 +10,18 @@ import "@/styles/globals.css";
 /**
  * Google authentication session middleware
  */
-export default function SessionMiddleware(props: {
-  children: any;
-  verify: (email: string | null | undefined) => Promise<boolean>;
-}): JSX.Element {
+export default function SessionMiddleware({
+  permissions,
+  unauthorized,
+  success,
+}: any): JSX.Element {
   return (
     <SessionProvider>
-      <_SessionMiddleware verify={props.verify} children={props.children} />
+      <_SessionMiddleware
+        permissions={permissions}
+        unauthorized={unauthorized}
+        success={success}
+      />
     </SessionProvider>
   );
 }
@@ -25,12 +30,15 @@ export default function SessionMiddleware(props: {
  * Google authentication session middleware
  * @returns JSX.Element
  */
-function _SessionMiddleware(props: {
-  children: any;
-  verify: (email: string | null | undefined) => Promise<boolean>;
-}): JSX.Element {
+function _SessionMiddleware({
+  permissions,
+  unauthorized,
+  success,
+}: any): JSX.Element {
   const { data: session, status } = useSession();
-  const [isAgent, setIsAgent] = React.useState<boolean | null>(null);
+  const [userPermissions, setUserPermissions] = React.useState<string[] | null>(
+    null,
+  );
 
   // If the session is loading, return a loading component
   React.useEffect(() => {
@@ -48,28 +56,38 @@ function _SessionMiddleware(props: {
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
-  if (isAgent === null) {
-    props.verify(session?.user?.email).then((res: boolean) => setIsAgent(res));
+  if (userPermissions === null) {
+    getPermissions(session?.user?.email).then((res) => setUserPermissions(res));
   }
 
   // If the user is not an agent, return an error message
-  if (!isAgent) return <NotAnAgent />;
+  if (
+    !userPermissions ||
+    !permissions.every((p: any) => userPermissions.includes(p))
+  )
+    return unauthorized();
 
-  // Return the children
-  return <>{props.children}</>;
+  // Return the children and pass the permissions to them
+  return success(session?.user?.email, userPermissions);
 }
 
 /**
- * Not an agent section
+ *
+ * @param email The email of the user
+ * @param permissions The permissions to check
+ * @returns
  */
-const NotAnAgent = (): JSX.Element => (
-  <section className="flex h-screen w-full flex-col items-center justify-center bg-primary">
-    <p className="text-4xl font-bold text-white">You are not an agent</p>
-    <button
-      className="mt-4 rounded-md bg-white px-10 py-2.5 font-medium text-primary"
-      onClick={() => signOut()}
-    >
-      Sign out
-    </button>
-  </section>
-);
+const getPermissions = async (
+  email: string | null | undefined,
+): Promise<string[]> => {
+  if (!email) return [];
+  return await fetch("/api/agents/permissions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then((res) => res.json())
+    .then((json) => json.permissions);
+};

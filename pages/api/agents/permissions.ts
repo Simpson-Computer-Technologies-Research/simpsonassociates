@@ -3,13 +3,17 @@ import { context } from "@/lib/mongo";
 export default async function handler(req: any, res: any) {
   // Make sure the request is a post
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res
+      .status(405)
+      .json({ message: "Method not allowed", permissions: [] });
   }
 
   // Get the request body
-  const { email, permissions } = req.body;
-  if (!email || !permissions) {
-    return res.status(400).json({ message: "Invalid request body" });
+  const { email } = req.body;
+  if (!email) {
+    return res
+      .status(400)
+      .json({ message: "Invalid request body", permissions: [] });
   }
 
   // Open a database connection using a context
@@ -28,6 +32,9 @@ export default async function handler(req: any, res: any) {
         return res.status(400).json({ message: false });
       }
     }
-  });*/
-  return res.status(200).json({ message: true });
+  });
+  
+  return res.status(200).json({ permissions: agent.permissions });
+  */
+  return res.status(200).json({ message: true, permissions: ["agent"] });
 }
