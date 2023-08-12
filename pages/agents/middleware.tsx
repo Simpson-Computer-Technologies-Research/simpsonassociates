@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useSession } from "next-auth/react";
+import { validSessionEmail } from "@/lib/login";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -10,14 +11,14 @@ import "@/styles/globals.css";
 /**
  * Google authentication session middleware
  */
-export default function SessionMiddleware({
+export default function PermissionMiddleware({
   permissions,
   unauthorized,
   success,
 }: any): JSX.Element {
   return (
     <SessionProvider>
-      <_SessionMiddleware
+      <_PermissionMiddleware
         permissions={permissions}
         unauthorized={unauthorized}
         success={success}
@@ -30,7 +31,7 @@ export default function SessionMiddleware({
  * Google authentication session middleware
  * @returns JSX.Element
  */
-function _SessionMiddleware({
+function _PermissionMiddleware({
   permissions,
   unauthorized,
   success,
@@ -42,10 +43,7 @@ function _SessionMiddleware({
 
   // If the session is loading, return a loading component
   React.useEffect(() => {
-    if (
-      (!session || !session.user || !session.user.email) &&
-      status !== "loading"
-    ) {
+    if (!validSessionEmail(session, status)) {
       window.location.href = "/login?redirect=/agents/dashboard";
       return;
     }

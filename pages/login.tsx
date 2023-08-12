@@ -2,6 +2,7 @@ import { signIn, useSession, SessionProvider } from "next-auth/react";
 
 import React from "react";
 import { useEffect } from "react";
+import { validSessionEmail } from "@/lib/login";
 
 import Loading from "@/app/components/loading";
 import "@/styles/globals.css";
@@ -39,10 +40,7 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
 
   // If the user is not logged in, log them in
   useEffect(() => {
-    if (
-      (!session || !session.user || !session.user.email) &&
-      status !== "loading"
-    ) {
+    if (!validSessionEmail(session, status)) {
       signIn("google");
     }
   }, [session]);
@@ -59,7 +57,7 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
   }
 
   // Return the loading component if the status is loading.
-  // No need to handle the "unauthenticated" status because 
+  // No need to handle the "unauthenticated" status because
   // the user will be automatically prompted to login
   return <Loading />;
 };
