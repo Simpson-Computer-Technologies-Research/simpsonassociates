@@ -3,12 +3,13 @@
 
 // Import react for state and effect
 import React from "react";
+import { SessionProvider } from "next-auth/react";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
 import Loading from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
-// import CirclesBackground from "@/app/components/circlesBackground";
+import Contact from "@/app/components/sections/contact";
 
 // Import tailwind and global styles
 import "@/styles/globals.css";
@@ -50,14 +51,15 @@ export default function Agents(): JSX.Element {
 
   // Render the agents page
   return (
-    <section>
+    <SessionProvider>
       <Navbar />
       <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
         <Header />
         <AgentsComponent initialQuery={initialQuery} agents={agents} />
-        <ScrollIndicator />
       </div>
-    </section>
+      <Contact />
+      <ScrollIndicator />
+    </SessionProvider>
   );
 }
 
@@ -243,7 +245,7 @@ const AgentsGrid = (props: {
 
   // Render the component jsx
   return (
-    <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 xs:justify-center md:flex md:flex-wrap">
+    <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 xs:justify-center sm:grid-cols-3 md:flex md:flex-wrap">
       {results.map((item: any, i: number) => {
         return <AgentCard key={i} agent={item.item || item} />;
       })}
@@ -270,7 +272,7 @@ const AgentCard = (props: {
     };
   };
 }): JSX.Element => (
-  <div className="group mb-24 xs:mb-8 flex scale-125 xs:scale-100 cursor-pointer flex-col items-center justify-center duration-700 ease-in-out xs:hover:scale-105 xs:mx-7 xs:items-start xs:justify-normal md:items-center md:justify-center">
+  <div className="group mb-24 flex scale-125 cursor-pointer flex-col items-center justify-center duration-700 ease-in-out xs:mx-7 xs:mb-8 xs:scale-100 xs:items-start xs:justify-normal xs:hover:scale-105 md:items-center md:justify-center">
     <img
       src={props.agent.photo}
       alt="..."
