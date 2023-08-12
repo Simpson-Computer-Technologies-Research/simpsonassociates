@@ -75,7 +75,7 @@ const DropdownMenuVisible = (
 ): JSX.Element => (
   <div
     id="menu"
-    className="absolute z-20 h-auto w-screen overflow-scroll rounded-b-3xl bg-white pb-8 pt-20 shadow-lg duration-500 ease-in-out"
+    className="absolute z-20 h-auto w-screen overflow-scroll bg-white pb-7 pt-20 shadow-xl duration-500 ease-in-out"
   >
     <NavbarMenuButton
       text="Home"
