@@ -25,7 +25,7 @@ export default function Agents(): JSX.Element {
         width={600}
         height={600}
         loading="lazy"
-        className="absolute right-0 top-32 z-[1]"
+        className="absolute right-0 top-32 z-[1] h-auto w-auto"
       />
       <CirclesBackground />
     </section>

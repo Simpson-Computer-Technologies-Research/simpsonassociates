@@ -29,12 +29,12 @@ export default function Agents(): JSX.Element {
   React.useEffect(() => {
     // Get the query
     const query: string | null = new URLSearchParams(
-      window.location.search
+      window.location.search,
     ).get("query");
     if (query) setInitialQuery(query);
 
     // Get the agents
-    fetch("/api/agents/get")
+    fetch("/api/agents")
       .then((res) => (res.status === 200 ? res.json() : []))
       .then((agents) => setAgents(agents));
   }, []);
@@ -52,7 +52,7 @@ export default function Agents(): JSX.Element {
   return (
     <section>
       <Navbar />
-      <div className="fade-in relative flex w-full flex-col items-center justify-center px-12 pb-16 pt-20">
+      <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
         <Header />
         <AgentsComponent initialQuery={initialQuery} agents={agents} />
         <ScrollIndicator />
@@ -108,7 +108,7 @@ const AgentsComponent = (props: {
             long: long,
           });
         },
-        (error) => setLocationError(error.message)
+        (error) => setLocationError(error.message),
       );
     } else setLocationError("Geolocation not supported");
   }
@@ -123,35 +123,29 @@ const AgentsComponent = (props: {
 
   // Render the component jsx
   return (
-    <section className="relative z-10">
-      <div className="mt-4 flex flex-col items-center justify-center">
-        <div className="flex flex-row items-center justify-center space-x-4">
-          <input
-            className="mb-4 w-60 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary p-2 text-gray-800 border-b-[2.5px] border-b-primary xs:w-96"
-            type="text"
-            defaultValue={props.initialQuery}
-            placeholder="Enter an agent name, city, or language"
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setUrlQueryParam(e.target.value);
-              if (location.active) setLocation({ ...location, active: false });
-            }}
-          />
-        </div>
-        <div className="flex flex-col items-center justify-center">
-          <button
-            onClick={getLocation}
-            className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
-          >
-            {location.loading
-              ? "Fetching Location"
-              : location.active
-              ? "Location Active"
-              : "Use My Location"}
-          </button>
-          <p className="text-sm font-semibold text-red-500">{locationError}</p>
-        </div>
-      </div>
+    <section className="relative z-10 mt-4 flex flex-col items-center justify-center">
+      <input
+        className="mb-4 w-60 border-b-[2.5px] border-b-primary p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
+        type="text"
+        defaultValue={props.initialQuery}
+        placeholder="Enter an agent name, city, or language"
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setUrlQueryParam(e.target.value);
+          if (location.active) setLocation({ ...location, active: false });
+        }}
+      />
+      <button
+        onClick={getLocation}
+        className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+      >
+        {location.loading
+          ? "Fetching Location"
+          : location.active
+          ? "Location Active"
+          : "Use My Location"}
+      </button>
+      <p className="text-sm font-semibold text-red-500">{locationError}</p>
       <AgentsGrid
         query={query || props.initialQuery}
         agents={props.agents}
@@ -184,7 +178,7 @@ const Header = (): JSX.Element => (
 const deg2rad = (deg: number) => deg * (Math.PI / 180);
 const getDistance = (
   a: { lat: number; long: number },
-  b: { lat: number; long: number }
+  b: { lat: number; long: number },
 ) => {
   const R = 6371; // Radius of the earth in km
   const dLat = deg2rad(b.lat - a.lat);
@@ -240,7 +234,7 @@ const AgentsGrid = (props: {
           {
             lat: agent.region.lat,
             long: agent.region.long,
-          }
+          },
         );
         return { ...agent, distance };
       })
@@ -249,12 +243,10 @@ const AgentsGrid = (props: {
 
   // Render the component jsx
   return (
-    <div className="mt-7 flex flex-col items-center justify-center">
-      <div className="grid grid-cols-2 justify-center sm:grid-cols-3 lg:flex lg:flex-row lg:flex-wrap">
-        {results.map((item: any, i: number) => {
-          return <AgentCard key={i} agent={item.item || item} />;
-        })}
-      </div>
+    <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 xs:justify-center md:flex md:flex-wrap">
+      {results.map((item: any, i: number) => {
+        return <AgentCard key={i} agent={item.item || item} />;
+      })}
     </div>
   );
 };
@@ -278,25 +270,25 @@ const AgentCard = (props: {
     };
   };
 }): JSX.Element => (
-  <div className="group m-6 flex cursor-pointer flex-col items-center justify-center duration-700 ease-in-out hover:scale-105">
+  <div className="group mb-24 xs:mb-8 flex scale-125 xs:scale-100 cursor-pointer flex-col items-center justify-center duration-700 ease-in-out xs:hover:scale-105 xs:mx-7 xs:items-start xs:justify-normal md:items-center md:justify-center">
     <img
       src={props.agent.photo}
       alt="..."
       width={150}
       height={150}
-      className="h-16 w-16 rounded-full xs:h-28 xs:w-28 md:h-32 md:w-32 lg:h-40 lg:w-40"
+      className="h-32 w-32 rounded-full lg:h-40 lg:w-40"
     />
     <h3 className="mt-4 font-extrabold tracking-wide text-primary lg:text-xl">
       {props.agent.name}
     </h3>
-    <p className="mt-1 text-sm text-primary lg:text-base">
+    <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
       {props.agent.title} - Level {props.agent.level}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-1 text-xs text-primary font-semibold opacity-0 delay-100 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-0 lg:text-sm">
+    <p className="mt-1 text-xs font-semibold text-primary delay-100 duration-500 ease-in-out group-hover:delay-0 xs:opacity-0 xs:group-hover:opacity-100 lg:text-sm">
       {props.agent.region.location}
     </p>
-    <p className="mt-1 text-xs text-primary font-semibold opacity-0 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-100 lg:text-sm">
+    <p className="mt-1 text-xs font-semibold text-primary duration-500 ease-in-out group-hover:delay-100 xs:opacity-0 xs:group-hover:opacity-100 lg:text-sm">
       {props.agent.lang}
     </p>
   </div>

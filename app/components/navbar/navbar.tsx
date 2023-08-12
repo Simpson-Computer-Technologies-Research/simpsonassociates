@@ -44,6 +44,7 @@ export default function Navbar() {
     <nav className="fixed z-50 flex w-screen flex-row justify-between border-b-4 border-secondary bg-nav">
       <NavbarMenu />
       <Image
+        priority={true}
         key={Math.random()}
         width={1920}
         height={1080}
