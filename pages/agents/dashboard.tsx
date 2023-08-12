@@ -19,32 +19,10 @@ const Dashboard = (): JSX.Element => {
 };
 
 /**
- * Verify that the user is an agent
- */
-const verifyAgent = async (email: string): Promise<boolean> => {
-  return await fetch("/api/agents/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
-  }).then((res) => res.status == 200);
-};
-
-const SignoutButton = (): JSX.Element => (
-  <button
-    className="mt-4 rounded-xl bg-white px-10 py-3"
-    onClick={() => signOut()}
-  >
-    Sign out
-  </button>
-);
-
-/**
  * Get the google auth session
  * @returns JSX.Element
  */
-const Session = (): JSX.Element => {
+const SessionMiddleware = (): JSX.Element => {
   const { data: session, status } = useSession();
   const [isAgent, setIsAgent] = React.useState<boolean>(false);
 
@@ -78,12 +56,38 @@ const Session = (): JSX.Element => {
 };
 
 /**
+ * Verify that the user is an agent
+ */
+const verifyAgent = async (email: string): Promise<boolean> => {
+  return await fetch("/api/agents/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  }).then((res) => res.status == 200);
+};
+
+/**
+ * Signout button
+ * @returns JSX.Element
+ */
+const SignoutButton = (): JSX.Element => (
+  <button
+    className="mt-4 rounded-xl bg-white px-10 py-3"
+    onClick={() => signOut()}
+  >
+    Sign out
+  </button>
+);
+
+/**
  * Return the component jsx
  */
 export default function AgentLogin(props: any): JSX.Element {
   return (
     <SessionProvider session={props.session}>
-      <Session />
+      <SessionMiddleware />
     </SessionProvider>
   );
 }
