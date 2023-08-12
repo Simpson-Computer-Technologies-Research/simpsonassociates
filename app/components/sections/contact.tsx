@@ -149,7 +149,7 @@ const Header = (): JSX.Element => (
 const SignInButton = (): JSX.Element => (
   <Link
     className="mb-2 mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
-    href="/contact/login"
+    href="/login"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -167,7 +167,7 @@ const ChangeEmailButton = (): JSX.Element => (
   <Link
     className="w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
     onClick={() => signOut({ redirect: false })}
-    href="/contact/login"
+    href="/login"
     target="_blank"
     rel="noopener noreferrer"
   >
@@ -328,7 +328,7 @@ const postEmail = async (
   message: string,
 ): Promise<string> => {
   // Send the email using the api
-  return await fetch("/api/contact/email", {
+  return await fetch("/api/email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

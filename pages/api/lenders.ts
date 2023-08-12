@@ -1,4 +1,4 @@
-export default function handler(req: any, res: any) {
+export default async function handler(req: any, res: any) {
   res.status(200).json([
     {
       logo: "https://dominionlending.ca/wp-content/uploads/2021/05/amba-1.svg",
