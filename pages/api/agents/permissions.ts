@@ -24,6 +24,9 @@ export default async function handler(req: any, res: any) {
 
     // If the agent is not found, return error
     const agent = await collection.findOne({ name: email });
+    if (!agent) {
+      return res.status(400).json({ message: false });
+    }
 
     // Iterate over the permissions and check if the agent has them, if
     // they don't, return false to the response.
