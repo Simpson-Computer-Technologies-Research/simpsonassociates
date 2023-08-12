@@ -7,7 +7,7 @@ import "@/styles/globals.css";
  * Dashboard page
  * @returns {JSX.Element} JSX.Element
  */
-export default function DashboardPage(): JSX.Element {
+export default function Dashboard(): JSX.Element {
   return (
     <SessionMiddleware>
       <section className="flex h-screen w-full flex-col items-center justify-center bg-primary">
