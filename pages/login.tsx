@@ -2,7 +2,7 @@ import { signIn, useSession, SessionProvider } from "next-auth/react";
 
 import React from "react";
 import { useEffect } from "react";
-import { validSessionEmail } from "@/lib/login";
+import { invalidSession } from "@/lib/login";
 
 import Loading from "@/app/components/loading";
 import "@/styles/globals.css";
@@ -40,7 +40,7 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
 
   // If the user is not logged in, log them in
   useEffect(() => {
-    if (!validSessionEmail(session, status)) {
+    if (invalidSession(session, status)) {
       signIn("google");
     }
   }, [session]);

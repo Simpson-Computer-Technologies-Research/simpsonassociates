@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useSession } from "next-auth/react";
-import { validSessionEmail } from "@/lib/login";
+import { invalidSession } from "@/lib/login";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -43,7 +43,7 @@ function _PermissionMiddleware({
 
   // If the session is loading, return a loading component
   React.useEffect(() => {
-    if (!validSessionEmail(session, status)) {
+    if (invalidSession(session, status)) {
       window.location.href = "/login?redirect=/agents/dashboard";
       return;
     }
