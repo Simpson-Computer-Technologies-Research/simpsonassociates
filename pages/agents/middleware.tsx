@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useSession } from "next-auth/react";
-import { invalidSession } from "@/lib/login";
+import { invalidSession, fetchPermissions } from "@/lib/login";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -55,7 +55,9 @@ function _PermissionMiddleware({
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
   if (userPermissions === null) {
-    getPermissions(session?.user?.email).then((res) => setUserPermissions(res));
+    fetchPermissions(session?.user?.email).then((res) =>
+      setUserPermissions(res),
+    );
   }
 
   // If the user is not an agent, return an error message
@@ -68,24 +70,3 @@ function _PermissionMiddleware({
   // Return the children and pass the permissions to them
   return success(session?.user?.email, userPermissions);
 }
-
-/**
- *
- * @param email The email of the user
- * @param permissions The permissions to check
- * @returns
- */
-const getPermissions = async (
-  email: string | null | undefined,
-): Promise<string[]> => {
-  if (!email) return [];
-  return await fetch("/api/agents/permissions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
-  })
-    .then((res) => res.json())
-    .then((json) => json.permissions);
-};
