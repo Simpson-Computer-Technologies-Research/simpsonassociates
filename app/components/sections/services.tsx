@@ -62,7 +62,7 @@ export default function Services(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Services
     </h2>
@@ -73,7 +73,7 @@ const Header = (): JSX.Element => (
       <strong className="tracking-wide">best products and rates</strong>{" "}
       available across Canada.
     </p>
-  </div>
+  </header>
 );
 
 /**

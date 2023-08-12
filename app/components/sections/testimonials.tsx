@@ -35,7 +35,7 @@ export default function Testimonials(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-5xl font-extrabold text-primary xs:text-6xl sm:text-7xl">
       Testimonials
     </h2>
@@ -46,7 +46,7 @@ const Header = (): JSX.Element => (
       <strong>unwavering commitment</strong>, our clients have shared their
       experiences with us.
     </p>
-  </div>
+  </header>
 );
 
 /**

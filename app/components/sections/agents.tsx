@@ -37,14 +37,14 @@ export default function Agents(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="z-[2] flex flex-col items-center justify-center text-center">
+  <header className="z-[2] flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">Agents</h2>
     <span className="mx-10 mb-6 mt-6 block h-1 w-3/5 rounded-full bg-secondary xs:w-2/5 sm:mb-10 sm:mt-8 lg:w-52"></span>
     <p className="w-60 px-5 pb-7 text-sm text-primary xs:w-96 lg:text-base">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.
     </p>
-  </div>
+  </header>
 );
 
 /**

@@ -22,7 +22,10 @@ export default function Services(): JSX.Element {
   return (
     <SessionProvider>
       <Navbar />
-      <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
+      <div
+        id="services"
+        className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20"
+      >
         <Header />
         <ServicesGrid />
       </div>

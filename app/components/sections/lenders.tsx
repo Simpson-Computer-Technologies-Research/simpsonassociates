@@ -55,7 +55,7 @@ const LenderImages = (props: { lenders: any }): JSX.Element => (
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Lenders
     </h2>
@@ -66,7 +66,7 @@ const Header = (): JSX.Element => (
       <strong className="tracking-wide">best mortgage products</strong> to suit
       your needs. Below is a snapshot of our lender partners and associations!
     </p>
-  </div>
+  </header>
 );
 
 /**

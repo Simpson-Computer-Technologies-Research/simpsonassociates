@@ -128,7 +128,7 @@ const ErrorMessage = (props: { error: string }): JSX.Element => (
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Contact
     </h2>
@@ -140,7 +140,7 @@ const Header = (): JSX.Element => (
       than happy to answer for you. We are here to help you through the mortgage
       process and make it as easy as possible for you.
     </p>
-  </div>
+  </header>
 );
 
 /**

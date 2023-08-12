@@ -18,7 +18,7 @@ export default function About(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       About Us
     </h2>
@@ -26,5 +26,5 @@ const Header = (): JSX.Element => (
     <p className="mb-4 w-3/4 text-base text-primary sm:w-1/2">
       About Us paragraph
     </p>
-  </div>
+  </header>
 );

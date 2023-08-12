@@ -45,7 +45,7 @@ export default function Landing(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="w-auto sm:w-[95%] lg:w-auto">
+  <header className="w-auto sm:w-[95%] lg:w-auto">
     <h1 className="text-5xl font-extrabold tracking-wide text-white md:text-6xl xl:text-7xl">
       Navigating{" "}
       <mark className="bg-transparent leading-tight text-secondary">
@@ -59,7 +59,7 @@ const Header = (): JSX.Element => (
       <strong>no hidden fees</strong>; we&rsquo;re here to help you navigate the
       mortgage process.
     </p>
-  </div>
+  </header>
 );
 
 /**
