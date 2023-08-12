@@ -22,7 +22,7 @@ export default function Testimonials(): JSX.Element {
   return (
     <section
       id="testimonials"
-      className="group relative flex w-full flex-col items-center justify-center bg-white pt-16 md:pb-7 md:pt-20"
+      className="group relative flex w-full flex-col items-center justify-center bg-white pb-7 pt-16 md:pt-20"
     >
       <Header />
       <TestimonialCards testimonials={testimonials} />

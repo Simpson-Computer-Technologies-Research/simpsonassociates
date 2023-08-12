@@ -22,7 +22,7 @@ export default function NavbarButton(props: {
       <Link
         href={props.href}
         onClick={() => props.setUnderlinedButton(props.id)}
-        className="py-2 text-base font-semibold tracking-widest text-white duration-500 ease-in-out"
+        className="py-2 text-base font-medium tracking-widest text-white duration-500 ease-in-out"
       >
         {props.text.toUpperCase()}
       </Link>
