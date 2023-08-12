@@ -154,7 +154,7 @@ const SignInButton = (): JSX.Element => (
     rel="noopener noreferrer"
   >
     <GoogleSvg />
-    <p className="text-xs font-medium text-gray-500/80 xs:text-sm sm:text-base">
+    <p className="text-xs font-medium text-primary xs:text-sm sm:text-base">
       Sign in to send email
     </p>
   </Link>
