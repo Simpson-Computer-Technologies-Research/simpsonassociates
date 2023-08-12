@@ -135,11 +135,10 @@ const Header = (): JSX.Element => (
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
       <i>Where do I start?</i> <i>What is a mortgage?</i>{" "}
-      <i>What is refinancing?</i> <i>What is a fixed rate?</i>{" "}
-      <i>What is a variable rate?</i> <i>What is a pre-approval?</i> These are
-      all questions we&rsquo;re more than happy to answer for you. We are here
-      to help you through the mortgage process and make it as easy as possible
-      for you.
+      <i>What is refinancing?</i> <i>What is a fixed rate; variable rate?</i>{" "}
+      <i>What is a pre-approval?</i> These are all questions we&rsquo;re more
+      than happy to answer for you. We are here to help you through the mortgage
+      process and make it as easy as possible for you.
     </p>
   </div>
 );

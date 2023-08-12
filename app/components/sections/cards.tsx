@@ -27,7 +27,7 @@ export default function Cards(): JSX.Element {
           description="Applying for a mortgage couldn’t be easier. 
             Just complete our secure application and we will be in touch shortly."
           button={{
-            href: "/",
+            href: "https://velocity-client.newton.ca/en/client/journey/home?shortCode=1c12wgprkn05s",
             text: "Apply Now",
           }}
         />
@@ -37,7 +37,7 @@ export default function Cards(): JSX.Element {
           description="Our rates are always competitive and we pride ourselves on making 
             sure that you get the best possible rate available to you."
           button={{
-            href: "/",
+            href: "https://dominionlending.ca/rates-lenders",
             text: "See Rates",
           }}
         />
@@ -80,7 +80,7 @@ const Card = (props: CardProps): JSX.Element => (
       <p className="text-sm text-primary sm:text-base">{props.description}</p>
       <a
         href={props.button.href}
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
         className="mt-7 rounded-full bg-secondary px-8 py-3 text-base font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] md:outline-none"
       >
