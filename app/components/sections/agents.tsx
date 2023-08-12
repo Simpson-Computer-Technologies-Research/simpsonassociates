@@ -60,7 +60,7 @@ const InputAndButtons = (): JSX.Element => {
       className="z-[2] flex flex-col items-center justify-center"
     >
       <input
-        className="mb-4 w-60 border-b-[2.5px] border-primary p-2 text-xs text-gray-800 xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mb-4 w-60 border-b-[2.5px] border-primary p-2 text-xs text-gray-800 focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         type="text"
         placeholder="Enter an agent name, city, or language"
         onChange={(e) => setInput(e.target.value)}

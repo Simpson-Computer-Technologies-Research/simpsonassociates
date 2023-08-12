@@ -55,7 +55,7 @@ const ContactForm = (): JSX.Element => {
       {/* Name input */}
       <input
         id="contact-name"
-        className="w-60 border-b-[2.5px] border-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="w-60 border-b-[2.5px] border-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         placeholder="Name"
         onChange={(e) => {
           if (!isValidName(e.target.value)) {
@@ -70,7 +70,7 @@ const ContactForm = (): JSX.Element => {
       {/* Phone number input */}
       <input
         id="contact-phone"
-        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         placeholder="Phone Number"
         onChange={(e) => {
           if (!isValidPhone(e.target.value))
@@ -87,7 +87,7 @@ const ContactForm = (): JSX.Element => {
       <textarea
         id="contact-message"
         placeholder="Message"
-        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:outline-none xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         onChange={(e) => {
           if (!isValidMessage(e.target.value))
             setErrors({ ...errors, message: "Message is required" });
