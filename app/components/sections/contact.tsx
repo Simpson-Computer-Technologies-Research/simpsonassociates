@@ -42,16 +42,14 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="backdrop-blur-md px-6 py-4 rounded-xl bg-white/20 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0 z-20 relative">
+    <section className="backdrop-blur-sm p-6 bg-white/50 mt-4 flex flex-col items-center justify-center xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0 z-20 relative">
       {/* Name input */}
-      <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
-          Name
-        </p>
+      <div className="mb-4 flex flex-col items-start justify-start">
         <input
           id="contact-name"
-          className="w-60 rounded-lg text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-primary xs:w-96"
+          className="w-60 text-xs xs:text-sm sm:text-base border-primary border-b-[2.5px] p-2 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
           type="text"
+          placeholder="Name"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setNameError("Name is required");
@@ -70,14 +68,12 @@ const ContactForm = (): JSX.Element => {
       </div>
 
       {/* Phone number input */}
-      <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium  text-xs xs:text-sm sm:text-base">
-          Phone Number
-        </p>
+      <div className="mb-4 flex flex-col items-start justify-start">
         <input
           id="contact-phone"
-          className="w-60 rounded-lg text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 focus:border-primary xs:w-96"
+          className="w-60 text-xs xs:text-sm sm:text-base border-b-[2.5px] border-b-primary p-2 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
           type="text"
+          placeholder="Phone Number"
           onChange={(e) => {
             if (!/^[0-9- ]*$/.test(e.target.value)) {
               setPhoneError("Please enter a valid phone number");
@@ -96,13 +92,11 @@ const ContactForm = (): JSX.Element => {
       </div>
 
       {/* Message input */}
-      <div className="mb-2 flex flex-col items-start justify-start">
-        <p className="mb-1 text-gray-400/80 font-medium text-xs xs:text-sm sm:text-base">
-          Message
-        </p>
+      <div className="mb-4 flex flex-col items-start justify-start">
         <textarea
           id="contact-message"
-          className="h-20 w-60 rounded-lg text-xs xs:text-sm sm:text-base border-2 border-gray-200 p-2 text-gray-800 focus:border-primary xs:w-96"
+          placeholder="Message"
+          className="h-20 w-60 text-xs xs:text-sm sm:text-base border-b-[2.5px] border-b-primary p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
           onChange={(e) => {
             if (e.target.value.length < 2) {
               setMessageError("Message is required");
@@ -235,7 +229,7 @@ function SubmitButtons(props: {
       {/* If the user is not logged in */}
       {!session && (
         <Link
-          className="mb-2 mt-2 w-60 rounded-lg bg-white shadow-xl shadow-slate-600/10 items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:animate-pulse"
+          className="mb-2 mt-2 w-60 bg-white shadow-xl items-center justify-center flex flex-row py-3 duration-500 ease-in-out xs:w-96 hover:animate-pulse"
           href="/contact/login"
           target="_blank"
           rel="noopener noreferrer"
@@ -250,7 +244,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <button
-          className="mb-2 mt-2 w-60 text-xs xs:text-sm sm:text-base rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="mb-2 mt-2 w-60 text-xs xs:text-sm sm:text-base bg-primary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => {
             setSending(true);
             checkSessionAndSendEmail(session).then(() => setSending(false));
@@ -272,7 +266,7 @@ function SubmitButtons(props: {
       {/* If the user is logged in */}
       {session && (
         <Link
-          className="w-60 text-xs xs:text-sm sm:text-base rounded-lg bg-tertiary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+          className="w-60 text-xs xs:text-sm sm:text-base bg-primary p-2 text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           onClick={() => signOut({ redirect: false })}
           href="/contact/login"
           target="_blank"

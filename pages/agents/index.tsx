@@ -8,7 +8,7 @@ import React from "react";
 import Navbar from "@/app/components/navbar/navbar";
 import Loading from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
-import CirclesBackground from "@/app/components/circlesBackground";
+// import CirclesBackground from "@/app/components/circlesBackground";
 
 // Import tailwind and global styles
 import "@/styles/globals.css";
@@ -56,7 +56,6 @@ export default function Agents(): JSX.Element {
         <Header />
         <AgentsComponent initialQuery={initialQuery} agents={agents} />
         <ScrollIndicator />
-        <CirclesBackground />
       </div>
     </section>
   );
@@ -128,7 +127,7 @@ const AgentsComponent = (props: {
       <div className="mt-4 flex flex-col items-center justify-center">
         <div className="flex flex-row items-center justify-center space-x-4">
           <input
-            className="mb-4 w-60 rounded-md border-2 border-gray-300 p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-secondary xs:w-96"
+            className="mb-4 w-60 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary p-2 text-gray-800 border-b-[2.5px] border-b-primary xs:w-96"
             type="text"
             defaultValue={props.initialQuery}
             placeholder="Enter an agent name, city, or language"
@@ -142,7 +141,7 @@ const AgentsComponent = (props: {
         <div className="flex flex-col items-center justify-center">
           <button
             onClick={getLocation}
-            className="mb-4 w-60 rounded-md bg-tertiary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
+            className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
           >
             {location.loading
               ? "Fetching Location"
@@ -294,10 +293,10 @@ const AgentCard = (props: {
       {props.agent.title} - Level {props.agent.level}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-1 text-xs text-primary opacity-0 delay-100 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-0 lg:text-sm">
+    <p className="mt-1 text-xs text-primary font-semibold opacity-0 delay-100 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-0 lg:text-sm">
       {props.agent.region.location}
     </p>
-    <p className="mt-1 text-xs text-primary opacity-0 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-100 lg:text-sm">
+    <p className="mt-1 text-xs text-primary font-semibold opacity-0 duration-500 ease-in-out group-hover:opacity-100 group-hover:delay-100 lg:text-sm">
       {props.agent.lang}
     </p>
   </div>

@@ -54,7 +54,7 @@ const Header = (): JSX.Element => (
       , Simplifying Your Future
       <mark className="bg-transparent leading-tight text-secondary">.</mark>
     </h1>
-    <p className="mt-4 w-[65%] text-base font-medium tracking-wide text-para md:w-[55%] lg:w-full lg:text-lg xl:w-3/4">
+    <p className="mt-4 w-[65%] text-base font-medium tracking-wider text-para md:w-[55%] lg:w-full lg:text-lg xl:w-3/4">
       <strong>Low rates</strong>, <strong>expert advice</strong>, and{" "}
       <strong>no hidden fees</strong>; we&rsquo;re here to help you navigate the
       mortgage process.
@@ -87,7 +87,7 @@ const GetStartedButton = (): JSX.Element => {
   // Return the main component
   return (
     <a
-      href="#get-started"
+      href="#agents"
       className="group mt-8 w-60 rounded-full bg-white px-8 py-5 shadow-lg duration-500 ease-in-out hover:w-64"
     >
       <div className="flex flex-row items-start justify-between">

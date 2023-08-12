@@ -15,7 +15,7 @@ export default function Agents(): JSX.Element {
       id="agents"
       className="relative flex w-full flex-col items-center justify-center bg-slate-50 p-10 text-center"
     >
-      <div className="relative z-[2] rounded-3xl bg-white/20 p-10 my-4 backdrop-blur-3xl">
+      <div className="relative z-[2] bg-white/50 backdrop-blur-sm p-10 my-4">
         <Header />
         <InputAndButtons />
       </div>
@@ -25,7 +25,7 @@ export default function Agents(): JSX.Element {
         width={600}
         height={600}
         loading="lazy"
-        className="absolute z-[1] right-0 top-32 hidden md:block"
+        className="absolute z-[1] right-0 top-32"
       />
       <CirclesBackground />
     </section>
@@ -55,11 +55,14 @@ const InputAndButtons = (): JSX.Element => {
   const [input, setInput] = React.useState("");
 
   return (
-    <div className="z-[2] flex flex-col items-center justify-center">
+    <div
+      id="agents"
+      className="z-[2] flex flex-col items-center justify-center"
+    >
       <div className="flex flex-row items-center justify-center space-x-4">
         <div className="text-start">
           <input
-            className="mb-4 w-60 rounded-lg border-2 border-gray-200 p-2 text-xs xs:text-sm text-gray-800 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary xs:w-96 sm:text-base"
+            className="mb-4 w-60 border-b-[2.5px] border-primary p-2 text-xs xs:text-sm text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96 sm:text-base"
             type="text"
             placeholder="Enter an agent name, city, or language"
             onChange={(e) => setInput(e.target.value)}
@@ -69,13 +72,13 @@ const InputAndButtons = (): JSX.Element => {
       <div className="flex flex-col items-center justify-center">
         <Link
           href={`/agents?query=${input}`}
-          className="mb-4 w-60 rounded-lg bg-tertiary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
+          className="mb-4 w-60 bg-primary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
         >
           Search
         </Link>
         <Link
           href="/agents"
-          className="mb-4 w-60 rounded-lg bg-tertiary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
+          className="mb-4 w-60 bg-primary p-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
         >
           See all agents
         </Link>

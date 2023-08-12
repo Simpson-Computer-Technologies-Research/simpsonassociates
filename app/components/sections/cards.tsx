@@ -82,7 +82,7 @@ const Card = (props: CardProps): JSX.Element => (
         href={props.button.href}
         rel="noreferrer"
         target="_blank"
-        className="mt-7 rounded-full bg-tertiary px-8 py-3 text-base font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] md:outline-none"
+        className="mt-7 rounded-full bg-secondary px-8 py-3 text-base font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] md:outline-none"
       >
         {props.button.text}
       </a>
