@@ -39,5 +39,7 @@ export default async function handler(req: any, res: any) {
   
   return res.status(200).json({ permissions: agent.permissions });
   */
-  return res.status(200).json({ message: true, permissions: ["agent"] });
+  return res
+    .status(200)
+    .json({ message: true, permissions: ["agent", "post_event", "admin"] });
 }
