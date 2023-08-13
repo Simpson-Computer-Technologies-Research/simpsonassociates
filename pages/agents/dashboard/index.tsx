@@ -28,7 +28,7 @@ export default function Dashboard(): JSX.Element {
 const Success = (user: User): JSX.Element => (
   <section className="flex flex-col">
     <SideMenu user={user} />
-    <div className="relative ml-72">
+    <div className="relative sm:ml-64">
       <Events user={user} />
       <Lenders />
     </div>
@@ -39,7 +39,7 @@ const Success = (user: User): JSX.Element => (
  * Side menu
  */
 const SideMenu = (props: { user: User }): JSX.Element => (
-  <section className="fixed z-10 flex h-screen w-72 flex-col bg-slate-50 p-4">
+  <div className="z-10 flex h-auto w-screen flex-col bg-slate-50 p-4 sm:fixed sm:h-screen sm:w-64">
     <div className="flex flex-row items-center justify-start">
       <img
         src={props.user.image || "/images/default_agent_headshot.png"}
@@ -78,37 +78,61 @@ const SideMenu = (props: { user: User }): JSX.Element => (
     </Link>
     <button
       onClick={() => signOut()}
-      className="absolute bottom-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
+      className="relative bottom-4 mt-8 rounded-md bg-primary px-10 py-2.5 text-start font-medium text-white hover:brightness-110 sm:absolute"
     >
       Sign out
     </button>
-  </section>
+  </div>
 );
 
 /**
  * Events section
  */
-const Events = (props: { user: User }): JSX.Element => (
-  <section id="events" className="flex h-fit w-full flex-col bg-primary p-7">
-    <h1 className="text-4xl font-bold text-white">Events</h1>
-    <p className="mt-2 text-sm text-white">
-      Keep up with upcoming company events and meetings
-    </p>
-    <div className="flex flex-row">
+const Events = (props: { user: User }): JSX.Element => {
+  const [events, setEvents] = React.useState<any>([]);
+  if (events.length === 0) {
+    setEvents([
+      {
+        title: "Event 1",
+        description: "This is the first event",
+        date: "2021-10-10",
+        attending: 10,
+      },
+      {
+        title: "Event 2",
+        description: "This is the second event",
+        date: "2021-10-10",
+        attending: 10,
+      },
+    ]);
+  }
+
+  return (
+    <section id="events" className="flex h-fit w-full flex-col bg-primary p-7">
+      <h1 className="text-4xl font-bold text-white">Events</h1>
+      <p className="mt-2 text-sm text-white">
+        Keep up with upcoming company events and meetings
+      </p>
       <PostEventCard user={props.user} />
-    </div>
-  </section>
-);
+      <div className="flex flex-wrap gap-4 lg:grid lg:grid-cols-2">
+        {events.map((event: any) => (
+          <EventCard event={event} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 /**
  * Post event card
  */
 const PostEventCard = (props: { user: User }): JSX.Element => {
   // If the user doesn't have the "post_event" permission, don't show the card
-  if (!props.user.permissions.includes("post_event")) return <div className="h-80"></div>;
+  if (!props.user.permissions.includes("post_event"))
+    return <div className="h-80"></div>;
 
   return (
-    <div className="mt-6 flex h-80 w-96 flex-col rounded-md bg-white p-4">
+    <div className="mb-4 mt-6 flex h-auto w-auto flex-col rounded-md bg-white p-4">
       <h1 className="text-2xl font-bold text-primary">Post an event</h1>
       <p className="mt-2 text-sm text-primary">
         Post an event to the company calendar
@@ -129,10 +153,35 @@ const PostEventCard = (props: { user: User }): JSX.Element => {
         className="mt-4 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-primary"
       />
       <button
-        className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
+        className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110"
         onClick={() => alert("Not implemented")}
       >
         Post
+      </button>
+    </div>
+  );
+};
+
+/**
+ * Event card
+ */
+const EventCard = (props: { event: any }): JSX.Element => {
+  return (
+    <div className="mb-4 mt-6 flex h-auto w-full flex-col rounded-md bg-white p-4">
+      <h1 className="text-2xl font-bold text-primary">{props.event.title}</h1>
+      <p className="mt-2 text-sm text-primary">{props.event.description}</p>
+      <p className="mt-2 text-sm text-primary">{props.event.date}</p>
+      <button
+        className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110"
+        onClick={() => alert("Not implemented")}
+      >
+        Acknowledge Attendance
+      </button>
+      <button
+        className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110"
+        onClick={() => alert("Not implemented")}
+      >
+        See Attending ({props.event.attending})
       </button>
     </div>
   );
@@ -164,12 +213,3 @@ const Unauthorized = (): JSX.Element => (
     </button>
   </section>
 );
-
-/**
- * Fetch the news
- */
-const fetchArticles = async (): Promise<any> => {
-  return await fetch("/api/news")
-    .then((res) => res.json())
-    .then((data) => data);
-};
