@@ -28,7 +28,6 @@ const Success = (user: User): JSX.Element => (
   <section className="flex h-screen w-full flex-col items-center justify-center bg-primary">
     <p className="text-4xl font-bold text-white">Admin Agent Dashboard</p>
     <p className="text-2xl font-bold text-white">{user.email}</p>
-    <p className="text-2xl font-bold text-white">{user.permissions}</p>
     {user.permissions &&
       user.permissions.map((permission: any) => (
         <p className="text-2xl font-bold text-white">{permission}</p>

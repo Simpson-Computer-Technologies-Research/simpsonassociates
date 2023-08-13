@@ -167,7 +167,7 @@ const Offices = (): JSX.Element => {
       <Office
         title="Victoria St."
         phone="+1 519-885-8852"
-        address="200 Victoria St. West"
+        address="901 Victoria St Kitchener"
         className="text-right md:text-left"
       />
     </div>
