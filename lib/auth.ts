@@ -4,7 +4,14 @@
  * @returns true if the session is valid, false otherwise
  */
 export const invalidSession = (session: any, status: string): boolean => {
-  return (!session || !session.user) && status !== "loading";
+  return (
+    (!session ||
+      !session.user ||
+      !session.user.email ||
+      !session.user.name ||
+      !session.user.image) &&
+    status !== "loading"
+  );
 };
 
 /**

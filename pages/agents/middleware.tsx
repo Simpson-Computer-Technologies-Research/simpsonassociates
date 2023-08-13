@@ -62,6 +62,7 @@ function _PermissionMiddleware({
   }, [session]);
 
   // If the session is loading or not authenticated, return a loading component
+  // This should be already handled with the above useEffect, but just in case.
   if (!session || status !== "authenticated") return <Loading />;
 
   // Now that we know the user has been authenticated (via google auth),
