@@ -23,7 +23,7 @@ export interface User {
 /**
  * Google authentication session middleware
  */
-export function PermissionMiddleware({
+export default function PermissionMiddleware({
   permissions,
   unauthorized,
   success,

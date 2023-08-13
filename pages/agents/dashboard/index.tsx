@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { PermissionMiddleware, User } from "@/pages/agents/middleware";
+import PermissionMiddleware, { User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
 
 import "@/styles/globals.css";
