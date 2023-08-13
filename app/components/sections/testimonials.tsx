@@ -9,11 +9,13 @@ export default function Testimonials(): JSX.Element {
   // const [testimonials, setTestimonials] = React.useState([]);
 
   // Fetch the testimonials from /api/testimonials
-  /*React.useEffect(() => {
+  /*
+  React.useEffect(() => {
     fetch("/api/testimonials")
       .then((res) => res.json())
       .then((testimonials) => setTestimonials(testimonials));
-  }, []);*/
+  }, []);
+  */
 
   // Get the testimonials
   const testimonials: any[] = getTestimonials();
@@ -40,12 +42,20 @@ const Header = (): JSX.Element => (
       Testimonials
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
+    <p className="mb-6 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
       Trusting the right mortgage brokerage is vital. Because of our dedication
       to <strong>exceptional service</strong> and{" "}
       <strong>unwavering commitment</strong>, our clients have shared their
       experiences with us.
     </p>
+    <Link
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://www.google.com/maps/place/Dominion+Lending+Dan+Simpson+Team/@43.46332,-80.4674503,17z/data=!4m6!3m5!1s0x882bf5ff62d60f99:0xc0e42b67bd26841d!8m2!3d43.46332!4d-80.46487!16s%2Fg%2F11rv1fs0d4"
+      className="mb-6 rounded-full bg-secondary p-2 px-14 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:px-16 hover:brightness-110 sm:px-20 sm:text-base sm:hover:px-24"
+    >
+      See all
+    </Link>
   </header>
 );
 
@@ -97,7 +107,7 @@ const TestimonialCard = (props: { testimonial: any }) => (
       target="_blank"
       rel="noopener noreferrer"
       href={props.testimonial.href}
-      className="absolute bottom-6 w-40 bg-primary p-2 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 sm:w-60 sm:text-base"
+      className="absolute bottom-6 rounded-full bg-secondary p-2 px-14 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:px-16 hover:brightness-110 sm:px-20 sm:text-base sm:hover:px-24"
     >
       See full review
     </Link>
