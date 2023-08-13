@@ -4,7 +4,6 @@ import { signIn, useSession, SessionProvider } from "next-auth/react";
 
 import React from "react";
 import { useEffect } from "react";
-import { invalidSession } from "@/lib/auth";
 
 import Loading from "@/app/components/loading";
 import "@/styles/globals.css";
@@ -42,20 +41,18 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
 
   // If the user is not logged in, log them in
   useEffect(() => {
-    if (invalidSession(session, status)) {
+    if (status === "unauthenticated") {
       signIn("google");
     }
   }, [session]);
 
   // Depending on the response, return the appropriate component
-  if (session && status === "authenticated") {
+  if (status === "authenticated") {
     if (props.redirect) window.location.href = props.redirect;
     else return <SuccessLogin />;
   }
 
-  // Return the loading component if the status is loading.
-  // No need to handle the "unauthenticated" status because
-  // the user will be automatically prompted to login
+  // Else if the login is loading, return the loading component
   return <Loading />;
 };
 

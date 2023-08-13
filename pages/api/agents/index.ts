@@ -1,65 +1,34 @@
 import { context } from "@/lib/mongo";
 
+// Search config
+const searchConfig = {
+  name: 1,
+  email: 1,
+  license: 1,
+  region: 1,
+  title: 1,
+  photo: 1,
+  lang: 1,
+  level: 1,
+};
+
 // Get the agents from the database and return them as JSON
 export default async function handler(_: any, res: any) {
-  /*if (
+  if (
     !context(async (client: any) => {
-      const db = client.db("agents");
-      const collection = db.collection("all");
-      const agents = await collection.find().toArray();
-      res.json(agents);
+      // Get the database and collection
+      const db = client.db("simpsonassociates");
+      const collection = db.collection("agents");
+
+      // Get the agents from the database
+      const result = await collection.find().project(searchConfig).toArray();
+
+      // Return the agents as JSON
+      res.status(200).json({ message: "Success", result });
     })
   ) {
-    res.status(500).json({ error: "Unable to connect to database" });
-  }*/
-  res.json([
-    {
-      name: "Dan Simpson",
-      level: 1,
-      title: "Mortgage Agent",
-      license: "License #93248",
-      photo: "/images/default_agent_headshot.png",
-      lang: "English",
-
-      // Coordinates which will be used to calculate the distance
-      // between them and the user via location, city, or postal code
-      region: {
-        location: "Kitchener, Waterloo ON",
-        long: 0,
-        lat: 0,
-      },
-    },
-    {
-      name: "Richard Gogh",
-      level: 1,
-      title: "Mortgage Agent",
-      license: "License #93243",
-      photo: "/images/default_agent_headshot.png",
-      lang: "English",
-
-      // Coordinates which will be used to calculate the distance
-      // between them and the user via location, city, or postal code
-      region: {
-        location: "Waterloo ON",
-        long: 90,
-        lat: 90,
-      },
-    },
-    {
-      name: "Michael Gogh",
-      level: 1,
-      title: "Mortgage Agent",
-      license: "License #93248",
-      photo: "/images/default_agent_headshot.png",
-      lang: "English",
-
-      // Coordinates which will be used to calculate the distance
-      // between them and the user via location, city, or postal code
-      region: {
-        location: "Kitchener ON",
-        long: 100,
-        lat: 100,
-      },
-    },
-  ]);
+    res
+      .status(500)
+      .json({ message: "Unable to connect to database", result: [] });
+  }
 }

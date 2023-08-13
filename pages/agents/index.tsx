@@ -4,6 +4,7 @@
 // Import react for state and effect
 import React from "react";
 import { SessionProvider } from "next-auth/react";
+import { fetchAgents } from "@/lib/agents";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -35,9 +36,7 @@ export default function Agents(): JSX.Element {
     if (query) setInitialQuery(query);
 
     // Get the agents
-    fetch("/api/agents")
-      .then((res) => (res.status === 200 ? res.json() : []))
-      .then((agents) => setAgents(agents));
+    fetchAgents().then((agents: any) => setAgents(agents));
   }, []);
 
   // If the agents are not loaded yet

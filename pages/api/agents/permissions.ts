@@ -17,29 +17,18 @@ export default async function handler(req: any, res: any) {
   }
 
   // Open a database connection using a context
-  /*await context(async (client: any) => {
+  await context(async (client: any) => {
     // Access the database
     const db = client.db("simpsonassociates");
     const collection = db.collection("agents");
 
     // If the agent is not found, return error
-    const agent = await collection.findOne({ name: email });
-    if (!agent) {
-      return res.status(400).json({ message: false });
+    const result = await collection.findOne({ email: email });
+    if (!result) {
+      res.status(400).json({ message: false });
     }
 
-    // Iterate over the permissions and check if the agent has them, if
-    // they don't, return false to the response.
-    for (let i = 0; i < permissions.length; i++) {
-      if (!agent.permissions.includes(permissions[i])) {
-        return res.status(400).json({ message: false });
-      }
-    }
+    // Return the agent permissions
+    res.status(200).json({ permissions: result.permissions });
   });
-  
-  return res.status(200).json({ permissions: agent.permissions });
-  */
-  return res
-    .status(200)
-    .json({ message: true, permissions: ["agent", "post_event", "admin"] });
 }

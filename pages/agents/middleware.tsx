@@ -3,7 +3,6 @@
 import React from "react";
 
 import { useSession } from "next-auth/react";
-import { invalidSession, fetchPermissions } from "@/lib/auth";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -49,13 +48,13 @@ function _PermissionMiddleware({
   success,
 }: any): JSX.Element {
   const { data: session, status } = useSession();
-  const [userPermissions, setUserPermissions] = React.useState<string[] | null>(
-    null,
-  );
+  const [userPermissions, setUserPermissions] = React.useState<string[]>([]);
+  const [permissionsStatus, setPermissionsStatus] =
+    React.useState<string>("none");
 
   // If the session is loading, return a loading component
   React.useEffect(() => {
-    if (invalidSession(session, status)) {
+    if (status === "unauthenticated") {
       window.location.href = "/login?redirect=/agents/dashboard";
       return;
     }
@@ -63,20 +62,24 @@ function _PermissionMiddleware({
 
   // If the session is loading or not authenticated, return a loading component
   // This should be already handled with the above useEffect, but just in case.
-  if (!session || status !== "authenticated") return <Loading />;
+  if (status === "loading" || permissionsStatus === "loading")
+    return <Loading />;
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
-  if (userPermissions === null) {
-    fetchPermissions(session?.user?.email).then((res) =>
-      setUserPermissions(res),
-    );
+  if (permissionsStatus === "none") {
+    setPermissionsStatus("loading");
+    fetchPermissions(session?.user?.email).then((res) => {
+      setUserPermissions(res);
+      setPermissionsStatus("done");
+    });
   }
 
   // If the user is not an agent, return an error message
   if (
-    !userPermissions ||
-    !permissions.every((p: any) => userPermissions.includes(p))
+    (!userPermissions ||
+      !permissions.every((p: any) => userPermissions.includes(p))) &&
+    permissionsStatus === "done"
   )
     return unauthorized();
 
@@ -89,3 +92,27 @@ function _PermissionMiddleware({
   };
   return success(user);
 }
+
+/**
+ * Fetch the users permissions
+ * @param email The email of the user
+ * @param permissions The permissions to check
+ * @returns the users permissions
+ */
+export const fetchPermissions = async (
+  email: string | null | undefined,
+): Promise<string[]> => {
+  // If there is no email, return an empty array
+  if (!email) return [];
+
+  // Fetch the permissions
+  return await fetch("/api/agents/permissions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  })
+    .then((res) => res.json())
+    .then((json) => json.permissions);
+};
