@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { useSession } from "next-auth/react";
@@ -9,9 +11,19 @@ import Loading from "@/app/components/loading";
 import "@/styles/globals.css";
 
 /**
+ * User class
+ */
+export interface User {
+  email: string | null | undefined;
+  name: string | null | undefined;
+  image: string | null | undefined;
+  permissions: string[];
+}
+
+/**
  * Google authentication session middleware
  */
-export default function PermissionMiddleware({
+export function PermissionMiddleware({
   permissions,
   unauthorized,
   success,
@@ -68,5 +80,11 @@ function _PermissionMiddleware({
     return unauthorized();
 
   // Return the children and pass the permissions to them
-  return success(session?.user?.email, userPermissions);
+  const user: User = {
+    email: session?.user?.email,
+    name: session?.user?.name,
+    image: session?.user?.image,
+    permissions: userPermissions,
+  };
+  return success(user);
 }

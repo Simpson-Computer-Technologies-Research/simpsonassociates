@@ -1,3 +1,5 @@
+"use client";
+
 import { signIn, useSession, SessionProvider } from "next-auth/react";
 
 import React from "react";

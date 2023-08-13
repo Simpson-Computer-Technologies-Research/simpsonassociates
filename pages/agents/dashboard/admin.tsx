@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
-import SessionMiddleware from "@/pages/agents/middleware";
+
+import { PermissionMiddleware, User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
 
 import "@/styles/globals.css";
@@ -10,7 +13,7 @@ import "@/styles/globals.css";
  */
 export default function AdminDashboard(): JSX.Element {
   return (
-    <SessionMiddleware
+    <PermissionMiddleware
       permissions={["agent", "admin"]}
       success={Success}
       unauthorized={Unauthorized}
@@ -21,13 +24,13 @@ export default function AdminDashboard(): JSX.Element {
 /**
  * Success section
  */
-const Success = (email: string, permissions: string[]): JSX.Element => (
+const Success = (user: User): JSX.Element => (
   <section className="flex h-screen w-full flex-col items-center justify-center bg-primary">
     <p className="text-4xl font-bold text-white">Admin Agent Dashboard</p>
-    <p className="text-2xl font-bold text-white">{email}</p>
-    <p className="text-2xl font-bold text-white">{permissions}</p>
-    {permissions &&
-      permissions.map((permission: any) => (
+    <p className="text-2xl font-bold text-white">{user.email}</p>
+    <p className="text-2xl font-bold text-white">{user.permissions}</p>
+    {user.permissions &&
+      user.permissions.map((permission: any) => (
         <p className="text-2xl font-bold text-white">{permission}</p>
       ))}
   </section>

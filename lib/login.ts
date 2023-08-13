@@ -5,7 +5,8 @@
  */
 export const invalidSession = (session: any, status: string): boolean => {
   return (
-    (!session || !session.user || !session.user.email) && status !== "loading"
+    (!session || !session.user || !session.user.email || !session.user.name) &&
+    status !== "loading"
   );
 };
 
