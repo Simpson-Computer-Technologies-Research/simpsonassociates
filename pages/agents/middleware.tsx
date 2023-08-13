@@ -3,7 +3,7 @@
 import React from "react";
 
 import { useSession } from "next-auth/react";
-import { invalidSession, fetchPermissions } from "@/lib/login";
+import { invalidSession, fetchPermissions } from "@/lib/auth";
 
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
@@ -62,7 +62,7 @@ function _PermissionMiddleware({
   }, [session]);
 
   // If the session is loading or not authenticated, return a loading component
-  if (status !== "authenticated") return <Loading />;
+  if (!session || status !== "authenticated") return <Loading />;
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.

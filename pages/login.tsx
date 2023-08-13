@@ -4,7 +4,7 @@ import { signIn, useSession, SessionProvider } from "next-auth/react";
 
 import React from "react";
 import { useEffect } from "react";
-import { invalidSession } from "@/lib/login";
+import { invalidSession } from "@/lib/auth";
 
 import Loading from "@/app/components/loading";
 import "@/styles/globals.css";
@@ -48,12 +48,7 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
   }, [session]);
 
   // Depending on the response, return the appropriate component
-  if (
-    session &&
-    session.user &&
-    session.user.email &&
-    status === "authenticated"
-  ) {
+  if (session && status === "authenticated") {
     if (props.redirect) window.location.href = props.redirect;
     else return <SuccessLogin />;
   }
