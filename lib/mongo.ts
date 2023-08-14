@@ -1,19 +1,26 @@
 import { Db, MongoClient, ServerApiVersion } from "mongodb";
 
-// Replace the placeholder with your Atlas connection string
+// Connect to the mongo database
 const uri: string = process.env.MONGODB_URI || "";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client: MongoClient = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-  },
-});
+export async function context(fn: (db: Db) => Promise<void>): Promise<void> {
+  const client: MongoClient = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+    },
+    maxConnecting: 10,
+    maxPoolSize: 5,
+    minPoolSize: 1,
+    maxIdleTimeMS: 1000,
+    maxStalenessSeconds: 1000,
+    connectTimeoutMS: 1000,
+  });
+  await client.connect();
 
-// Connect to the MongoDB cluster
-client.connect().then(() => {
-  console.log("Connected to MongoDB cluster");
-});
+  const db: Db = client.db("simpsonassociates");
+  const result: any = await fn(db);
 
-// Export the database connection
-export const database: Db = client.db("simpsonassociates");
+  await client.close();
+  return result;
+}

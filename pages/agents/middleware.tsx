@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import { useSession } from "next-auth/react";
@@ -53,6 +51,9 @@ function _PermissionMiddleware({
   const [permissionsStatus, setPermissionsStatus] =
     React.useState<string>("none");
 
+  const [accessTokenUpdated, setAccessTokenUpdated] =
+    React.useState<boolean>(false);
+
   // If the session is loading, return a loading component
   React.useEffect(() => {
     if (status === "unauthenticated") {
@@ -85,7 +86,10 @@ function _PermissionMiddleware({
     return unauthorized();
 
   // Update the users authorization token
-  updateAccessToken(session?.user?.email, session?.accessToken);
+  if (!accessTokenUpdated) {
+    updateAccessToken(session?.user?.email, session?.accessToken);
+    setAccessTokenUpdated(true);
+  }
 
   // Return the children and pass the permissions to them
   const user: User = {

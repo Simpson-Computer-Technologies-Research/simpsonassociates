@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import PermissionMiddleware, { User } from "@/pages/agents/middleware";

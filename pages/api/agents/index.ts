@@ -1,4 +1,4 @@
-import { database } from "@/lib/mongo";
+import { context } from "@/lib/mongo";
 
 // Search config
 const searchConfig = {
@@ -22,20 +22,22 @@ const verifyAdmin = async (req: any, res: any) => {
   if (!token) return false;
 
   // Get the database and collection
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    const collection = database.collection("agents");
 
-  // Get the user from the database
-  const user = await collection
-    .find({ authorization: token })
-    .project({ permissions: 1 })
-    .limit(1)
-    .toArray();
+    // Get the user from the database
+    const user = await collection
+      .find({ authorization: token })
+      .project({ permissions: 1 })
+      .limit(1)
+      .toArray();
 
-  // If the user doesn't exist, return a 401
-  if (!user) return false;
+    // If the user doesn't exist, return a 401
+    if (!user) return false;
 
-  // Return whether the user is an admin
-  return user[0].permissions.includes("admin");
+    // Return whether the user is an admin
+    return user[0].permissions.includes("admin");
+  });
 };
 
 // Get the agents from the database and return them as JSON
@@ -79,47 +81,51 @@ export default async function handler(req: any, res: any) {
 
 // Get the agents from the database and return them as JSON
 const getAgents = async (req: any, res: any) => {
-  // Get the database and collection
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    // Get the database and collection
+    const collection = database.collection("agents");
 
-  // Get the agents from the database
-  const result = await collection.find().project(searchConfig).toArray();
-  if (!result) {
-    res.status(404).json({ message: "Not found", result: [] });
-    return;
-  }
+    // Get the agents from the database
+    const result = await collection.find().project(searchConfig).toArray();
+    if (!result) {
+      res.status(404).json({ message: "Not found", result: [] });
+      return;
+    }
 
-  // Return the agents as JSON
-  res.status(200).json({ message: "Success", result });
+    // Return the agents as JSON
+    res.status(200).json({ message: "Success", result });
+  });
 };
 
 // Update an agent
 const postAgent = async (req: any, res: any) => {
   // Get the database and collection
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    const collection = database.collection("agents");
 
-  // Get the agent from the database
-  const result = await collection.findOne({ email: req.body.email });
-  if (!result) {
-    res.status(404).json({ message: "Not found", update: null });
-    return;
-  }
+    // Get the agent from the database
+    const result = await collection.findOne({ email: req.body.email });
+    if (!result) {
+      res.status(404).json({ message: "Not found", update: null });
+      return;
+    }
 
-  // Get the agent from the database
-  const update = await collection.findOneAndUpdate(
-    { email: req.body.email },
-    { $set: req.body },
-    { upsert: true },
-  );
+    // Get the agent from the database
+    const update = await collection.findOneAndUpdate(
+      { email: req.body.email },
+      { $set: req.body },
+      { upsert: true },
+    );
 
-  // If the agent doesn't exist, return a 404
-  if (!update) {
-    res.status(404).json({ message: "Not found", update: null });
-    return;
-  }
+    // If the agent doesn't exist, return a 404
+    if (!update) {
+      res.status(404).json({ message: "Not found", update: null });
+      return;
+    }
 
-  // Return the agent as JSON
-  res.status(200).json({ message: "Success", update });
+    // Return the agent as JSON
+    res.status(200).json({ message: "Success", update });
+  });
 };
 
 // Add an agent
@@ -146,51 +152,56 @@ const putAgent = async (req: any, res: any) => {
     !level ||
     !permissions
   ) {
-    res.status(400).json({ message: "Missing required fields", result: null });
-    return;
+    return res
+      .status(400)
+      .json({ message: "Missing required fields", result: null });
   }
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    const collection = database.collection("agents");
 
-  // Check if the agent already exists
-  const agent = await collection.findOne({ email });
-  if (agent) {
-    res.status(409).json({ message: "Agent already exists", result: null });
-    return;
-  }
+    // Check if the agent already exists
+    const agent = await collection.findOne({ email });
+    if (agent) {
+      res.status(409).json({ message: "Agent already exists", result: null });
+      return;
+    }
 
-  // Add the agent to the database
-  const result = await collection.insertOne({
-    name,
-    email,
-    license,
-    region,
-    title,
-    photo,
-    lang,
-    level,
-    authorization: "",
-    permissions: permissions,
+    // Add the agent to the database
+    const result = await collection.insertOne({
+      name,
+      email,
+      license,
+      region,
+      title,
+      photo,
+      lang,
+      level,
+      authorization: "",
+      permissions: permissions,
+    });
+
+    // Return the agent as JSON
+    res.status(200).json({ message: "Success", result });
   });
-
-  // Return the agent as JSON
-  res.status(200).json({ message: "Success", result });
 };
 
 // Delete an agent
 const deleteAgent = async (req: any, res: any) => {
   const { email } = req.body;
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    const collection = database.collection("agents");
 
-  // Check if the agent already exists
-  const agent = await collection.findOne({ email });
-  if (!agent) {
-    res.status(409).json({ message: "Agent does not exist", result: null });
-    return;
-  }
+    // Check if the agent already exists
+    const agent = await collection.findOne({ email });
+    if (!agent) {
+      res.status(409).json({ message: "Agent does not exist", result: null });
+      return;
+    }
 
-  // Delete the agent from the database
-  const result = await collection.deleteOne({ email });
+    // Delete the agent from the database
+    const result = await collection.deleteOne({ email });
 
-  // Return the agent as JSON
-  res.status(200).json({ message: "Success", result });
+    // Return the agent as JSON
+    res.status(200).json({ message: "Success", result });
+  });
 };

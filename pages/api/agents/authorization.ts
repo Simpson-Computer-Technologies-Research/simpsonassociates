@@ -1,4 +1,4 @@
-import { database } from "@/lib/mongo";
+import { context } from "@/lib/mongo";
 
 export default async function handler(req: any, res: any) {
   // If the requestg method is not a PUT
@@ -17,17 +17,20 @@ export default async function handler(req: any, res: any) {
   }
 
   // Get the user so we can check if their authorization token has already been set
-  const user = await database.collection("agents").findOne({ email });
-  if (user && user.authorization) {
-    res.status(400).json({ message: "Authorization token already set" });
-    return;
-  }
+  await context(async (database) => {
+    const user = await database.collection("agents").findOne({ email });
 
-  // Update the user in the database
-  const result = database
-    .collection("agents")
-    .updateOne({ email }, { $set: { authorization } }, { upsert: true });
+    if (user && user.authorization) {
+      res.status(400).json({ message: "Authorization token already set" });
+      return;
+    }
 
-  // If the update was successful
-  res.status(200).json({ message: "Success", result });
+    // Update the user in the database
+    const result = database
+      .collection("agents")
+      .updateOne({ email }, { $set: { authorization } }, { upsert: true });
+
+    // If the update was successful
+    res.status(200).json({ message: "Success", result });
+  });
 }

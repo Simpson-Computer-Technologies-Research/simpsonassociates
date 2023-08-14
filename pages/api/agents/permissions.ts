@@ -1,4 +1,4 @@
-import { database } from "@/lib/mongo";
+import { context } from "@/lib/mongo";
 
 export default async function handler(req: any, res: any) {
   // Make sure the request is a post
@@ -17,14 +17,20 @@ export default async function handler(req: any, res: any) {
   }
 
   // Access the database
-  const collection = database.collection("agents");
+  await context(async (database) => {
+    const collection = database.collection("agents");
 
-  // If the agent is not found, return error
-  const result = await collection.findOne({ email: email });
-  if (!result) {
-    res.status(400).json({ message: false, permissions: [] });
-  }
+    // If the agent is not found, return error
+    const result = await collection.findOne({ email: email });
+    if (!result) {
+      res.status(400).json({ message: false, permissions: [] });
+      return;
+    }
 
-  // Return the agent permissions
-  res.status(200).json({ message: true, permissions: result?.permissions });
+    // Get the agent permissions
+    const permissions = result.permissions;
+
+    // Return the agent permissions
+    res.status(200).json({ message: true, permissions });
+  });
 }

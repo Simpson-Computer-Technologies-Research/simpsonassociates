@@ -1,7 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-
-// Import react for state and effect
 import React from "react";
 import { SessionProvider } from "next-auth/react";
 
@@ -280,7 +277,7 @@ const AgentCard = (props: {
     };
   };
 }): JSX.Element => (
-  <div className="group mb-24 flex scale-125 cursor-pointer flex-col items-center justify-center duration-700 ease-in-out xs:mx-7 xs:mb-8 xs:scale-100 xs:items-start xs:justify-normal xs:hover:scale-105 md:items-center md:justify-center">
+  <div className="group mb-24 flex text-left hover:duration-100 scale-125 cursor-pointer flex-col duration-700 ease-in-out xs:mx-7 xs:mb-8 xs:scale-100 xs:items-start xs:justify-normal xs:hover:scale-105">
     <img
       src={props.agent.photo}
       alt="..."
@@ -295,10 +292,10 @@ const AgentCard = (props: {
       {props.agent.title} - Level {props.agent.level}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-1 text-xs font-semibold text-primary delay-100 duration-500 ease-in-out group-hover:delay-0 xs:opacity-0 xs:group-hover:opacity-100 lg:text-sm">
+    <p className="mt-3 text-sm text-primary">
       {props.agent.region.location}
     </p>
-    <p className="mt-1 text-xs font-semibold text-primary duration-500 ease-in-out group-hover:delay-100 xs:opacity-0 xs:group-hover:opacity-100 lg:text-sm">
+    <p className="mt-1 text-sm text-primary">
       {props.agent.lang}
     </p>
   </div>
