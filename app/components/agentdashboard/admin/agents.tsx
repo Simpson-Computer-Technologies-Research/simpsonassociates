@@ -12,7 +12,6 @@ export default function Agents(props: {
   user: any;
   setAgents: any;
 }): JSX.Element {
-  const [modify, setModify] = React.useState<boolean>(false);
   return (
     <section
       id="current-agents"
@@ -25,6 +24,7 @@ export default function Agents(props: {
       <div className="flex h-full w-full flex-col">
         {props.agents &&
           props.agents.map((agent: any, i: number) => {
+            const [modify, setModify] = React.useState<boolean>(false);
             return (
               <div key={i}>
                 {modify ? (

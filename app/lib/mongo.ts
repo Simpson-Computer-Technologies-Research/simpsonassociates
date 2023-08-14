@@ -26,6 +26,7 @@ export async function context(fn: (db: Db) => Promise<void>): Promise<any> {
     await client.connect();
   } catch (err) {
     console.log(err);
+    await client.close();
     return err;
   }
 
