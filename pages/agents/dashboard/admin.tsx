@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { fetchAgents } from "@/lib/agents";
 
 import PermissionMiddleware, { User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
@@ -29,7 +28,7 @@ const Success = (user: User): JSX.Element => (
   <div>
     <SideMenu user={user} />
     <div className="relative sm:ml-64">
-      <ModifyAgents />
+      <ModifyAgents user={user} />
     </div>
   </div>
 );
@@ -37,7 +36,7 @@ const Success = (user: User): JSX.Element => (
 /**
  * Add Agents Section
  */
-const ModifyAgents = (): JSX.Element => {
+const ModifyAgents = (props: { user: User }): JSX.Element => {
   // Fetch the current agents
   const [agents, setAgents] = React.useState<any>(null);
   if (agents === null) {
@@ -52,52 +51,104 @@ const ModifyAgents = (): JSX.Element => {
     <section className="flex h-fit w-full flex-col bg-primary px-10 pb-10 pt-7">
       <p className="text-4xl font-bold text-white">Modify Agents</p>
       <div className="mt-4 flex flex-col rounded-md bg-white p-7">
-        {/* Current Agents */}
-        <p className="text-2xl font-bold text-primary">Current Agents</p>
-        <div className="flex h-full w-full flex-col">
-          {agents &&
-            agents.map((agent: any) => (
-              <div className="flex h-16 w-full flex-row items-center justify-between px-4">
-                <p className="text-lg font-medium text-primary">{agent.name}</p>
-                <div className="flex flex-row gap-4">
-                  <RemoveAgentButton setAgents={setAgents} agents={agents} />
-                  <button
-                    className="rounded-md bg-primary px-2 py-2 font-medium text-white"
-                    onClick={() => {
-                      // If the agent is already pending modification, return
-                      if (pendingModification.includes(agent)) return;
-                      setPendingModification([...pendingModification, agent]);
-                    }}
-                  >
-                    Modify
-                  </button>
-                </div>
-              </div>
-            ))}
+        {/* Add Agent */}
+        <div className="mt-4 flex flex-col rounded-md bg-white p-7">
+          <p className="mb-4 text-2xl font-bold text-primary">Add Agent</p>
+          <AddAgentInputs
+            user={props.user}
+            setAgents={setAgents}
+            agents={agents}
+          />
         </div>
-      </div>
 
-      {/* Modify Agent */}
-      {pendingModification &&
-        pendingModification.map((agent: any) => (
-          <div className="mt-4 flex flex-col rounded-md bg-white p-7">
-            <p className="mb-4 text-2xl font-bold text-primary">Modify Agent</p>
-            <ModifyAgentInputs
+        {/* Current Agents */}
+        <div className="mt-4 flex flex-col rounded-md bg-white p-7">
+          <p className="text-2xl font-bold text-primary">Current Agents</p>
+          <div className="flex h-full w-full flex-col">
+            <CurrentAgents
+              agents={agents}
+              setAgents={setAgents}
               pendingModification={pendingModification}
               setPendingModification={setPendingModification}
-              agent={agent}
             />
           </div>
-        ))}
+        </div>
 
-      {/* Add Agent */}
-      <div className="mt-4 flex flex-col rounded-md bg-white p-7">
-        <p className="mb-4 text-2xl font-bold text-primary">Add Agent</p>
-        <AddAgentInputs />
+        {/* Modify Agent */}
+        {pendingModification &&
+          pendingModification.map((agent: any) => (
+            <div className="mt-4 flex flex-col rounded-md bg-white p-7">
+              <p className="mb-4 text-2xl font-bold text-primary">
+                Modify Agent
+              </p>
+              <ModifyAgentInputs
+                pendingModification={pendingModification}
+                setPendingModification={setPendingModification}
+                agent={agent}
+              />
+            </div>
+          ))}
       </div>
     </section>
   );
 };
+
+/**
+ * Current agents
+ */
+const CurrentAgents = (props: {
+  agents: any;
+  setAgents: any;
+  pendingModification: any;
+  setPendingModification: any;
+}): JSX.Element => {
+  return (
+    <>
+      {props.agents &&
+        props.agents.map((agent: any) => (
+          <div className="flex h-16 w-full flex-row items-center justify-between px-4">
+            <p className="text-lg font-medium text-primary">{agent.name}</p>
+            <div className="flex flex-row gap-4">
+              <RemoveAgentButton
+                setAgents={props.setAgents}
+                agents={props.agents}
+              />
+              <div></div>
+              <button
+                className="rounded-md bg-primary px-2 py-2 font-medium text-white"
+                onClick={() => {
+                  // If the agent is already pending modification, return
+                  if (props.pendingModification.includes(agent)) return;
+                  props.setPendingModification([
+                    ...props.pendingModification,
+                    agent,
+                  ]);
+                }}
+              >
+                Modify
+              </button>
+            </div>
+          </div>
+        ))}
+    </>
+  );
+};
+
+/**
+ * Input for the modify agent section
+ * ph: placeholder
+ * id: id
+ * def: default value
+ */
+const Input = (props: { ph: string; id: string; def: string }): JSX.Element => (
+  <input
+    id={props.id}
+    type="text"
+    className="w-auto rounded-md border-2 border-primary px-2 py-2"
+    placeholder={props.ph}
+    defaultValue={props.def}
+  />
+);
 
 /**
  * Modify Agent Inputs
@@ -109,48 +160,44 @@ const ModifyAgentInputs = (props: {
 }): JSX.Element => (
   <>
     <div className="grid h-auto w-auto grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <input
-        id="modify_name"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Name"
-        defaultValue={props.agent.name}
-      />
-      <input
-        id="modify_email"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Email"
-        defaultValue={props.agent.email}
-      />
-      <input
-        id="modify_title"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Title"
-        defaultValue={props.agent.title}
-      />
-      <input
-        id="modify_level"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Level"
-        defaultValue={props.agent.level}
-      />
-      <input
-        id="modify_languages"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Languages"
-        defaultValue={props.agent.lang}
-      />
-      <input
-        id="modify_license"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="License"
-        defaultValue={props.agent.license}
-      />
+      <Input ph="Name" id="modify_name" def={props.agent.name} />
+      <Input ph="Email" id="modify_email" def={props.agent.email} />
+      <Input ph="Title" id="modify_title" def={props.agent.title} />
+      <Input ph="Level" id="modify_level" def={props.agent.level} />
+      <Input ph="Languages" id="modify_languages" def={props.agent.lang} />
+      <Input ph="License" id="modify_license" def={props.agent.license} />
+
+      {/* Permissions checklist */}
+      <div
+        id="modify_permissions"
+        className="flex h-full w-full flex-col gap-2"
+      >
+        <p className="text-lg font-medium text-primary">Permissions</p>
+        <div className="flex flex-row gap-2">
+          <input
+            type="checkbox"
+            value="post_events"
+            className="h-4 w-4"
+            checked={
+              props.agent.permissions &&
+              props.agent.permissions.includes("post_events")
+            }
+          />
+          <label htmlFor="post_events">Post Events</label>
+        </div>
+        <div className="flex flex-row gap-2">
+          <input
+            type="checkbox"
+            value="admin"
+            className="h-4 w-4"
+            checked={
+              props.agent.permissions &&
+              props.agent.permissions.includes("admin")
+            }
+          />
+          <label htmlFor="admin">Admin</label>
+        </div>
+      </div>
     </div>
     <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
       Select Region
@@ -177,58 +224,74 @@ const ModifyAgentInputs = (props: {
 /**
  * Add Agent Inputs
  */
-const AddAgentInputs = (): JSX.Element => (
-  <>
-    <div className="grid h-auto w-auto grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <input
-        id="add_name"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Name"
-      />
-      <input
-        id="add_email"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Email"
-      />
-      <input
-        id="add_title"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Title"
-      />
-      <input
-        id="add_level"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Level"
-      />
-      <input
-        id="add_languages"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="Languages"
-      />
-      <input
-        id="add_license"
-        type="text"
-        className="w-auto rounded-md border-2 border-primary px-2 py-2"
-        placeholder="License"
-      />
-    </div>
-    <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
-      Select Region
-    </button>
-    <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
-      Upload Photo
-    </button>
-    <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
-      Add
-    </button>
-  </>
-);
+const AddAgentInputs = (props: {
+  user: User;
+  setAgents: any;
+  agents: any;
+}): JSX.Element => {
+  const [error, setError] = React.useState<string>("");
 
+  return (
+    <>
+      <div className="grid h-auto w-auto grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Input ph="Name" id="add_name" def="" />
+        <Input ph="Email" id="add_email" def="" />
+        <Input ph="Title" id="add_title" def="" />
+        <Input ph="Level" id="add_level" def="" />
+        <Input ph="Languages" id="add_languages" def="" />
+        <Input ph="License" id="add_license" def="" />
+
+        {/* Permissions checklist */}
+        <div id="add_permissions" className="flex h-full w-full flex-col gap-2">
+          <p className="text-lg font-medium text-primary">Permissions</p>
+          <div className="flex flex-row gap-2">
+            <input type="checkbox" value="post_events" className="h-4 w-4" />
+            <label htmlFor="post_events">Post Events</label>
+          </div>
+          <div className="flex flex-row gap-2">
+            <input type="checkbox" value="admin" className="h-4 w-4" />
+            <label htmlFor="admin">Admin</label>
+          </div>
+        </div>
+      </div>
+      <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
+        Select Region
+      </button>
+      <button className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white">
+        Upload Photo
+      </button>
+      <div className="flex flex-row gap-4">
+        <button
+          onClick={() => {
+            const inputs = getInputs();
+            if (inputs.error) {
+              setError(inputs.error);
+              return;
+            }
+            addAgent(inputs, props.user.accessToken as string).then((res) => {
+              if (res) {
+                clearAddAgent();
+                props.setAgents([...props.agents, inputs]);
+              }
+            });
+          }}
+          className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white"
+        >
+          Add
+        </button>
+        <button
+          onClick={clearAddAgent}
+          className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white"
+        >
+          Clear
+        </button>
+      </div>
+      {error && (
+        <p className="mt-4 text-lg font-medium text-primary">{error}</p>
+      )}
+    </>
+  );
+};
 /**
  * Remove Agent Button
  */
@@ -326,3 +389,110 @@ function SideMenu(props: { user: User }): JSX.Element {
     </div>
   );
 }
+
+/**
+ * Clear the add agent inputs
+ */
+function clearAddAgent(): void {
+  const inputs = document.querySelectorAll(
+    "#add_name, #add_email, #add_title, #add_level, #add_languages, #add_license",
+  );
+  inputs.forEach((input) => ((input as HTMLInputElement).value = ""));
+
+  // Clear the permissions checklist
+  const add_permissions = document.getElementById(
+    "add_permissions",
+  ) as HTMLInputElement;
+  for (let i = 0; i < add_permissions.children.length; i++) {
+    const child = add_permissions.children[i] as HTMLInputElement;
+    child.checked = false;
+  }
+}
+
+/**
+ * Fetch the agents
+ */
+const fetchAgents = async () => {
+  return await fetch("/api/agents")
+    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((json) => json.result);
+};
+
+/**
+ * Add an agent
+ */
+const addAgent = async (
+  input: {
+    name: string;
+    email: string;
+    title: string;
+    level: string;
+    lang: string;
+    license: string;
+    photo: string;
+    permissions: string[];
+  },
+  authorization: string,
+) => {
+  return await fetch("/api/agents", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization,
+    },
+    body: JSON.stringify({ ...input }),
+  })
+    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((json) => json.result);
+};
+
+/**
+ * Get the inputs
+ */
+const getInputs = (): any => {
+  const name = (document.getElementById("add_name") as HTMLInputElement).value;
+  if (!name) return { error: "Name is required" };
+  const email = (document.getElementById("add_email") as HTMLInputElement)
+    .value;
+  if (!email) return { error: "Email is required" };
+  const title = (document.getElementById("add_title") as HTMLInputElement)
+    .value;
+  if (!title) return { error: "Title is required" };
+  const level = (document.getElementById("add_level") as HTMLInputElement)
+    .value;
+  if (!level) return { error: "Level is required" };
+  const lang = (document.getElementById("add_languages") as HTMLInputElement)
+    .value;
+  if (!lang) return { error: "Languages is required" };
+  const license = (document.getElementById("add_license") as HTMLInputElement)
+    .value;
+  if (!license) return { error: "License is required" };
+
+  // get the permissions from the add_permissions checklist
+  const permissions = ["agent"];
+  const add_permissions = document.getElementById(
+    "add_permissions",
+  ) as HTMLInputElement;
+  for (let i = 0; i < add_permissions.children.length; i++) {
+    const child = add_permissions.children[i] as HTMLInputElement;
+    if (child.checked) permissions.push(child.value);
+  }
+
+  const photo = "/images/default_agent_headshot.png";
+  const region = {
+    location: "Kitchener ON",
+    lat: 43.45,
+    long: -80.48,
+  };
+  return {
+    name,
+    email,
+    title,
+    level,
+    lang,
+    license,
+    photo,
+    region,
+    permissions,
+  };
+};

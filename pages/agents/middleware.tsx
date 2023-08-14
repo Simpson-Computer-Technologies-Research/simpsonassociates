@@ -14,6 +14,7 @@ import "@/styles/globals.css";
  */
 export interface User {
   email: string | null | undefined;
+  accessToken: string | null | undefined;
   name: string | null | undefined;
   image: string | null | undefined;
   permissions: string[];
@@ -83,9 +84,13 @@ function _PermissionMiddleware({
   )
     return unauthorized();
 
+  // Update the users authorization token
+  updateAccessToken(session?.user?.email, session?.accessToken);
+
   // Return the children and pass the permissions to them
   const user: User = {
     email: session?.user?.email,
+    accessToken: session?.accessToken,
     name: session?.user?.name,
     image: session?.user?.image,
     permissions: userPermissions,
@@ -115,4 +120,24 @@ export const fetchPermissions = async (
   })
     .then((res) => res.json())
     .then((json) => json.permissions);
+};
+
+/**
+ * Update the users access token
+ */
+export const updateAccessToken = async (
+  email: string | null | undefined,
+  accessToken: string | null | undefined,
+): Promise<void> => {
+  // If there is no email, return an empty array
+  if (!email || !accessToken) return;
+
+  // Fetch the permissions
+  await fetch("/api/agents/authorization", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, authorization: accessToken }),
+  });
 };

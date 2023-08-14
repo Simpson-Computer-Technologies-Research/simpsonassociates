@@ -4,7 +4,6 @@
 // Import react for state and effect
 import React from "react";
 import { SessionProvider } from "next-auth/react";
-import { fetchAgents } from "@/lib/agents";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -17,6 +16,16 @@ import "@/styles/globals.css";
 
 // Import fuse.js
 import Fuse from "fuse.js";
+
+/**
+ * Fetch the agents from the api
+ * @returns Agents
+ */
+const fetchAgents = async () => {
+  return await fetch("/api/agents")
+    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((json) => json.result);
+};
 
 /**
  * Agents Page
