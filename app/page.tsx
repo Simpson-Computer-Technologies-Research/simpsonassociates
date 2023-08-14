@@ -9,7 +9,7 @@ import Services from "./components/sections/services";
 import Navbar from "./components/navbar/navbar";
 import Lenders from "./components/sections/lenders";
 import Bottom from "./components/sections/bottom";
-import About from "./components/sections/about";
+import Team from "./components/sections/team";
 import Agents from "./components/sections/agents";
 import Testimonials from "./components/sections/testimonials";
 import Contact from "./components/sections/contact";
@@ -44,10 +44,10 @@ export default function Home() {
       <section className="flex flex-col items-center justify-center">
         <Cards />
         <Services />
-        <About />
+        <Team />
         <Agents />
         <Testimonials />
-        <Contact />
+        <Contact bgColor={"bg-white"}/>
         <Lenders />
         <Bottom />
       </section>

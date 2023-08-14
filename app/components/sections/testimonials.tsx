@@ -12,7 +12,7 @@ export default function Testimonials(): JSX.Element {
   return (
     <section
       id="testimonials"
-      className="group relative flex w-full flex-col items-center justify-center bg-white pb-7 pt-16 md:pt-20"
+      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 pb-7 pt-16 md:pt-20"
     >
       <Header />
       <TestimonialCards testimonials={testimonials} />
@@ -75,7 +75,7 @@ const TestimonialCards = (props: { testimonials: any }): JSX.Element => {
  * @returns Testimonial Card Component JSX
  */
 const TestimonialCard = (props: { testimonial: any }) => (
-  <div className="mx-1 flex w-80 flex-col items-center p-4 text-center duration-500 ease-in-out hover:bg-slate-50 hover:duration-100 xs:mx-3 xs:p-10 md:mx-5 md:w-96 lg:w-[30rem]">
+  <div className="mx-1 flex w-80 flex-col items-center p-4 text-center duration-500 ease-in-out hover:bg-slate-100 hover:duration-100 xs:mx-3 xs:p-10 md:mx-5 md:w-96 lg:w-[30rem]">
     {" "}
     {/* hover:border-secondary */}
     <h2 className="mt-5 whitespace-nowrap text-base font-bold text-primary lg:text-lg">

@@ -419,19 +419,7 @@ const fetchAgents = async () => {
 /**
  * Add an agent
  */
-const addAgent = async (
-  input: {
-    name: string;
-    email: string;
-    title: string;
-    level: string;
-    lang: string;
-    license: string;
-    photo: string;
-    permissions: string[];
-  },
-  authorization: string,
-) => {
+const addAgent = async (input: {}, authorization: string) => {
   return await fetch("/api/agents", {
     method: "PUT",
     headers: {

@@ -8,21 +8,30 @@ import Loading from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 
+import {
+  fetchAgents,
+  fuzzySearch,
+  getLocation,
+  nearbyAgents,
+} from "@/app/lib/location";
+
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
 
-// Import fuse.js
-import Fuse from "fuse.js";
+/**
+ * Set the query in the url
+ * @param query The query to set in the url
+ */
+const setUrlQueryParam = (query: string) => {
+  if (window) window.history.pushState({}, "", `/agents?query=${query}`);
+};
 
 /**
- * Fetch the agents from the api
- * @returns Agents
+ * Get the query param from the url
+ * @returns The query param from the url
  */
-const fetchAgents = async () => {
-  return await fetch("/api/agents")
-    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
-    .then((json) => json.result);
-};
+const getUrlQueryParam = () =>
+  new URLSearchParams(window.location.search).get("query");
 
 /**
  * Agents Page
@@ -35,10 +44,7 @@ export default function Agents(): JSX.Element {
 
   // React effect
   React.useEffect(() => {
-    // Get the query
-    const query: string | null = new URLSearchParams(
-      window.location.search,
-    ).get("query");
+    const query = getUrlQueryParam();
     if (query) setInitialQuery(query);
 
     // Get the agents
@@ -62,7 +68,7 @@ export default function Agents(): JSX.Element {
         <Header />
         <AgentsComponent initialQuery={initialQuery} agents={agents} />
       </div>
-      <Contact />
+      <Contact bgColor={"bg-slate-50"} />
       <ScrollIndicator />
     </SessionProvider>
   );
@@ -78,55 +84,13 @@ const AgentsComponent = (props: {
 }): JSX.Element => {
   // Manage the query and location state
   const [query, setQuery] = React.useState("");
-  const [locationError, setLocationError] = React.useState("");
+  const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({
     loading: false,
     active: false,
     lat: 0,
     long: 0,
   });
-
-  /**
-   * Fetch user's location
-   *
-   * @return {void}
-   */
-  function getLocation(): void {
-    // If the user is already searching by location, return
-    if (location.active) return;
-
-    // If the user has already searched by location but
-    // the location is not active, set the location to active
-    if (location.lat && location.long)
-      setLocation({ ...location, active: true, loading: false });
-
-    // Otherwise, get the users location
-    if (navigator.geolocation) {
-      setLocation({ ...location, loading: true });
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const long = position.coords.longitude;
-          setLocation({
-            loading: false,
-            active: true,
-            lat: lat,
-            long: long,
-          });
-        },
-        (error) => setLocationError(error.message),
-      );
-    } else setLocationError("Geolocation not supported");
-  }
-
-  /**
-   * Set the url query param
-   * @param query - The query to set
-   */
-  const setUrlQueryParam = (query: string) => {
-    if (window) window.history.pushState({}, "", `/agents?query=${query}`);
-  };
 
   // Render the component jsx
   return (
@@ -143,7 +107,7 @@ const AgentsComponent = (props: {
         }}
       />
       <button
-        onClick={getLocation}
+        onClick={() => getLocation(location, setLocation, setError)}
         className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
       >
         {location.loading
@@ -152,7 +116,7 @@ const AgentsComponent = (props: {
           ? "Location Active"
           : "Use My Location"}
       </button>
-      <p className="text-sm font-semibold text-red-500">{locationError}</p>
+      <p className="text-sm font-semibold text-red-500">{error}</p>
       <AgentsGrid
         query={query || props.initialQuery}
         agents={props.agents}
@@ -178,74 +142,27 @@ const Header = (): JSX.Element => (
 );
 
 /**
- * Get the distance between agents
- * @param a - The first agent long/lat
- * @param b - The second agent long/lat
- */
-const deg2rad = (deg: number) => deg * (Math.PI / 180);
-const getDistance = (
-  a: { lat: number; long: number },
-  b: { lat: number; long: number },
-) => {
-  const R = 6371; // Radius of the earth in km
-  const dLat = deg2rad(b.lat - a.lat);
-  const dLon = deg2rad(b.long - a.long);
-  const x =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(a.lat)) *
-      Math.cos(deg2rad(b.lat)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
-  const d = R * c; // Distance in km
-  return d;
-};
-
-/**
  * Agents Grid Component
  * @returns JSX.Element
  */
 const AgentsGrid = (props: {
   agents: any[];
   query: string;
-  location: {
-    active: boolean;
-    lat: number;
-    long: number;
-  };
+  location: any;
 }): JSX.Element => {
   let results: any[] = props.agents; // The search results
 
   // If there is a query and no location
   if (props.query && !props.location.active) {
-    // Create the fuse instance
-    const fuse = new Fuse(props.agents, {
-      includeScore: true,
-      keys: ["region.location", "name", "title", "lang"],
-    });
-
-    // Get the search results
-    results = fuse.search(props.query);
+    results = fuzzySearch(props.agents, props.query);
   }
 
   // If the location is active, then get the closest agents
   if (props.location.active) {
-    // Get the closest agents
-    results = props.agents
-      .map((agent) => {
-        const distance = getDistance(
-          {
-            lat: props.location.lat,
-            long: props.location.long,
-          },
-          {
-            lat: agent.region.lat,
-            long: agent.region.long,
-          },
-        );
-        return { ...agent, distance };
-      })
-      .sort((a, b) => a.distance - b.distance);
+    results = nearbyAgents(props.agents, {
+      lat: props.location.lat,
+      long: props.location.long,
+    });
   }
 
   // Render the component jsx
@@ -262,21 +179,7 @@ const AgentsGrid = (props: {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: {
-  agent: {
-    name: string;
-    title: string;
-    level: number;
-    photo: string;
-    lang: string;
-    license: string;
-    region: {
-      location: string;
-      long: number;
-      lat: number;
-    };
-  };
-}): JSX.Element => (
+const AgentCard = (props: { agent: any }): JSX.Element => (
   <div className="group mb-24 flex cursor-pointer flex-col text-left xs:mx-7 xs:mb-8">
     <img
       src={props.agent.photo}

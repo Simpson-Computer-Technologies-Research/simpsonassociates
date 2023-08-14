@@ -29,7 +29,7 @@ export default function Services(): JSX.Element {
         <Header />
         <ServicesGrid />
       </div>
-      <Contact />
+      <Contact bgColor={"bg-slate-50"}/>
       <ScrollIndicator />
     </SessionProvider>
   );

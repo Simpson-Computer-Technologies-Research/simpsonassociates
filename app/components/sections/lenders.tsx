@@ -12,7 +12,7 @@ export default function Lenders(): JSX.Element {
   return (
     <section
       id="lenders"
-      className="group relative flex w-screen flex-col items-center justify-center bg-white px-10 pb-12 pt-12 sm:pb-16 sm:pt-20"
+      className="group relative flex w-screen flex-col items-center justify-center bg-slate-50 px-10 pb-12 pt-12 sm:pt-16"
     >
       <Header />
       <LenderImages lenders={lenders} />

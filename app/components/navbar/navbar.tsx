@@ -16,7 +16,7 @@ export default function Navbar() {
 
   // Set the window listener
   React.useEffect(() => {
-    const buttons: string[] = ["home", "services", "about", "contact"];
+    const buttons: string[] = ["home", "services", "team", "contact"];
 
     window.addEventListener("scroll", () => {
       // If the window size is less than medium, return
@@ -69,9 +69,9 @@ export default function Navbar() {
           setUnderlinedButton={setUnderlinedButton}
         />
         <NavbarButton
-          text="About"
-          href="/#about"
-          id="about"
+          text="Team"
+          href="/#team"
+          id="team"
           underlinedButton={underlinedButton}
           setUnderlinedButton={setUnderlinedButton}
         />

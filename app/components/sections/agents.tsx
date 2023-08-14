@@ -13,7 +13,7 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="relative flex w-full flex-col items-center justify-center bg-slate-50 p-10"
+      className="relative flex w-full flex-col items-center justify-center bg-white p-10"
     >
       <div className="relative z-[2] my-4 bg-white/50 p-10 backdrop-blur-sm">
         <Header />
@@ -67,12 +67,16 @@ const InputAndButtons = (): JSX.Element => {
       />
       <Link
         href={`/agents?query=${input}`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="mb-4 w-60 bg-primary p-2 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
       >
         Search
       </Link>
       <Link
         href="/agents"
+        target="_blank"
+        rel="noopener noreferrer"
         className="w-60 bg-primary p-2 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 sm:text-base"
       >
         See all agents

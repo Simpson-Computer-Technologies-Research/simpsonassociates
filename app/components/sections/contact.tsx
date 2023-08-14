@@ -9,11 +9,11 @@ import { signOut, useSession } from "next-auth/react";
  * Contact Component
  * @returns JSX.Element
  */
-export default function Contact(): JSX.Element {
+export default function Contact(props: { bgColor: string }): JSX.Element {
   return (
     <section
       id="contact"
-      className="group relative flex w-full flex-col bg-slate-50 p-10 pt-14 sm:py-16 sm:pt-20"
+      className={`group relative flex w-full flex-col p-10 pt-14 sm:py-16 sm:pt-20 ${props.bgColor}`}
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center">

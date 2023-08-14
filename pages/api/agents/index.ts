@@ -84,8 +84,10 @@ export default async function handler(req: any, res: any) {
 
 // Get the agents from the database and return them as JSON
 const getAgents = async (req: any, res: any) => {
+  let hasResponded: boolean = false;
   if (cache.isCached()) {
     res.status(200).json({ message: "Success", result: cache.get() });
+    hasResponded = true;
   }
 
   await context(async (database) => {
@@ -94,14 +96,13 @@ const getAgents = async (req: any, res: any) => {
 
     // Get the agents from the database
     const result = await collection.find().project(searchConfig).toArray();
-    if (!result) {
-      res.status(404).json({ message: "Not found", result: [] });
-      return;
-    }
+    if (!result) return;
 
-    // Return the agents as JSON
-    res.status(200).json({ message: "Success", result });
+    // Update the cache
     cache.update(result);
+    if (!hasResponded) {
+      res.status(200).json({ message: "Success", result });
+    }
   });
 };
 
@@ -138,28 +139,7 @@ const postAgent = async (req: any, res: any) => {
 
 // Add an agent
 const putAgent = async (req: any, res: any) => {
-  const {
-    name,
-    email,
-    license,
-    region,
-    title,
-    photo,
-    lang,
-    level,
-    permissions,
-  } = req.body;
-  if (
-    !name ||
-    !email ||
-    !license ||
-    !region ||
-    !title ||
-    !photo ||
-    !lang ||
-    !level ||
-    !permissions
-  ) {
+  if (!isValidPutAgentBody(req.body)) {
     return res
       .status(400)
       .json({ message: "Missing required fields", result: null });
@@ -168,7 +148,7 @@ const putAgent = async (req: any, res: any) => {
     const collection = database.collection("agents");
 
     // Check if the agent already exists
-    const agent = await collection.findOne({ email });
+    const agent = await collection.findOne({ email: req.body.email });
     if (agent) {
       res.status(409).json({ message: "Agent already exists", result: null });
       return;
@@ -176,16 +156,8 @@ const putAgent = async (req: any, res: any) => {
 
     // Add the agent to the database
     const result = await collection.insertOne({
-      name,
-      email,
-      license,
-      region,
-      title,
-      photo,
-      lang,
-      level,
+      ...req.body,
       authorization: "",
-      permissions: permissions,
     });
 
     // Return the agent as JSON
@@ -212,4 +184,10 @@ const deleteAgent = async (req: any, res: any) => {
     // Return the agent as JSON
     res.status(200).json({ message: "Success", result });
   });
+};
+
+// Check if the body of the request is valid
+const isValidPutAgentBody = (body: any) => {
+  const { name, email, license, region, title, photo, lang, level } = body;
+  return name && email && license && region && title && photo && lang && level;
 };
