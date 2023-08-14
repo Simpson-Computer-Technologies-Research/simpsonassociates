@@ -1,5 +1,8 @@
 import { context } from "@/lib/mongo";
 
+import { AgentsCache } from "@/lib/cache";
+const cache = new AgentsCache();
+
 // Search config
 const searchConfig = {
   name: 1,
@@ -81,6 +84,10 @@ export default async function handler(req: any, res: any) {
 
 // Get the agents from the database and return them as JSON
 const getAgents = async (req: any, res: any) => {
+  if (cache.isCached()) {
+    res.status(200).json({ message: "Success", result: cache.get() });
+  }
+
   await context(async (database) => {
     // Get the database and collection
     const collection = database.collection("agents");
@@ -94,6 +101,7 @@ const getAgents = async (req: any, res: any) => {
 
     // Return the agents as JSON
     res.status(200).json({ message: "Success", result });
+    cache.update(result);
   });
 };
 
