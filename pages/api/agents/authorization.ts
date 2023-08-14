@@ -1,3 +1,4 @@
+import { generateBearer } from "@/app/lib/bearer";
 import { context } from "@/app/lib/mongo";
 
 export default async function handler(req: any, res: any) {
@@ -8,10 +9,10 @@ export default async function handler(req: any, res: any) {
   }
 
   // Get the authorization token from the request header
-  const { email, authorization } = req.body;
+  const { email } = req.body;
 
   // If the authorization token is not present
-  if (!authorization || !email) {
+  if (!email) {
     res.status(401).json({ message: "Invalid request body" });
     return;
   }
@@ -24,6 +25,9 @@ export default async function handler(req: any, res: any) {
       res.status(400).json({ message: "Authorization token already set" });
       return;
     }
+
+    // Generate a new authorization bearer token
+    const authorization: string = await generateBearer(email);
 
     // Update the user in the database
     const result = database

@@ -8,20 +8,26 @@ const uri: string = process.env.MONGODB_URI || "";
  * @param fn The function to run in the context of the database
  * @returns The result of the function
  */
-export async function context(fn: (db: Db) => Promise<void>): Promise<void> {
+export async function context(fn: (db: Db) => Promise<void>): Promise<any> {
   const client: MongoClient = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,
     },
-    maxConnecting: 10,
-    maxPoolSize: 5,
+    maxConnecting: 20,
+    maxPoolSize: 20,
     minPoolSize: 1,
     maxIdleTimeMS: 10000,
     maxStalenessSeconds: 10000,
     connectTimeoutMS: 10000,
   });
-  await client.connect();
+
+  try {
+    await client.connect();
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
 
   const db: Db = client.db("simpsonassociates");
   const result: any = await fn(db);

@@ -1,12 +1,18 @@
 import React from "react";
 import ModifyAgentCard from "./modifyAgent";
+import { generateBearer } from "@/app/lib/bearer";
 
 /**
  * Current Agents and Modify Agents
  * @param props
  * @returns JSX.Element
  */
-export default function CurrentAgents(props: any): JSX.Element {
+export default function Agents(props: {
+  agents: any;
+  user: any;
+  setAgents: any;
+}): JSX.Element {
+  const [modify, setModify] = React.useState<boolean>(false);
   return (
     <section
       id="current-agents"
@@ -18,21 +24,15 @@ export default function CurrentAgents(props: any): JSX.Element {
       </p>
       <div className="flex h-full w-full flex-col">
         {props.agents &&
-          props.agents.map((agent: any) => {
-            const [modify, setModify] = React.useState<boolean>(false);
+          props.agents.map((agent: any, i: number) => {
             return (
-              <>
+              <div key={i}>
                 {modify ? (
                   <ModifyAgentCard agent={agent} setModify={setModify} />
                 ) : (
-                  <AgentCard
-                    agent={agent}
-                    setModify={setModify}
-                    agents={props.agents}
-                    setAgents={props.setAgents}
-                  />
+                  <AgentCard {...props} agent={agent} setModify={setModify} />
                 )}
-              </>
+              </div>
             );
           })}
       </div>
@@ -54,10 +54,7 @@ const AgentCard = (props: any): JSX.Element => {
           <p className="text-sm font-medium text-white">{props.agent.email}</p>
         </div>
         <div className="flex flex-row items-center justify-between">
-          <RemoveAgentButton
-            agents={props.agents}
-            setAgents={props.setAgents}
-          />
+          <RemoveAgentButton {...props} />
           <button
             className="mx-2 rounded-md bg-white px-6 py-2 font-medium text-primary"
             onClick={() => props.setModify(true)}
@@ -101,9 +98,9 @@ const RemoveConfirmation = (props: any): JSX.Element => {
       <p className="mr-4 text-lg font-medium text-white">Are you sure?</p>
       <div className="flex flex-row items-center justify-between">
         <button
-          onClick={() => {
+          onClick={async () => {
             props.setConfirm(false);
-            props.setAgents(props.agents.slice(1));
+            await removeAgent(props.user.email, props.agent.email);
           }}
           className="mx-2 rounded-md bg-white px-10 py-2 font-medium text-primary"
         >
@@ -118,4 +115,25 @@ const RemoveConfirmation = (props: any): JSX.Element => {
       </div>
     </div>
   );
+};
+
+/**
+ * Remove Agent via api
+ * @param email the email of the agent to remove
+ * @returns void
+ */
+const removeAgent = async (
+  userEmail: string,
+  email: string,
+): Promise<boolean> => {
+  // Generate the authorization token
+  const authorization = await generateBearer(userEmail);
+
+  // Remove the agent
+  return await fetch("/api/agents", {
+    method: "DELETE",
+    headers: { authorization, email, "Content-Type": "application/json" },
+  })
+    .then((res) => res.json())
+    .then((json) => json && json.result && json.result.deletedCount === 1);
 };

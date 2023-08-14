@@ -4,7 +4,7 @@ import { User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
 
 import AddAgent from "./addAgent";
-import CurrentAndModifyAgents from "./currentAgents";
+import Agents from "./agents";
 import SideMenu from "./sideMenu";
 
 import "@/app/styles/globals.css";
@@ -26,7 +26,7 @@ export default function Success(user: User): JSX.Element {
     <div>
       <SideMenu user={user} />
       <div className="relative sm:ml-64">
-        <Agents user={user} />
+        <_Success user={user} />
       </div>
     </div>
   );
@@ -37,7 +37,7 @@ export default function Success(user: User): JSX.Element {
  * @param agents
  * @returns JSX.Element
  */
-function Agents(props: { user: User }): JSX.Element {
+function _Success(props: { user: User }): JSX.Element {
   // Fetch the current agents
   const [agents, setAgents] = React.useState<any>(null);
   if (agents === null) {
@@ -47,7 +47,7 @@ function Agents(props: { user: User }): JSX.Element {
   return (
     <>
       <AddAgent user={props.user} agents={agents} setAgents={setAgents} />
-      <CurrentAndModifyAgents agents={agents} setAgents={setAgents} />
+      <Agents agents={agents} setAgents={setAgents} user={props.user} />
     </>
   );
 }

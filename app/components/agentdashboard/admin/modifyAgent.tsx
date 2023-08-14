@@ -22,7 +22,7 @@ export default function ModifyAgentCard(props: any): JSX.Element {
       </button>
       <div className="flex flex-row gap-4">
         <button
-          onClick={updateAgent}
+          onClick={() => updateAgent()}
           className="mt-4 w-full rounded-md bg-primary px-2 py-2 font-medium text-white"
         >
           Save

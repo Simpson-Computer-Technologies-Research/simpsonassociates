@@ -19,24 +19,24 @@ const searchConfig = {
 // Function to verify that the user making the request is an admin
 const verifyAdmin = async (req: any, res: any) => {
   // Get the users access token from the headers
-  const token = req.headers.authorization;
+  const auth = req.headers.authorization;
 
   // If the token is not present, return a 401
-  if (!token) return false;
+  if (!auth) return false;
 
   // Get the database and collection
-  await context(async (database) => {
+  return await context(async (database) => {
     const collection = database.collection("agents");
 
     // Get the user from the database
     const user = await collection
-      .find({ authorization: token })
+      .find({ authorization: auth })
       .project({ permissions: 1 })
       .limit(1)
       .toArray();
 
     // If the user doesn't exist, return a 401
-    if (!user) return false;
+    if (user.length === 0 || !user[0]) return false;
 
     // Return whether the user is an admin
     return user[0].permissions.includes("admin");
@@ -78,8 +78,6 @@ export default async function handler(req: any, res: any) {
       return;
     }
   }
-
-  // Invalid method
 }
 
 // Get the agents from the database and return them as JSON
@@ -167,7 +165,13 @@ const putAgent = async (req: any, res: any) => {
 
 // Delete an agent
 const deleteAgent = async (req: any, res: any) => {
-  const { email } = req.body;
+  const { email } = req.headers;
+  if (!email) {
+    return res
+      .status(400)
+      .json({ message: "Missing required fields", result: null });
+  }
+
   await context(async (database) => {
     const collection = database.collection("agents");
 
