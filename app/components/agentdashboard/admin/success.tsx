@@ -45,12 +45,9 @@ function Agents(props: { user: User }): JSX.Element {
   }
 
   return (
-    <section className="flex h-fit w-full flex-col bg-primary px-10 pb-10 pt-7">
-      <p className="text-4xl font-bold text-white">Agents</p>
-      <div className="mt-4 flex flex-col rounded-md bg-white p-7">
-        <AddAgent user={props.user} agents={agents} setAgents={setAgents} />
-        <CurrentAndModifyAgents agents={agents} setAgents={setAgents} />
-      </div>
-    </section>
+    <>
+      <AddAgent user={props.user} agents={agents} setAgents={setAgents} />
+      <CurrentAndModifyAgents agents={agents} setAgents={setAgents} />
+    </>
   );
 }
