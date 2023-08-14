@@ -6,7 +6,7 @@ import React from "react";
 import { useEffect } from "react";
 
 import Loading from "@/app/components/loading";
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 /**
  * Return the component jsx

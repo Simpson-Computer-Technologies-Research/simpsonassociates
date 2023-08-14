@@ -1,4 +1,4 @@
-import { context } from "@/lib/mongo";
+import { context } from "@/app/lib/mongo";
 
 export default async function handler(req: any, res: any) {
   // Make sure the request is a post

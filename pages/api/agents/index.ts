@@ -1,6 +1,6 @@
-import { context } from "@/lib/mongo";
+import { context } from "@/app/lib/mongo";
 
-import { AgentsCache } from "@/lib/cache";
+import { AgentsCache } from "@/app/lib/cache";
 const cache = new AgentsCache();
 
 // Search config

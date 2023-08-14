@@ -1,4 +1,4 @@
-import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
+import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import nodemailer from "nodemailer";
 
 /**

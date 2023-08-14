@@ -9,7 +9,7 @@ import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 
 // Import tailwind and global styles
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 // Import fuse.js
 import Fuse from "fuse.js";
@@ -277,7 +277,7 @@ const AgentCard = (props: {
     };
   };
 }): JSX.Element => (
-  <div className="group mb-24 flex text-left hover:duration-100 scale-125 cursor-pointer flex-col duration-700 ease-in-out xs:mx-7 xs:mb-8 xs:scale-100 xs:items-start xs:justify-normal xs:hover:scale-105">
+  <div className="group mb-24 flex cursor-pointer flex-col text-left xs:mx-7 xs:mb-8">
     <img
       src={props.agent.photo}
       alt="..."
@@ -292,11 +292,7 @@ const AgentCard = (props: {
       {props.agent.title} - Level {props.agent.level}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-3 text-sm text-primary">
-      {props.agent.region.location}
-    </p>
-    <p className="mt-1 text-sm text-primary">
-      {props.agent.lang}
-    </p>
+    <p className="mt-3 text-sm text-primary">{props.agent.region.location}</p>
+    <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
   </div>
 );

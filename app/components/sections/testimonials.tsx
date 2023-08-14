@@ -5,18 +5,6 @@ import Link from "next/link";
 
 // Return the component
 export default function Testimonials(): JSX.Element {
-  // Manage the testimonials state
-  // const [testimonials, setTestimonials] = React.useState([]);
-
-  // Fetch the testimonials from /api/testimonials
-  /*
-  React.useEffect(() => {
-    fetch("/api/testimonials")
-      .then((res) => res.json())
-      .then((testimonials) => setTestimonials(testimonials));
-  }, []);
-  */
-
   // Get the testimonials
   const testimonials: any[] = getTestimonials();
 

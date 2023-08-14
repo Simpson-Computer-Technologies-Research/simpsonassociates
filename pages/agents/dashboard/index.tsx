@@ -4,7 +4,7 @@ import Link from "next/link";
 import PermissionMiddleware, { User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
 
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 /**
  * Dashboard page

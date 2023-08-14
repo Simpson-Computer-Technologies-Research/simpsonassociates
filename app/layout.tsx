@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-page-custom-font */
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 import type { Metadata } from "next";
 

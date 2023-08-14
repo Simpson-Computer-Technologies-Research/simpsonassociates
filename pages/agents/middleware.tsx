@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { SessionProvider } from "@/app/components/providers";
 import Loading from "@/app/components/loading";
 
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 /**
  * User class

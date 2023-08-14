@@ -11,7 +11,7 @@ import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 
 // Import tailwind and global styles
-import "@/styles/globals.css";
+import "@/app/styles/globals.css";
 
 /**
  * Agents Page

@@ -5,16 +5,6 @@ import Image from "next/image";
 
 // Render the component
 export default function Lenders(): JSX.Element {
-  // Manage the lenders state
-  // const [lenders, setLenders] = React.useState([]);
-
-  // Fetch the lenders from /api/lenders
-  /*React.useEffect(() => {
-    fetch("/api/lenders")
-      .then((res) => res.json())
-      .then((lenders) => setLenders(lenders));
-  }, []);*/
-
   // Get the lenders
   const lenders: any[] = getLenders();
 
