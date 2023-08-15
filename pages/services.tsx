@@ -47,7 +47,7 @@ export default function ServicesPage(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <div className="mt-28 flex flex-col items-center justify-center px-7 pb-6 text-center lg:mt-52">
+  <div className="mt-44 lg:mt-52 flex flex-col items-center justify-center px-7 pb-6 text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Services
     </h2>
