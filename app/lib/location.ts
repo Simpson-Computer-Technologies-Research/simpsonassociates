@@ -1,9 +1,6 @@
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
 
-// Import fuse.js
-import Fuse from "fuse.js";
-
 /**
  * Fetch the agents from the api
  * @returns Agents
@@ -73,19 +70,6 @@ const getDistance = (
   const c = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
   const d = R * c; // Distance in km
   return d;
-};
-
-/**
- * Get the agents that match the query
- * @param agents The agents to search through
- * @param query The query to search for
- * @returns The agents that match the query
- */
-export const fuzzySearch = (agents: any[], query: string) => {
-  const fuse = new Fuse(agents, {
-    keys: ["region.location", "name", "title", "lang"],
-  });
-  return fuse.search(query);
 };
 
 /**

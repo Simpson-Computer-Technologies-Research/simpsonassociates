@@ -7,16 +7,24 @@ import Navbar from "@/app/components/navbar/navbar";
 import Loading from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
-
-import {
-  fetchAgents,
-  fuzzySearch,
-  getLocation,
-  nearbyAgents,
-} from "@/app/lib/location";
-
-// Import tailwind and global styles
 import "@/app/styles/globals.css";
+
+import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
+
+import Fuse from "fuse.js";
+
+/**
+ * Get the agents that match the query
+ * @param agents The agents to search through
+ * @param query The query to search for
+ * @returns The agents that match the query
+ */
+export const fuzzySearch = (agents: any[], query: string) => {
+  const fuse = new Fuse(agents, {
+    keys: ["region.location", "name", "title", "lang"],
+  });
+  return fuse.search(query);
+};
 
 /**
  * Set the query in the url
@@ -38,35 +46,31 @@ const getUrlQueryParam = () =>
  * @returns JSX.Element
  */
 export default function Agents(): JSX.Element {
-  // Manage states
   const [initialQuery, setInitialQuery] = React.useState("");
   const [agents, setAgents] = React.useState([]);
 
-  // React effect
   React.useEffect(() => {
     const query = getUrlQueryParam();
     if (query) setInitialQuery(query);
 
-    // Get the agents
     fetchAgents().then((agents: any) => setAgents(agents));
   }, []);
 
-  // If the agents are not loaded yet
-  if (!agents.length)
+  if (!agents.length) {
     return (
       <section>
         <Navbar />
         <Loading />
       </section>
     );
+  }
 
-  // Render the agents page
   return (
     <SessionProvider>
       <Navbar />
       <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
         <Header />
-        <AgentsComponent initialQuery={initialQuery} agents={agents} />
+        <_Agents initialQuery={initialQuery} agents={agents} />
       </div>
       <Contact bgColor={"bg-slate-50"} />
       <ScrollIndicator />
@@ -75,14 +79,10 @@ export default function Agents(): JSX.Element {
 }
 
 /**
- * Search Filters Component. Can use Postal COde, City, or Agent Name
+ * Agents Component
  * @returns JSX.Element
  */
-const AgentsComponent = (props: {
-  initialQuery: string;
-  agents: any;
-}): JSX.Element => {
-  // Manage the query and location state
+const _Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({
@@ -92,7 +92,6 @@ const AgentsComponent = (props: {
     long: 0,
   });
 
-  // Render the component jsx
   return (
     <section className="relative z-10 mt-4 flex flex-col items-center justify-center">
       <input
@@ -150,14 +149,12 @@ const AgentsGrid = (props: {
   query: string;
   location: any;
 }): JSX.Element => {
-  let results: any[] = props.agents; // The search results
+  let results: any[] = props.agents;
 
-  // If there is a query and no location
   if (props.query && !props.location.active) {
     results = fuzzySearch(props.agents, props.query);
   }
 
-  // If the location is active, then get the closest agents
   if (props.location.active) {
     results = nearbyAgents(props.agents, {
       lat: props.location.lat,
@@ -165,7 +162,6 @@ const AgentsGrid = (props: {
     });
   }
 
-  // Render the component jsx
   return (
     <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 xs:justify-center sm:grid-cols-3 md:flex md:flex-wrap">
       {results.map((item: any, i: number) => {
@@ -180,7 +176,7 @@ const AgentsGrid = (props: {
  * @returns JSX.Element
  */
 const AgentCard = (props: { agent: any }): JSX.Element => (
-  <div className="group mb-24 flex cursor-pointer flex-col text-left xs:mx-7 xs:mb-8">
+  <div className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 hover:animate-pulse xs:mx-7 xs:mb-8">
     <img
       src={props.agent.photo}
       alt="..."

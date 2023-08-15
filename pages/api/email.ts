@@ -9,7 +9,7 @@ const middlewares = getMiddlewares({ limit: 2 }).map(applyMiddleware);
 /**
  * Middleware to limit the number of requests
  */
-const middleware = async (req: any, res: any) => {
+const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
@@ -24,15 +24,12 @@ const middleware = async (req: any, res: any) => {
  * @returns void
  */
 export default async function handler(req: any, res: any) {
-  // Middleware rate limit
-  await middleware(req, res);
+  await rateLimit(req, res);
 
-  // If the method is POST, send the email
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Get the data from the request
   const { name, email, phone, message } = req.body;
   if (!email || !message || !name || !phone) {
     return res.status(400).json({ message: "Missing fields from body" });
@@ -52,7 +49,6 @@ const sendEmail = async (
   phone: string,
   message: string,
 ): Promise<void> => {
-  // Prepare nodemailer transporter
   const transporter = nodemailer.createTransport({
     port: 465,
     host: "smtp.gmail.com",
@@ -71,7 +67,6 @@ const sendEmail = async (
     html: `<div>${message}</div><p>Sent from: ${email} (${phone})</p>`,
   };
 
-  // Send email
   transporter.sendMail(data, (err: any, msg: any) => {
     if (err) res.status(500).json({ message: err.message });
     else res.status(200).json({ message: msg });

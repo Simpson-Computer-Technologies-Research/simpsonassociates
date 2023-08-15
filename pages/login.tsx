@@ -15,16 +15,13 @@ export default function Login(props: {
   session: any;
   redirect: string;
 }): JSX.Element {
-  // Store the redirect url
   const [redirect, setRedirect] = React.useState<string | null>(null);
 
-  // Get the redirect url
   React.useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search);
     setRedirect(params.get("redirect"));
   }, []);
 
-  // Return the component
   return (
     <SessionProvider session={props.session}>
       <_Login redirect={redirect} />
@@ -52,7 +49,6 @@ const _Login = (props: { redirect: string | null }): JSX.Element => {
     else return <SuccessLogin />;
   }
 
-  // Else if the login is loading, return the loading component
   return <Loading />;
 };
 
