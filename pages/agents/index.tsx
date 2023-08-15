@@ -45,7 +45,7 @@ const getUrlQueryParam = () =>
  * Agents Page
  * @returns JSX.Element
  */
-export default function Agents(): JSX.Element {
+export default function AgentsPage(): JSX.Element {
   const [initialQuery, setInitialQuery] = React.useState("");
   const [agents, setAgents] = React.useState([]);
 
@@ -70,7 +70,7 @@ export default function Agents(): JSX.Element {
       <Navbar />
       <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
         <Header />
-        <_Agents initialQuery={initialQuery} agents={agents} />
+        <Agents initialQuery={initialQuery} agents={agents} />
       </div>
       <Contact bgColor={"bg-slate-50"} />
       <ScrollIndicator />
@@ -82,7 +82,7 @@ export default function Agents(): JSX.Element {
  * Agents Component
  * @returns JSX.Element
  */
-const _Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
+const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({

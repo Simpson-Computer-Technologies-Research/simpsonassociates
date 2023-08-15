@@ -24,7 +24,7 @@ export default function Login(props: {
 
   return (
     <SessionProvider session={props.session}>
-      <_Login redirect={redirect} />
+      <LoginPage redirect={redirect} />
     </SessionProvider>
   );
 }
@@ -33,7 +33,7 @@ export default function Login(props: {
  * Get the google auth session
  * @returns JSX.Element
  */
-const _Login = (props: { redirect: string | null }): JSX.Element => {
+const LoginPage = (props: { redirect: string | null }): JSX.Element => {
   const { data: session, status } = useSession();
 
   // If the user is not logged in, log them in

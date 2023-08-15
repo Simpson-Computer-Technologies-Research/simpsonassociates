@@ -1,4 +1,4 @@
-export default function Team(): JSX.Element {
+export default function TeamPage(): JSX.Element {
   return (
     <div>
       <h1>Team</h1>
