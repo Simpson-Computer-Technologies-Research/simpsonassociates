@@ -51,7 +51,7 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="relative z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
       {/* Name input */}
       <input
         id="contact-name"

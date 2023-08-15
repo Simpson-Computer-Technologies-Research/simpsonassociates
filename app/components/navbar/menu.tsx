@@ -46,7 +46,7 @@ const OpenButton = (
   setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ): JSX.Element => (
   <div
-    className="group relative z-50 ml-8 mt-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
+    className="group z-50 ml-8 mt-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
     onClick={() => setMenuClicked(true)}
   >
     <div className="flex flex-col">

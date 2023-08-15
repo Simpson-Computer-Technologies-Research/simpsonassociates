@@ -73,7 +73,7 @@ const verifyAdmin = async (authorization: string): Promise<boolean> => {
 
     // Return whether the user is an admin
     return user[0].permissions.includes("admin");
-  });
+  }).catch((_) => false);
 };
 
 // Get the agents from the database and return them as JSON
@@ -130,7 +130,7 @@ const getAgents = async (_: any, res: any) => {
           res.status(200).json({ message: "Success", result });
         }
       });
-  });
+  }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
 /**
@@ -166,7 +166,7 @@ const postAgent = async (req: any, res: any): Promise<void> =>
           res.status(200).json({ message: "Success", update });
         });
     });
-  });
+  }).catch((error) => res.status(500).json({ message: error.message }));
 
 /**
  * Add an agent
@@ -202,7 +202,7 @@ const putAgent = async (req: any, res: any) => {
         cache.add_agent({ ...req.body, user_id: userId });
         res.status(200).json({ message: "Success", result });
       });
-  });
+  }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
 /**
@@ -242,7 +242,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
         res.status(200).json({ message: "Success", result });
       });
     });
-  });
+  }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
 // Check if the body of the request is valid

@@ -18,7 +18,7 @@ export default function Landing(): JSX.Element {
       <span className="bg-stripes-landing btm_clip-poly absolute z-[1] h-[98.7%] w-screen bg-primary" />
 
       {/* Content */}
-      <div className="relative z-[3] m-9 mr-10 mt-[10rem] flex flex-row justify-between sm:m-14 sm:mt-44 lg:m-24 lg:mt-56 xl:mr-20">
+      <div className="z-[3] m-9 mr-10 mt-[10rem] flex flex-row justify-between sm:m-14 sm:mt-44 lg:m-24 lg:mt-56 xl:mr-20">
         <div className="fade-in flex flex-col">
           <Header />
           <GetStartedButton />

@@ -70,7 +70,7 @@ interface CardProps {
  */
 const Card = (props: CardProps): JSX.Element => (
   <section
-    className={`group relative z-10 bg-white p-10 py-10 sm:py-16 lg:p-12 ${props.className}`}
+    className={`group z-10 bg-white p-10 py-10 sm:py-16 lg:p-12 ${props.className}`}
   >
     <div className="flex flex-col items-center justify-center text-center duration-500 ease-in-out group-hover:-translate-y-3">
       <h1 className="mb-5 text-4xl font-extrabold text-primary sm:mb-6">

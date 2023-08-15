@@ -25,7 +25,7 @@ export default function Lenders(): JSX.Element {
  * @returns JSX.Element
  */
 const LenderImages = (props: { lenders: any }): JSX.Element => (
-  <div className="relative mt-4 flex h-auto w-[98%] flex-row overflow-hidden md:w-3/4">
+  <div className="mt-4 flex h-auto w-[98%] flex-row overflow-hidden md:w-3/4">
     <div className="flex animate-marquee-current flex-row whitespace-nowrap">
       {props.lenders.map((lender: any, i: number) => (
         <Image

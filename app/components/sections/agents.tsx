@@ -15,7 +15,7 @@ export default function Agents(): JSX.Element {
       id="agents"
       className="relative flex w-full flex-col items-center justify-center bg-white p-10"
     >
-      <div className="relative z-[2] my-4 bg-white/50 p-10 backdrop-blur-sm">
+      <div className="z-[2] my-4 bg-white/50 p-10 backdrop-blur-sm">
         <Header />
         <InputAndButtons />
       </div>
