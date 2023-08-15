@@ -25,7 +25,9 @@ export default function ScrollIndicator(): JSX.Element {
   return (
     <div className="fixed bottom-0 z-40 h-4 w-screen bg-slate-50">
       <div
-        className="fixed bottom-0 h-4 bg-primary ease-in-out"
+        className={`fixed bottom-0 h-4 border-r-4 bg-primary ${
+          scrollPercent >= 99 ? "border-primary" : "border-secondary"
+        } ease-in-out`}
         style={{ width: `${scrollPercent}%` }}
       ></div>
     </div>

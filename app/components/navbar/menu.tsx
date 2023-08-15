@@ -35,8 +35,8 @@ const CloseButton = (
     onClick={() => setMenuClicked(false)}
   >
     <div className="flex flex-col items-center justify-center">
-      <span className="h-1.5 w-10 rotate-45 rounded-lg bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:-rotate-45 group-hover:bg-secondary"></span>
-      <span className="-mt-1.5 h-1.5 w-10 -rotate-45 rounded-lg bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:rotate-45 group-hover:bg-secondary"></span>
+      <span className="h-1 w-10 rotate-45 bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:-rotate-45 group-hover:bg-secondary"></span>
+      <span className="-mt-1 h-1 w-10 -rotate-45 bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:rotate-45 group-hover:bg-secondary"></span>
     </div>
   </div>
 );
@@ -50,9 +50,9 @@ const OpenButton = (
     onClick={() => setMenuClicked(true)}
   >
     <div className="flex flex-col">
-      <span className="h-1.5 w-10 rounded-lg bg-white duration-700 ease-in-out group-hover:w-16 group-hover:bg-secondary"></span>
-      <span className="mt-1 h-1.5 w-8 rounded-lg bg-white duration-700 ease-in-out group-hover:w-12 group-hover:bg-secondary"></span>
-      <span className="mt-1 h-1.5 w-6 rounded-lg bg-white duration-700 ease-in-out group-hover:w-8 group-hover:bg-secondary"></span>
+      <span className="h-1 w-12 rounded-lg bg-white duration-700 ease-in-out group-hover:w-[4.5rem] group-hover:bg-secondary"></span>
+      <span className="mt-1.5 h-1 w-10 rounded-lg bg-white duration-700 ease-in-out group-hover:w-14 group-hover:bg-secondary"></span>
+      <span className="mt-1.5 h-1 w-8 rounded-lg bg-white duration-700 ease-in-out group-hover:w-10 group-hover:bg-secondary"></span>
     </div>
   </div>
 );
@@ -75,7 +75,7 @@ const DropdownMenuVisible = (
 ): JSX.Element => (
   <div
     id="menu"
-    className="absolute z-20 h-auto w-screen overflow-scroll bg-white pb-7 pt-20 shadow-xl duration-500 ease-in-out"
+    className="absolute z-20 h-auto w-screen overflow-y-scroll bg-white pb-7 pt-20 shadow-xl duration-500 ease-in-out"
   >
     <NavbarMenuButton
       text="Home"
@@ -111,7 +111,7 @@ export default function NavbarMenu(): JSX.Element {
 
   // Return the component
   return (
-    <div className="block lg:hidden">
+    <div className="block lg:hidden overflow-y-scroll">
       {MenuButton(menuClicked, setMenuClicked)}
       {menuClicked ? DropdownMenuVisible(setMenuClicked) : DropdownMenuHidden()}
     </div>
