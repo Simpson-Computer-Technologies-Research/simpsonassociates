@@ -99,7 +99,7 @@ const Card = (props: {
     href={props.href}
     rel="noopener noreferrer"
     target="_blank"
-    className="group relative ease-in-out hover:duration-100 m-2 flex h-44 w-36 flex-col items-center bg-white/80 p-2 px-3 text-center bg-blend-lighten backdrop-blur-md duration-500 hover:scale-105 hover:bg-slate-50/90 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:p-7 xl:h-[21.5rem] xl:w-72"
+    className="group relative m-2 flex h-44 w-36 flex-col items-center bg-white/80 p-2 px-3 text-center backdrop-blur-md duration-500 ease-in-out hover:scale-105 hover:bg-slate-50/90 hover:duration-100 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:p-7 xl:h-[21.5rem] xl:w-72"
   >
     <Image
       src={props.icon}
