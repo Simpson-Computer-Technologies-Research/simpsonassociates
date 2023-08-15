@@ -1,4 +1,4 @@
-import { generateBearer } from "@/app/lib/bearer";
+import { decodeAuthorization } from "@/app/lib/auth";
 import { context } from "@/app/lib/mongo";
 
 export default async function handler(req: any, res: any) {
@@ -9,32 +9,38 @@ export default async function handler(req: any, res: any) {
   }
 
   // Get the authorization token from the request header
-  const { email } = req.body;
-
-  // If the authorization token is not present
-  if (!email) {
-    res.status(401).json({ message: "Invalid request body" });
+  const { authorization } = req.headers;
+  const decoded = await decodeAuthorization(authorization);
+  if (!decoded || !decoded.email || !decoded.accessToken) {
+    res.status(401).json({ message: "Unauthorized" });
     return;
   }
 
-  // Get the user so we can check if their authorization token has already been set
   await context(async (database) => {
-    const user = await database.collection("agents").findOne({ email });
+    const collection = database.collection("agents");
+    const user = await collection.findOne({
+      access_token: decoded.accessToken,
+    });
 
-    if (user && user.authorization) {
+    if (user && user.access_token) {
       res.status(400).json({ message: "Authorization token already set" });
       return;
     }
 
-    // Generate a new authorization bearer token
-    const authorization: string = await generateBearer(email);
-
-    // Update the user in the database
-    const result = database
-      .collection("agents")
-      .updateOne({ email }, { $set: { authorization } }, { upsert: true });
-
-    // If the update was successful
-    res.status(200).json({ message: "Success", result });
+    await collection
+      .updateOne(
+        { email: decoded.email },
+        { $set: { access_token: decoded.accessToken } },
+        { upsert: true },
+      )
+      .then((result) => {
+        if (result.modifiedCount !== 1) {
+          res
+            .status(400)
+            .json({ message: "Failed to update authorization token" });
+          return;
+        }
+        res.status(200).json({ message: "Authorization token set", result });
+      });
   });
 }

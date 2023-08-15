@@ -1,10 +1,10 @@
 import React from "react";
 
+import { generateAuthorization } from "@/app/lib/auth";
 import { useSession } from "next-auth/react";
-
 import { SessionProvider } from "@/app/components/providers";
-import Loading from "@/app/components/loading";
 
+import Loading from "@/app/components/loading";
 import "@/app/styles/globals.css";
 
 /**
@@ -51,7 +51,7 @@ function _PermissionMiddleware({
   const [permissionsStatus, setPermissionsStatus] =
     React.useState<string>("none");
 
-  const [accessTokenUpdated, setAccessTokenUpdated] =
+  const [authorizationUpdated, setAuthorizationUpdated] =
     React.useState<boolean>(false);
 
   // If the session is loading, return a loading component
@@ -71,10 +71,15 @@ function _PermissionMiddleware({
   // we need to verify that the user is an agent.
   if (permissionsStatus === "none") {
     setPermissionsStatus("loading");
-    fetchPermissions(session?.user?.email).then((res) => {
-      setUserPermissions(res);
-      setPermissionsStatus("done");
-    });
+    generateAuthorization(
+      session?.accessToken || "",
+      session?.user?.email || "",
+    ).then((auth) =>
+      fetchPermissions(auth).then((permissions) => {
+        setUserPermissions(permissions);
+        setPermissionsStatus("done");
+      }),
+    );
   }
 
   // If the user is not an agent, return an error message
@@ -86,9 +91,12 @@ function _PermissionMiddleware({
     return unauthorized();
 
   // Update the users authorization token
-  if (!accessTokenUpdated) {
-    updateAccessToken(session?.user?.email, session?.accessToken);
-    setAccessTokenUpdated(true);
+  if (!authorizationUpdated) {
+    generateAuthorization(
+      session?.accessToken || "",
+      session?.user?.email || "",
+    ).then((auth) => updateAuthorization(auth));
+    setAuthorizationUpdated(true);
   }
 
   // Return the children and pass the permissions to them
@@ -108,19 +116,17 @@ function _PermissionMiddleware({
  * @param permissions The permissions to check
  * @returns the users permissions
  */
-export const fetchPermissions = async (
-  email: string | null | undefined,
-): Promise<string[]> => {
+export const fetchPermissions = async (auth: string): Promise<string[]> => {
   // If there is no email, return an empty array
-  if (!email) return [];
+  if (!auth) return [];
 
   // Fetch the permissions
   return await fetch("/api/agents/permissions", {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
+      authorization: auth,
     },
-    body: JSON.stringify({ email }),
   })
     .then((res) => res.json())
     .then((json) => json.permissions);
@@ -129,19 +135,18 @@ export const fetchPermissions = async (
 /**
  * Update the users access token
  */
-export const updateAccessToken = async (
-  email: string | null | undefined,
-  accessToken: string | null | undefined,
+export const updateAuthorization = async (
+  authorization: string | null | undefined,
 ): Promise<void> => {
   // If there is no email, return an empty array
-  if (!email || !accessToken) return;
+  if (!authorization) return;
 
   // Fetch the permissions
   await fetch("/api/agents/authorization", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      authorization,
     },
-    body: JSON.stringify({ email, authorization: accessToken }),
   });
 };

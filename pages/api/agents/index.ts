@@ -1,6 +1,8 @@
 import { context } from "@/app/lib/mongo";
-
 import { AgentsCache } from "@/app/lib/cache";
+import { decodeAuthorization, generateUserId } from "@/app/lib/auth";
+
+// Create a new agents cache
 const cache = new AgentsCache();
 
 // Search config
@@ -14,23 +16,54 @@ const searchConfig = {
   lang: 1,
   level: 1,
   permissions: 1,
+  user_id: 1,
 };
 
-// Function to verify that the user making the request is an admin
-const verifyAdmin = async (req: any, res: any) => {
-  // Get the users access token from the headers
-  const auth = req.headers.authorization;
+/**
+ * Verify that the user making the request is authenticated to do so
+ * @param authorization The authorization header
+ * @returns True if the user is authenticated, false otherwise
+ */
+const verifyAuth = async (
+  collection: any,
+  authorization: string,
+): Promise<any | false> => {
+  if (!authorization) return false;
 
-  // If the token is not present, return a 401
-  if (!auth) return false;
+  const decoded = await decodeAuthorization(authorization);
+  if (!decoded || !decoded.email || !decoded.accessToken) return false;
 
+  return await collection
+    .find({ access_token: decoded.accessToken })
+    .project({ email: 1 })
+    .limit(1)
+    .toArray()
+    .then((user: any) => {
+      if (user.length === 0 || !user[0]) return false;
+
+      return {
+        result: user[0].email === decoded.email,
+        email: decoded.email,
+        access_token: decoded.accessToken,
+      };
+    });
+};
+
+/**
+ * Verify that the user making the request is an admin
+ * @param authorization The authorization header
+ * @returns True if the user is an admin, false otherwise
+ */
+const verifyAdmin = async (authorization: string): Promise<boolean> => {
   // Get the database and collection
-  return await context(async (database) => {
+  return await context(async (database): Promise<boolean> => {
     const collection = database.collection("agents");
+    const authenticated = await verifyAuth(collection, authorization);
+    if (!authenticated.result) return false;
 
     // Get the user from the database
     const user = await collection
-      .find({ authorization: auth })
+      .find({ access_token: authenticated.access_token })
       .project({ permissions: 1 })
       .limit(1)
       .toArray();
@@ -51,31 +84,26 @@ export default async function handler(req: any, res: any) {
     return;
   } else {
     // Verify that the user is an admin
-    const isAdmin = await verifyAdmin(req, res);
+    const { authorization } = req.headers;
+    const isAdmin = await verifyAdmin(authorization);
     if (!isAdmin) {
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
-    // Updating an agent
-    if (req.method === "POST") {
-      await postAgent(req, res);
-      return;
-    }
-    // Adding an agent
-    else if (req.method === "PUT") {
-      await putAgent(req, res);
-      return;
-    }
-    // Deleting an agent
-    else if (req.method === "DELETE") {
-      await deleteAgent(req, res);
-      return;
-    }
-    // Invalid method
-    else {
-      res.status(405).json({ message: "Method not allowed" });
-      return;
+    switch (req.method) {
+      case "POST":
+        await postAgent(req, res);
+        return;
+      case "PUT":
+        await putAgent(req, res);
+        return;
+      case "DELETE":
+        await deleteAgent(req, res);
+        return;
+      default:
+        res.status(405).json({ message: "Method not allowed" });
+        return;
     }
   }
 }
@@ -83,90 +111,109 @@ export default async function handler(req: any, res: any) {
 // Get the agents from the database and return them as JSON
 const getAgents = async (req: any, res: any) => {
   let hasResponded: boolean = false;
+
   if (cache.isCached()) {
     res.status(200).json({ message: "Success", result: cache.get() });
     hasResponded = true;
   }
 
   await context(async (database) => {
-    // Get the database and collection
     const collection = database.collection("agents");
 
-    // Get the agents from the database
-    const result = await collection.find().project(searchConfig).toArray();
-    if (!result) return;
-
-    // Update the cache
-    cache.update(result);
-    if (!hasResponded) {
-      res.status(200).json({ message: "Success", result });
-    }
+    await collection
+      .find()
+      .project(searchConfig)
+      .toArray()
+      .then((result) => {
+        cache.update(result);
+        if (!hasResponded) {
+          res.status(200).json({ message: "Success", result });
+        }
+      });
   });
 };
 
-// Update an agent
-const postAgent = async (req: any, res: any) => {
-  // Get the database and collection
+/**
+ * Update an agent
+ * @param req The request
+ * @param res The response
+ * @returns void
+ */
+const postAgent = async (req: any, res: any): Promise<void> =>
   await context(async (database) => {
     const collection = database.collection("agents");
+    const { agent_id } = req.body;
 
-    // Get the agent from the database
-    const result = await collection.findOne({ email: req.body.email });
-    if (!result) {
-      res.status(404).json({ message: "Not found", update: null });
-      return;
-    }
+    await collection.findOne({ user_id: agent_id }).then(async (result) => {
+      if (!result) {
+        res.status(404).json({ message: "Not found", update: null });
+        return;
+      }
 
-    // Get the agent from the database
-    const update = await collection.findOneAndUpdate(
-      { email: req.body.email },
-      { $set: req.body },
-      { upsert: true },
-    );
+      await collection
+        .findOneAndUpdate(
+          { user_id: agent_id },
+          { $set: req.body.data },
+          { upsert: true },
+        )
+        .then((update) => {
+          if (!update) {
+            res.status(404).json({ message: "Not found", update: null });
+            return;
+          }
 
-    // If the agent doesn't exist, return a 404
-    if (!update) {
-      res.status(404).json({ message: "Not found", update: null });
-      return;
-    }
-
-    // Return the agent as JSON
-    res.status(200).json({ message: "Success", update });
+          cache.update_agent(agent_id, req.body.data);
+          res.status(200).json({ message: "Success", update });
+        });
+    });
   });
-};
 
-// Add an agent
+/**
+ * Add an agent
+ * @param req The request
+ * @param res The response
+ * @returns void
+ */
 const putAgent = async (req: any, res: any) => {
   if (!isValidPutAgentBody(req.body)) {
     return res
       .status(400)
       .json({ message: "Missing required fields", result: null });
   }
+
   await context(async (database) => {
     const collection = database.collection("agents");
 
-    // Check if the agent already exists
-    const agent = await collection.findOne({ email: req.body.email });
-    if (agent) {
-      res.status(409).json({ message: "Agent already exists", result: null });
-      return;
-    }
-
     // Add the agent to the database
-    const result = await collection.insertOne({
-      ...req.body,
-      authorization: "",
-    });
+    const userId: string = await generateUserId();
+    await collection
+      .insertOne({
+        ...req.body,
+        user_id: userId,
+      })
+      .then((result) => {
+        if (!result.acknowledged) {
+          res
+            .status(409)
+            .json({ message: "Failed to add agent", result: null });
+          return;
+        }
 
-    // Return the agent as JSON
-    res.status(200).json({ message: "Success", result });
+        cache.add_agent({ ...req.body, user_id: userId });
+        res.status(200).json({ message: "Success", result });
+      });
   });
 };
 
-// Delete an agent
-const deleteAgent = async (req: any, res: any) => {
-  const { email } = req.headers;
-  if (!email) {
+/**
+ * Delete an agent
+ * @param req The request
+ * @param res The response
+ * @returns void
+ */
+const deleteAgent = async (req: any, res: any): Promise<void> => {
+  const { agent_id } = req.body;
+  if (!agent_id) {
     return res
       .status(400)
       .json({ message: "Missing required fields", result: null });
@@ -176,22 +223,50 @@ const deleteAgent = async (req: any, res: any) => {
     const collection = database.collection("agents");
 
     // Check if the agent already exists
-    const agent = await collection.findOne({ email });
-    if (!agent) {
-      res.status(409).json({ message: "Agent does not exist", result: null });
-      return;
-    }
+    await collection.findOne({ user_id: agent_id }).then(async (agent) => {
+      if (!agent) {
+        res.status(409).json({ message: "Agent does not exist", result: null });
+        return;
+      }
 
-    // Delete the agent from the database
-    const result = await collection.deleteOne({ email });
+      // Delete the agent from the database
+      await collection.deleteOne({ user_id: agent_id }).then((result) => {
+        if (result.deletedCount === 0) {
+          res
+            .status(409)
+            .json({ message: "Failed to delete agent", result: null });
+          return;
+        }
 
-    // Return the agent as JSON
-    res.status(200).json({ message: "Success", result });
+        cache.delete_agent(agent_id);
+        res.status(200).json({ message: "Success", result });
+      });
+    });
   });
 };
 
 // Check if the body of the request is valid
 const isValidPutAgentBody = (body: any) => {
-  const { name, email, license, region, title, photo, lang, level } = body;
-  return name && email && license && region && title && photo && lang && level;
+  const {
+    name,
+    email,
+    license,
+    region,
+    title,
+    photo,
+    lang,
+    level,
+    permissions,
+  } = body;
+  return (
+    name &&
+    email &&
+    license &&
+    region &&
+    title &&
+    photo &&
+    lang &&
+    level &&
+    permissions.length > 0
+  );
 };

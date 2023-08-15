@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
+import { sha256 } from "@/app/lib/crypto";
 
 export default NextAuth({
   providers: [
@@ -18,7 +19,10 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
+      const bearerSecret: string = process.env.BEARER_SECRET ?? "";
+      const idToken: string = token.id_token as string;
+
+      session.accessToken = await sha256(idToken + bearerSecret);
       return session;
     },
   },

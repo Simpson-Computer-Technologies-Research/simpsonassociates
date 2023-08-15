@@ -1,6 +1,7 @@
 export class AgentsCache {
   cache: {
     name: string;
+    user_id: string;
     email: string;
     title: string;
     photo: string;
@@ -29,5 +30,19 @@ export class AgentsCache {
 
   update(agents: any[]) {
     this.cache = agents;
+  }
+
+  update_agent(agent_id: any, data: any) {
+    const index = this.cache.findIndex((agent) => agent.user_id === agent_id);
+    this.cache[index] = data;
+  }
+
+  add_agent(agent: any) {
+    this.cache.push(agent);
+  }
+
+  delete_agent(agent_id: any) {
+    const index = this.cache.findIndex((agent) => agent.user_id === agent_id);
+    this.cache.splice(index, 1);
   }
 }

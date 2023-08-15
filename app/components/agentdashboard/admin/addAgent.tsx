@@ -1,6 +1,7 @@
 import { User } from "@/pages/agents/middleware";
 import React from "react";
 import Input from "./input";
+import { generateAuthorization } from "@/app/lib/auth";
 
 /**
  * Add Agent Component
@@ -53,7 +54,7 @@ const addAgent = (setError: any, setAgents: any, user: User, agents: any[]) => {
   if (agentInfo.error) return setError(agentInfo.error);
 
   // Put the agent
-  putAgent(agentInfo, user.accessToken as string).then((res) => {
+  putAgent(agentInfo, user.accessToken || "", user.email || "").then((res) => {
     if (res) {
       clearInput();
       setAgents([...agents, agentInfo]);
@@ -71,7 +72,7 @@ const AgentInfoInputs = (): JSX.Element => (
     <Input ph="Email" id="add_email" def="" />
     <Input ph="Title" id="add_title" def="" />
     <Input ph="Level" id="add_level" def="" />
-    <Input ph="Languages" id="add_languages" def="" />
+    <Input ph="Languages" id="add_lang" def="" />
     <Input ph="License" id="add_license" def="" />
   </>
 );
@@ -168,7 +169,7 @@ const UploadPhotoButton = (): JSX.Element => {
  */
 function clearInput(): void {
   const inputs = document.querySelectorAll(
-    "#add_name, #add_email, #add_title, #add_level, #add_languages, #add_license",
+    "#add_name, #add_email, #add_title, #add_level, #add_lang, #add_license",
   );
 
   // For each input, set the value to an empty string
@@ -187,14 +188,18 @@ function clearInput(): void {
 /**
  * Add an agent
  */
-const putAgent = async (input: {}, authorization: string) => {
+const putAgent = async (data: {}, accessToken: string, accessEmail: string) => {
+  if (!accessToken || !accessEmail) return;
+
+  const authorization = await generateAuthorization(accessToken, accessEmail);
+
   return await fetch("/api/agents", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       authorization,
     },
-    body: JSON.stringify({ ...input }),
+    body: JSON.stringify({ ...data }),
   })
     .then((res) => (res.status === 200 ? res.json() : { result: [] }))
     .then((json) => json.result);
@@ -204,27 +209,23 @@ const putAgent = async (input: {}, authorization: string) => {
  * Get the inputs from the add agent section
  */
 const getInput = (): any => {
-  // Get the inputs
   const values = document.querySelectorAll(
-    "#add_name, #add_email, #add_title, #add_level, #add_languages, #add_license",
+    "#add_name, #add_email, #add_title, #add_level, #add_lang, #add_license",
   );
 
-  // Store all of the values in an object
   let result = {};
-
-  // Iterate through the values
   for (let i = 0; i < values.length; i++) {
     const value = (values[i] as HTMLInputElement).value;
 
-    // If the value is empty, return an error
-    if (!value) return { error: "All fields are required" };
+    if (!value) {
+      return { error: "All fields are required" };
+    }
 
     // Get the key and add it to the result object
     const key = values[i].id.replace("add_", "");
     result = { ...result, [key]: value };
   }
 
-  // Return the result
   return result;
 };
 
@@ -232,19 +233,20 @@ const getInput = (): any => {
  * Get the permissions
  */
 const getPermissions = (): string[] => {
-  const permissions = ["agent"];
-
-  // Get the permissions checklist
+  const result = ["agent"];
   const perms = document.getElementById("add_perms") as HTMLInputElement;
 
-  // Iterate through the children and add the checked ones to the permissions array
+  // Iterate through the children and add the checked 
+  // ones to the permissions array
   for (let i = 0; i < perms.children.length; i++) {
     const child = perms.children[i] as HTMLInputElement;
-    if (child.checked) permissions.push(child.value);
+
+    if (child.checked) {
+      result.push(child.value);
+    }
   }
 
-  // Return the permissions
-  return permissions;
+  return result;
 };
 
 /**

@@ -8,7 +8,7 @@ const uri: string = process.env.MONGODB_URI || "";
  * @param fn The function to run in the context of the database
  * @returns The result of the function
  */
-export async function context(fn: (db: Db) => Promise<void>): Promise<any> {
+export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
   const client: MongoClient = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,

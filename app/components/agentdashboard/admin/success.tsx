@@ -4,7 +4,7 @@ import { User } from "@/pages/agents/middleware";
 import { signOut } from "next-auth/react";
 
 import AddAgent from "./addAgent";
-import Agents from "./agents";
+import Agents from "./allAgents";
 import SideMenu from "./sideMenu";
 
 import "@/app/styles/globals.css";
