@@ -28,22 +28,22 @@ const NavbarMenuButton = (props: {
 
 // Close button
 const CloseButton = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>
+  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ): JSX.Element => (
   <div
     className="group absolute top-10 z-50 ml-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
     onClick={() => setMenuClicked(false)}
   >
     <div className="flex flex-col items-center justify-center">
-      <span className="h-1 w-10 rotate-45 bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:-rotate-45 group-hover:bg-secondary"></span>
-      <span className="-mt-1 h-1 w-10 -rotate-45 bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:rotate-45 group-hover:bg-secondary"></span>
+      <span className="h-1 w-10 rotate-45 rounded-lg bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:-rotate-45 group-hover:bg-secondary"></span>
+      <span className="-mt-1 h-1 w-10 -rotate-45 rounded-lg bg-slate-950 duration-700 ease-in-out group-hover:w-11 group-hover:rotate-45 group-hover:bg-secondary"></span>
     </div>
   </div>
 );
 
 // Open Button
 const OpenButton = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>
+  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ): JSX.Element => (
   <div
     className="group relative z-50 ml-8 mt-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
@@ -60,7 +60,7 @@ const OpenButton = (
 // Menu button wrapper
 const MenuButton = (
   menuClicked: boolean,
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>
+  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ): JSX.Element =>
   menuClicked ? CloseButton(setMenuClicked) : OpenButton(setMenuClicked);
 
@@ -71,7 +71,7 @@ const DropdownMenuHidden = (): JSX.Element => (
 
 // Dropdown menu visible
 const DropdownMenuVisible = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>
+  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
 ): JSX.Element => (
   <div
     id="menu"
@@ -111,7 +111,7 @@ export default function NavbarMenu(): JSX.Element {
 
   // Return the component
   return (
-    <div className="block lg:hidden overflow-y-scroll">
+    <div className="block overflow-y-scroll lg:hidden">
       {MenuButton(menuClicked, setMenuClicked)}
       {menuClicked ? DropdownMenuVisible(setMenuClicked) : DropdownMenuHidden()}
     </div>
