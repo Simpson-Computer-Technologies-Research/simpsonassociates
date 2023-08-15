@@ -50,9 +50,9 @@ const OpenButton = (
     onClick={() => setMenuClicked(true)}
   >
     <div className="flex flex-col">
-      <span className="h-1 w-12 rounded-lg bg-white duration-700 ease-in-out group-hover:w-[4.5rem] group-hover:bg-secondary"></span>
-      <span className="mt-1.5 h-1 w-10 rounded-lg bg-white duration-700 ease-in-out group-hover:w-14 group-hover:bg-secondary"></span>
-      <span className="mt-1.5 h-1 w-8 rounded-lg bg-white duration-700 ease-in-out group-hover:w-10 group-hover:bg-secondary"></span>
+      <span className="h-1 w-9 rounded-lg bg-white duration-700 ease-in-out group-hover:w-16 group-hover:bg-secondary"></span>
+      <span className="mt-1.5 h-1 w-9 rounded-lg bg-white duration-700 ease-in-out group-hover:w-12 group-hover:bg-secondary"></span>
+      <span className="mt-1.5 h-1 w-9 rounded-lg bg-white duration-700 ease-in-out group-hover:w-8 group-hover:bg-secondary"></span>
     </div>
   </div>
 );
