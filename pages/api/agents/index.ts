@@ -58,17 +58,17 @@ const verifyAdmin = async (authorization: string): Promise<boolean> => {
   // Get the database and collection
   return await context(async (database): Promise<boolean> => {
     const collection = database.collection("agents");
+
     const authenticated = await verifyAuth(collection, authorization);
     if (!authenticated.result) return false;
 
-    // Get the user from the database
     const user = await collection
       .find({ access_token: authenticated.access_token })
       .project({ permissions: 1 })
       .limit(1)
       .toArray();
 
-    // If the user doesn't exist, return a 401
+    // If the user doesn't exist
     if (user.length === 0 || !user[0]) return false;
 
     // Return whether the user is an admin
@@ -82,34 +82,34 @@ export default async function handler(req: any, res: any) {
   if (req.method === "GET") {
     await getAgents(req, res);
     return;
-  } else {
-    // Verify that the user is an admin
-    const { authorization } = req.headers;
-    const isAdmin = await verifyAdmin(authorization);
-    if (!isAdmin) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
+  }
 
-    switch (req.method) {
-      case "POST":
-        await postAgent(req, res);
-        return;
-      case "PUT":
-        await putAgent(req, res);
-        return;
-      case "DELETE":
-        await deleteAgent(req, res);
-        return;
-      default:
-        res.status(405).json({ message: "Method not allowed" });
-        return;
-    }
+  const { authorization } = req.headers;
+
+  const isAdmin = await verifyAdmin(authorization);
+  if (!isAdmin) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
+  switch (req.method) {
+    case "POST":
+      await postAgent(req, res);
+      return;
+    case "PUT":
+      await putAgent(req, res);
+      return;
+    case "DELETE":
+      await deleteAgent(req, res);
+      return;
+    default:
+      res.status(405).json({ message: "Method not allowed" });
+      return;
   }
 }
 
 // Get the agents from the database and return them as JSON
-const getAgents = async (req: any, res: any) => {
+const getAgents = async (_: any, res: any) => {
   let hasResponded: boolean = false;
 
   if (cache.isCached()) {
@@ -246,27 +246,13 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 };
 
 // Check if the body of the request is valid
-const isValidPutAgentBody = (body: any) => {
-  const {
-    name,
-    email,
-    license,
-    region,
-    title,
-    photo,
-    lang,
-    level,
-    permissions,
-  } = body;
-  return (
-    name &&
-    email &&
-    license &&
-    region &&
-    title &&
-    photo &&
-    lang &&
-    level &&
-    permissions.length > 0
-  );
-};
+const isValidPutAgentBody = (body: any) =>
+  body.name &&
+  body.email &&
+  body.license &&
+  body.region &&
+  body.title &&
+  body.photo &&
+  body.lang &&
+  body.level &&
+  body.permissions.length > 0;

@@ -20,6 +20,10 @@ export interface User {
 
 /**
  * Google authentication session middleware
+ * @param permissions the permissions required to access the page
+ * @param unauthorized the component to render if the user is not authorized
+ * @param success the component to render if the user is authorized
+ * @returns JSX.Element
  */
 export default function PermissionMiddleware({
   permissions,
@@ -54,7 +58,6 @@ function _PermissionMiddleware({
   const [authorizationUpdated, setAuthorizationUpdated] =
     React.useState<boolean>(false);
 
-  // If the session is loading, return a loading component
   React.useEffect(() => {
     if (status === "unauthenticated") {
       window.location.href = "/login?redirect=/agents/dashboard";
@@ -99,7 +102,7 @@ function _PermissionMiddleware({
     setAuthorizationUpdated(true);
   }
 
-  // Return the children and pass the permissions to them
+  // Return the success component
   const user: User = {
     email: session?.user?.email,
     accessToken: session?.accessToken,
@@ -112,12 +115,10 @@ function _PermissionMiddleware({
 
 /**
  * Fetch the users permissions
- * @param email The email of the user
- * @param permissions The permissions to check
+ * @param auth the users access token and email base64 encoded
  * @returns the users permissions
  */
 export const fetchPermissions = async (auth: string): Promise<string[]> => {
-  // If there is no email, return an empty array
   if (!auth) return [];
 
   // Fetch the permissions
@@ -134,14 +135,14 @@ export const fetchPermissions = async (auth: string): Promise<string[]> => {
 
 /**
  * Update the users access token
+ * @param authorization the users access token and email base64 encoded
+ * @returns void
  */
 export const updateAuthorization = async (
   authorization: string | null | undefined,
 ): Promise<void> => {
-  // If there is no email, return an empty array
   if (!authorization) return;
 
-  // Fetch the permissions
   await fetch("/api/agents/authorization", {
     method: "POST",
     headers: {
