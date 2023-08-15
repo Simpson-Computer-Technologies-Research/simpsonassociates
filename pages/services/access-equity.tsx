@@ -93,10 +93,10 @@ const AccessEquityCard = (props: {
     />
     <div className="mx-10 mt-40 xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
-      <p className="mb-5 mt-2 text-sm text-primary">{props.description}</p>
+      <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <a
         href="#contact"
-        className="rounded-full bg-secondary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-8 xs:px-7 xs:py-3 xs:text-xs md:outline-none lg:text-sm lg:group-hover:px-9"
+        className="rounded-full bg-secondary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:text-sm lg:group-hover:px-12"
       >
         Get Started
       </a>
