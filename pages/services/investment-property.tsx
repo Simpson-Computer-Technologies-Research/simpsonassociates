@@ -4,6 +4,7 @@
 // Import react for state and effect
 import React from "react";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -20,18 +21,23 @@ import { cn } from "@/app/lib/utils";
  */
 export default function ServicesInvestmentPropertyPage(): JSX.Element {
   return (
-    <SessionProvider>
-      <Navbar />
-      <div
-        id="services"
-        className="fade-in flex w-full flex-col items-center justify-center"
-      >
-        <Header />
-        <InvestmentProperty />
-      </div>
-      <Contact bgColor={"bg-slate-50"} />
-      <ScrollIndicator />
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Investment Property | Simpson & Associates</title>
+      </Head>
+      <SessionProvider>
+        <Navbar />
+        <div
+          id="services"
+          className="fade-in flex w-full flex-col items-center justify-center"
+        >
+          <Header />
+          <InvestmentProperty />
+        </div>
+        <Contact className="bg-slate-50" />
+        <ScrollIndicator />
+      </SessionProvider>
+    </>
   );
 }
 
@@ -59,17 +65,17 @@ const InvestmentProperty = (): JSX.Element => (
     <InvestmentPropertyCard
       title="Residential"
       description="Whether you are looking to purchase your first home or your fifth, we have access to the best products and rates available across Canada."
-      image="/images/residential.jpg"
+      image="/images/blue_home_banner.png"
     />
     <InvestmentPropertyCard
       title="Commercial"
       description="We have access to the best products and rates available across Canada for commercial properties."
-      image="/images/commercial.jpg"
+      image="/images/blue_home_banner.png"
     />
     <InvestmentPropertyCard
       title="Multi-Unit"
       description="We have access to the best products and rates available across Canada for multi-unit properties."
-      image="/images/multi-unit.jpg"
+      image="/images/blue_home_banner.png"
     />
   </div>
 );
@@ -82,7 +88,7 @@ const InvestmentPropertyCard = (props: {
 }): JSX.Element => (
   <div
     className={cn(
-      "group flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
       props.className,
     )}
   >

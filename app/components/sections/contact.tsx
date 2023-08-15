@@ -5,15 +5,19 @@ import Link from "next/link";
 import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
+import { cn } from "@/app/lib/utils";
 /**
  * Contact Component
  * @returns JSX.Element
  */
-export default function Contact(props: { bgColor: string }): JSX.Element {
+export default function Contact(props: { className?: string }): JSX.Element {
   return (
     <section
       id="contact"
-      className={`group relative flex w-full flex-col p-10 pt-14 sm:py-16 sm:pt-20 ${props.bgColor}`}
+      className={cn(
+        "group relative flex w-screen flex-col items-center justify-center p-10 pt-14 sm:py-16 sm:pt-20",
+        props.className,
+      )}
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center">

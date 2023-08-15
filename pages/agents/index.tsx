@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -58,23 +59,33 @@ export default function AgentsPage(): JSX.Element {
 
   if (!agents.length) {
     return (
-      <section>
-        <Navbar />
-        <Loading />
-      </section>
+      <>
+        <Head>
+          <title>Agents | Simpson & Associates</title>
+        </Head>
+        <section>
+          <Navbar />
+          <Loading />
+        </section>
+      </>
     );
   }
 
   return (
-    <SessionProvider>
-      <Navbar />
-      <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
-        <Header />
-        <Agents initialQuery={initialQuery} agents={agents} />
-      </div>
-      <Contact bgColor={"bg-slate-50"} />
-      <ScrollIndicator />
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Agents | Simpson & Associates</title>
+      </Head>
+      <SessionProvider>
+        <Navbar />
+        <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
+          <Header />
+          <Agents initialQuery={initialQuery} agents={agents} />
+        </div>
+        <Contact className="bg-slate-50" />
+        <ScrollIndicator />
+      </SessionProvider>
+    </>
   );
 }
 

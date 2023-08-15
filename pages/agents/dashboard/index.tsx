@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import { signOut } from "next-auth/react";
 
 import PermissionMiddleware from "@/pages/agents/middleware";
@@ -12,11 +13,16 @@ import "@/app/styles/globals.css";
  */
 export default function Dashboard(): JSX.Element {
   return (
-    <PermissionMiddleware
-      permissions={["agent"]}
-      success={Success}
-      unauthorized={Unauthorized}
-    />
+    <>
+      <Head>
+        <title>Agent Dashboard | Simpson & Associates</title>
+      </Head>
+      <PermissionMiddleware
+        permissions={["agent"]}
+        success={Success}
+        unauthorized={Unauthorized}
+      />
+    </>
   );
 }
 

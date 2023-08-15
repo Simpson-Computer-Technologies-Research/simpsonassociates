@@ -3,6 +3,7 @@
 
 // Import react for state and effect
 import React from "react";
+import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 
 // Import components
@@ -20,18 +21,23 @@ import { cn } from "@/app/lib/utils";
  */
 export default function ServicesAccessEquityPage(): JSX.Element {
   return (
-    <SessionProvider>
-      <Navbar />
-      <div
-        id="services"
-        className="fade-in flex w-full flex-col items-center justify-center"
-      >
-        <Header />
-        <AccessEquity />
-      </div>
-      <Contact bgColor={"bg-slate-50"} />
-      <ScrollIndicator />
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Access Equity | Simpson & Associates</title>
+      </Head>
+      <SessionProvider>
+        <Navbar />
+        <div
+          id="services"
+          className="fade-in flex w-full flex-col items-center justify-center"
+        >
+          <Header />
+          <AccessEquity />
+        </div>
+        <Contact className="bg-slate-50" />
+        <ScrollIndicator />
+      </SessionProvider>
+    </>
   );
 }
 
@@ -59,17 +65,17 @@ const AccessEquity = (): JSX.Element => (
     <AccessEquityCard
       title="First Time Home Buyers"
       description="We have access to the best products and rates available across Canada."
-      image="/images/services/access-equity/first-time-home-buyers.jpg"
+      image="/images/blue_home_banner.png"
     />
     <AccessEquityCard
       title="Mortgage Renewal"
       description="We have access to the best products and rates available across Canada."
-      image="/images/services/access-equity/mortgage-renewal.jpg"
+      image="/images/blue_home_banner.png"
     />
     <AccessEquityCard
       title="Refinance"
       description="We have access to the best products and rates available across Canada."
-      image="/images/services/access-equity/refinance.jpg"
+      image="/images/blue_home_banner.png"
     />
   </div>
 );

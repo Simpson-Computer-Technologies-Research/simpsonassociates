@@ -24,22 +24,25 @@ export default function Lenders(): JSX.Element {
  * Lender Images Component
  * @returns JSX.Element
  */
-const LenderImages = (props: { lenders: any }): JSX.Element => (
-  <div className="mt-4 flex h-auto w-[98%] flex-row overflow-hidden md:w-3/4">
-    <div className="flex animate-marquee-current flex-row whitespace-nowrap">
-      {props.lenders.map((lender: any, i: number) => (
-        <Image
-          key={i}
-          src={lender.logo}
-          alt="..."
-          width={200}
-          height={200}
-          className="mx-4 h-24 w-24 xs:h-32 xs:w-32 sm:h-40 sm:w-40"
-        />
-      ))}
+const LenderImages = (props: { lenders: any }): JSX.Element => {
+  const lenderImages = props.lenders.map((lender: any, i: number) => (
+    <Image
+      key={i}
+      src={lender.logo}
+      alt="..."
+      width={200}
+      height={200}
+      className="mx-4 h-24 w-24 xs:h-32 xs:w-32 sm:h-40 sm:w-40"
+    />
+  ));
+  return (
+    <div className="relative mt-4 flex h-auto w-[98%] flex-row overflow-hidden md:w-3/4">
+      <div className="flex animate-marquee-current flex-row whitespace-nowrap">
+        {lenderImages}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 /**
  * Header Component
  * @returns JSX.Element

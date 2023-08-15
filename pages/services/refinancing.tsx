@@ -4,6 +4,7 @@
 // Import react for state and effect
 import React from "react";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -20,18 +21,23 @@ import { cn } from "@/app/lib/utils";
  */
 export default function ServicesRefinancingPage(): JSX.Element {
   return (
-    <SessionProvider>
-      <Navbar />
-      <div
-        id="services"
-        className="fade-in flex w-full flex-col items-center justify-center"
-      >
-        <Header />
-        <Refinancing />
-      </div>
-      <Contact bgColor={"bg-slate-50"} />
-      <ScrollIndicator />
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Refinancing | Simpson & Associates</title>
+      </Head>
+      <SessionProvider>
+        <Navbar />
+        <div
+          id="services"
+          className="fade-in flex w-full flex-col items-center justify-center"
+        >
+          <Header />
+          <Refinancing />
+        </div>
+        <Contact className="bg-slate-50" />
+        <ScrollIndicator />
+      </SessionProvider>
+    </>
   );
 }
 
@@ -59,17 +65,17 @@ const Refinancing = (): JSX.Element => (
     <RefinancingCard
       title="Mortgage Refinancing"
       description="Refinancing your mortgage can be a great way to save money by consolidating your high-interest debt, lowering your monthly payments, or accessing your home’s equity."
-      image="/images/services/refinancing/mortgage-refinancing.jpg"
+      image="/images/blue_home_banner.png"
     />
     <RefinancingCard
       title="Home Equity Line of Credit"
       description="A home equity line of credit (HELOC) is a revolving line of credit secured against your home. It allows you to access up to 65% of the value of your home."
-      image="/images/services/refinancing/home-equity-line-of-credit.jpg"
+      image="/images/blue_home_banner.png"
     />
     <RefinancingCard
       title="Home Equity Loan"
       description="A home equity loan is a loan secured against the equity in your home. It allows you to access up to 80% of the value of your home."
-      image="/images/services/refinancing/home-equity-loan.jpg"
+      image="/images/blue_home_banner.png"
     />
   </div>
 );
@@ -82,7 +88,7 @@ const RefinancingCard = (props: {
 }): JSX.Element => (
   <div
     className={cn(
-      "group flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
       props.className,
     )}
   >

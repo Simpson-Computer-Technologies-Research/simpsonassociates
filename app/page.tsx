@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import Landing from "./components/sections/landing";
 import Loading from "./components/loading";
 import Cards from "./components/sections/cards";
@@ -47,7 +46,7 @@ export default function Home() {
         <Team />
         <Agents />
         <Testimonials />
-        <Contact bgColor={"bg-white"}/>
+        <Contact className="bg-white" />
         <Lenders />
         <Bottom />
       </section>

@@ -4,7 +4,6 @@ export default function Document(): JSX.Element {
   return (
     <Html lang="en">
       <Head>
-        <title key="title">Simpson & Associates</title>
         <meta
           name="description"
           content="Dominion Lending - Simpson & Associates"

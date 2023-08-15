@@ -108,17 +108,17 @@ const Services = (): JSX.Element => {
         Services
       </h2>
       <Button
-        href="/services#residential-mortgages"
+        href="/services/residential-mortgages"
         text="Residential Mortgages"
       />
       <Button
-        href="/services#commercial-mortgages"
+        href="/services/commercial-mortgages"
         text="Commercial Mortgages"
       />
-      <Button href="/services#refinancing" text="Refinancing" />
-      <Button href="/services#access-equity" text="Access Equity" />
-      <Button href="/services#second-property" text="Second Property" />
-      <Button href="/services#investment-property" text="Investment Property" />
+      <Button href="/services/refinancing" text="Refinancing" />
+      <Button href="/services/access-equity" text="Access Equity" />
+      <Button href="/services/second-property" text="Second Property" />
+      <Button href="/services/investment-property" text="Investment Property" />
     </div>
   );
 };
