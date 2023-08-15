@@ -11,10 +11,10 @@ export default function Bottom(): JSX.Element {
   return (
     <section
       id="bottom"
-      className="flex w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-10 pb-20 md:items-center lg:flex-row lg:justify-center"
+      className="relative flex w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-10 pb-20 md:items-center lg:flex-row lg:justify-center"
     >
       {/* Before Image, Show on larger screens */}
-      <div className="relative hidden justify-center lg:flex lg:flex-row">
+      <div className="hidden justify-center lg:flex lg:flex-row">
         <NavigationLinks />
         <Services />
       </div>
@@ -108,17 +108,17 @@ const Services = (): JSX.Element => {
         Services
       </h2>
       <Button
-        href="/services#residential-mortgages"
+        href="/services/residential-mortgages"
         text="Residential Mortgages"
       />
       <Button
-        href="/services#commercial-mortgages"
+        href="/services/commercial-mortgages"
         text="Commercial Mortgages"
       />
-      <Button href="/services#refinancing" text="Refinancing" />
-      <Button href="/services#access-equity" text="Access Equity" />
-      <Button href="/services#second-property" text="Second Property" />
-      <Button href="/services#investment-property" text="Investment Property" />
+      <Button href="/services/refinancing" text="Refinancing" />
+      <Button href="/services/access-equity" text="Access Equity" />
+      <Button href="/services/second-property" text="Second Property" />
+      <Button href="/services/investment-property" text="Investment Property" />
     </div>
   );
 };

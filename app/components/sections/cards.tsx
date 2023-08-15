@@ -8,7 +8,7 @@ export default function Cards(): JSX.Element {
   return (
     <div
       id="cards"
-      className="relative z-0 flex flex-col items-center justify-center bg-slate-50"
+      className="relative z-0 flex flex-col w-screen items-center justify-center bg-slate-50"
     >
       <div className="grid grid-cols-1 px-10 py-8 md:grid-cols-2 md:px-14 md:py-16 lg:grid-cols-3">
         <Card
@@ -70,7 +70,7 @@ interface CardProps {
  */
 const Card = (props: CardProps): JSX.Element => (
   <section
-    className={`group relative z-10 bg-white p-10 py-10 sm:py-16 lg:p-12 ${props.className}`}
+    className={`group z-10 bg-white p-10 py-10 sm:py-16 lg:p-12 ${props.className}`}
   >
     <div className="flex flex-col items-center justify-center text-center duration-500 ease-in-out group-hover:-translate-y-3">
       <h1 className="mb-5 text-4xl font-extrabold text-primary sm:mb-6">

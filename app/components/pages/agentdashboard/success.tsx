@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "@/pages/agents/middleware";
-import SideMenu from "@/app/components/agentdashboard/sideMenu";
-import PostEventCard from "@/app/components/agentdashboard/postEventCard";
+import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
+import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 
 /**
  * Success section

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -45,7 +46,7 @@ const getUrlQueryParam = () =>
  * Agents Page
  * @returns JSX.Element
  */
-export default function Agents(): JSX.Element {
+export default function AgentsPage(): JSX.Element {
   const [initialQuery, setInitialQuery] = React.useState("");
   const [agents, setAgents] = React.useState([]);
 
@@ -58,23 +59,33 @@ export default function Agents(): JSX.Element {
 
   if (!agents.length) {
     return (
-      <section>
-        <Navbar />
-        <Loading />
-      </section>
+      <>
+        <Head>
+          <title>Agents | Simpson & Associates</title>
+        </Head>
+        <section>
+          <Navbar />
+          <Loading />
+        </section>
+      </>
     );
   }
 
   return (
-    <SessionProvider>
-      <Navbar />
-      <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
-        <Header />
-        <_Agents initialQuery={initialQuery} agents={agents} />
-      </div>
-      <Contact bgColor={"bg-slate-50"} />
-      <ScrollIndicator />
-    </SessionProvider>
+    <>
+      <Head>
+        <title>Agents | Simpson & Associates</title>
+      </Head>
+      <SessionProvider>
+        <Navbar />
+        <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
+          <Header />
+          <Agents initialQuery={initialQuery} agents={agents} />
+        </div>
+        <Contact className="bg-slate-50" />
+        <ScrollIndicator />
+      </SessionProvider>
+    </>
   );
 }
 
@@ -82,7 +93,7 @@ export default function Agents(): JSX.Element {
  * Agents Component
  * @returns JSX.Element
  */
-const _Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
+const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({

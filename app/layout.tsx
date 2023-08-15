@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import "@/app/styles/globals.css";
+import { SessionProvider } from "@/app/components/providers";
 
 import type { Metadata } from "next";
-
-import { SessionProvider } from "@/app/components/providers";
 
 export const metadata: Metadata = {
   title: "Simpson & Associates",
@@ -18,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title key="title">Simpson & Associates</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link

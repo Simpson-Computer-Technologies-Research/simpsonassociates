@@ -42,5 +42,5 @@ export default async function handler(req: any, res: any) {
         }
         res.status(200).json({ message: "Authorization token set", result });
       });
-  });
+  }).catch((error) => res.status(500).json({ message: error.message }));
 }

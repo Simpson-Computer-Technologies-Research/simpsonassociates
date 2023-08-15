@@ -21,7 +21,7 @@ export default function Team(): JSX.Element {
         height={1080}
         className="absolute w-[95%] rounded-lg duration-700 ease-in-out group-hover:brightness-125 sm:w-[90%]"
       />
-      <h1 className="z-10 text-3xl font-black italic tracking-wider text-white duration-700 ease-in-out group-hover:-mb-4 group-hover:mt-9 group-hover:scale-125 group-hover:tracking-widest sm:text-4xl sm:group-hover:-mb-6 sm:group-hover:mt-12 sm:group-hover:scale-125 md:text-5xl md:group-hover:mt-20 md:group-hover:scale-110 lg:text-6xl lg:group-hover:scale-125 xl:group-hover:scale-150">
+      <h1 className="z-10 text-2xl font-black italic tracking-wider text-white duration-700 ease-in-out group-hover:-mb-4 group-hover:mt-9 group-hover:scale-125 group-hover:tracking-widest xs:text-3xl sm:text-4xl sm:group-hover:-mb-6 sm:group-hover:mt-12 sm:group-hover:scale-125 md:text-5xl md:group-hover:mt-20 md:group-hover:scale-110 lg:text-6xl lg:group-hover:scale-125 xl:group-hover:scale-150">
         MEET THE TEAM
       </h1>
       <div className="flex h-0 w-20 -translate-x-full flex-row gap-2 fill-secondary opacity-0 duration-700 ease-in-out group-hover:h-20 group-hover:translate-x-0 group-hover:opacity-100 sm:w-32 sm:group-hover:h-32 md:w-40 md:group-hover:h-40 lg:w-52 lg:group-hover:h-52">
