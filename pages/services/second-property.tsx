@@ -12,6 +12,7 @@ import Contact from "@/app/components/sections/contact";
 
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
+import { cn } from "@/app/lib/utils";
 
 /**
  * Agents Page
@@ -40,7 +41,7 @@ export default function ServicesSecondPropertyPage(): JSX.Element {
  */
 const Header = (): JSX.Element => (
   <div className="mt-44 flex flex-col items-center justify-center px-7 pb-6 text-center lg:mt-52">
-    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
+    <h2 className="text-5xl font-extrabold text-primary xs:text-6xl lg:text-7xl">
       Second Property
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
@@ -74,20 +75,23 @@ const SecondProperty = (): JSX.Element => (
 );
 
 const SecondPropertyCard = (props: {
+  className?: string;
   title: string;
   description: string;
   image: string;
 }): JSX.Element => (
-  <div className="group flex w-96 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105">
+  <div
+    className={cn(
+      "group flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      props.className,
+    )}
+  >
     <img
       src={props.image}
       alt={props.title}
-      className="absolute h-auto w-96 duration-500 ease-in-out group-hover:brightness-110"
+      className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
     />
-    <h1 className="relative z-10 mx-10 mt-[10%] px-10 text-center text-2xl font-bold tracking-wider text-white duration-500 ease-in-out group-hover:scale-110 xs:text-3xl">
-      SECOND PROPERTY
-    </h1>
-    <div className="mx-10 mt-16">
+    <div className="mx-10 mt-40 xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-5 mt-2 text-sm text-primary">{props.description}</p>
       <a
