@@ -64,7 +64,7 @@ const Header = (): JSX.Element => (
 const ResidentialMortgages = (): JSX.Element => (
   <div
     id="residential-mortgages"
-    className="flex w-full flex-col items-center justify-center bg-slate-50 p-20 px-7 text-center"
+    className="mt-10 md:mt-2 flex w-full flex-col items-center justify-center bg-slate-50 p-20 px-7 text-center"
   >
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Residential Mortgages
