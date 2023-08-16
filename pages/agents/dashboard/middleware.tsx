@@ -84,7 +84,7 @@ function _PermissionMiddleware({
     return unauthorized();
 
   // Update the users authorization token
-  if (!authorizationUpdated) {
+  if (!authorizationUpdated && permissionsStatus === "done") {
     generateAuthorization(
       session?.accessToken || "",
       session?.user?.email || "",

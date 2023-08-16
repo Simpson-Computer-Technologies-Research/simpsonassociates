@@ -10,6 +10,7 @@ import Head from "next/head";
 import Navbar from "@/app/components/navbar/navbar";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
+import Bottom from "@/app/components/sections/bottom";
 
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
@@ -36,6 +37,7 @@ export default function ServicesSecondPropertyPage(): JSX.Element {
         </div>
         <Contact className="bg-slate-50" />
         <ScrollIndicator />
+        <Bottom />
       </SessionProvider>
     </>
   );
