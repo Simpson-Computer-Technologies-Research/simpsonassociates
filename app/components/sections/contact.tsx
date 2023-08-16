@@ -33,7 +33,7 @@ export default function Contact(props: {
           width={750}
           height={750}
           loading="eager"
-          className="absolute -right-64 -bottom-10 z-[1] lg:-right-40 2xl:-right-20"
+          className="absolute -bottom-10 z-[1] hidden xs:-right-60 xs:block sm:-right-64 lg:-right-40 2xl:-right-20"
         />
       </div>
     </section>
@@ -81,7 +81,7 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="z-[2] flex flex-col bg-white/50 p-6 backdrop-blur-sm lg:mr-40 xl:mr-0">
+    <section className="z-[2] flex flex-col p-6 sm:bg-white/50 sm:backdrop-blur-sm lg:mr-40 xl:mr-0">
       <input
         disabled={true}
         className="w-60 border-b-[2.5px] border-b-primary bg-white p-2 text-xs text-primary xs:w-96 xs:text-sm sm:text-base"
