@@ -101,7 +101,7 @@ export default function Navbar() {
           href="/login?redirect=/agents/dashboard"
           rel="noopener noreferrer"
           target="_blank"
-          className="hidden rounded-lg border-[1px] border-secondary px-5 py-2 text-center text-sm font-extralight tracking-wide text-white duration-200 ease-in-out hover:bg-secondary hover:text-slate-950 lg:flex justify-center items-center"
+          className="hidden items-center justify-center rounded-lg border-[1px] border-secondary px-5 py-2 text-center text-sm font-extralight tracking-wide text-white duration-200 ease-in-out hover:bg-secondary hover:text-slate-950 lg:flex"
         >
           Agent Login
         </Link>
