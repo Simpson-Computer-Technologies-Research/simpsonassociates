@@ -3,6 +3,7 @@
 import React from "react";
 import { cn } from "@/app/lib/utils";
 import { LoadingRelative } from "../loading";
+import { Rate } from "@/app/lib/types";
 
 /**
  * Cards Component
@@ -102,9 +103,9 @@ const Card = (props: CardProps): JSX.Element => (
  * @returns JSX.Element
  */
 const RatesCard = (): JSX.Element => {
-  const [rates, setRates] = React.useState<any[]>([]);
+  const [rates, setRates] = React.useState<Rate[]>([]);
   React.useEffect(() => {
-    if (rates.length > 0) return;
+    if (rates.length) return;
 
     fetch("/api/rates")
       .then((res) => res.json())
@@ -126,11 +127,7 @@ const RatesCard = (): JSX.Element => {
           Our rates are always competitive and we pride ourselves on making sure
           that you get the best possible rate available to you.
         </p>
-        {rates.length === 0 ? (
-          <LoadingRelative />
-        ) : (
-          <RatesTable rates={rates} />
-        )}
+        {!rates.length ? <LoadingRelative /> : <RatesTable rates={rates} />}
       </div>
     </section>
   );
@@ -141,7 +138,7 @@ const RatesCard = (): JSX.Element => {
  * @param rates
  * @returns JSX.Element
  */
-const RatesTable = (props: { rates: any[] }): JSX.Element => {
+const RatesTable = (props: { rates: Rate[] }): JSX.Element => {
   return (
     <table id="rates" className="w-full text-sm text-primary sm:text-base">
       <thead className="border-b-2 border-slate-100">

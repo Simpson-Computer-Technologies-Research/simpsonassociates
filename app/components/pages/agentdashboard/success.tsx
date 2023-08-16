@@ -1,10 +1,11 @@
 import React from "react";
-import { User } from "@/pages/agents/dashboard/middleware";
+import { User, Event } from "@/app/lib/types";
 import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
 import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 
 /**
  * Success section
+ * @returns JSX.Element
  */
 export default function Success(user: User): JSX.Element {
   return (
@@ -20,9 +21,10 @@ export default function Success(user: User): JSX.Element {
 
 /**
  * Events section
+ * @returns JSX.Element
  */
 const Events = (props: { user: User }): JSX.Element => {
-  const [events, setEvents] = React.useState<any>([]);
+  const [events, setEvents] = React.useState<Event[]>([]);
   return (
     <section id="events" className="flex h-fit w-full flex-col bg-primary p-7">
       <h1 className="text-4xl font-bold text-white">Events</h1>
@@ -42,7 +44,7 @@ const Events = (props: { user: User }): JSX.Element => {
 /**
  * Event card
  */
-const EventCard = (props: { event: any }): JSX.Element => {
+const EventCard = (props: { event: Event }): JSX.Element => {
   return (
     <div className="mb-4 mt-6 flex h-auto w-full flex-col rounded-md bg-white p-4">
       <h1 className="text-2xl font-bold text-primary">{props.event.title}</h1>

@@ -5,17 +5,13 @@ import Image from "next/image";
 
 // Render the component
 export default function Lenders(): JSX.Element {
-  // Get the lenders
-  const lenders: any[] = getLenders();
-
-  // Return the component jsx
   return (
     <section
       id="lenders"
       className="group relative flex w-screen flex-col items-center justify-center bg-slate-50 px-10 pb-12 pt-14"
     >
       <Header />
-      <LenderImages lenders={lenders} />
+      <LenderImages />
     </section>
   );
 }
@@ -24,8 +20,8 @@ export default function Lenders(): JSX.Element {
  * Lender Images Component
  * @returns JSX.Element
  */
-const LenderImages = (props: { lenders: any }): JSX.Element => {
-  const lenderImages = props.lenders.map((lender: any, i: number) => (
+const LenderImages = () => {
+  const lenderImages = lenders.map((lender: any, i: number) => (
     <Image
       key={i}
       src={lender.logo}
@@ -65,7 +61,7 @@ const Header = (): JSX.Element => (
 /**
  * Get the lenders
  */
-const getLenders = (): any[] => [
+const lenders: { logo: string; href: string }[] = [
   {
     logo: "https://dominionlending.ca/wp-content/uploads/2021/05/amba-1.svg",
     href: "https://amba.ca/",

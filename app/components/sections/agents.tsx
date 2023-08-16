@@ -52,7 +52,7 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const InputAndButtons = (): JSX.Element => {
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = React.useState<string>("");
 
   return (
     <div

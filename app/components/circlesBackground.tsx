@@ -3,7 +3,6 @@
  * @returns JSX.Element
  */
 export default function CirclesBackground(): JSX.Element {
-    // Return the component jsx
     return (
       <svg
         id="visual"

@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@/pages/agents/dashboard/middleware";
+import { Agent, User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 
 /**
@@ -9,7 +9,7 @@ import { generateAuthorization } from "@/app/lib/auth";
  */
 export default function RemoveAgentButton(props: {
   user: User;
-  agent: any;
+  agent: Agent;
 }): JSX.Element {
   if (!props.agent) {
     return <></>;
@@ -36,7 +36,7 @@ export default function RemoveAgentButton(props: {
 const RemoveConfirmation = (props: {
   setConfirm: (confirm: boolean) => void;
   user: User;
-  agent: any;
+  agent: Agent;
 }): JSX.Element => {
   return (
     <div className="flex flex-row items-center justify-center">

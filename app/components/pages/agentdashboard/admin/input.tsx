@@ -5,17 +5,17 @@
  * def: default value
  */
 export default function Input(props: {
-  ph: string;
+  placeholder: string;
   id: string;
-  def: string;
+  default?: string | undefined;
 }): JSX.Element {
   return (
     <input
       id={props.id}
       type="text"
       className="w-auto rounded-md border-2 border-primary px-2 py-2"
-      placeholder={props.ph}
-      defaultValue={props.def}
+      placeholder={props.placeholder}
+      defaultValue={props.default || ""}
     />
   );
 }

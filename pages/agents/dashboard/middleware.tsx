@@ -6,17 +6,7 @@ import { SessionProvider } from "@/app/components/providers";
 
 import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
-
-/**
- * User class
- */
-export interface User {
-  email: string | null | undefined;
-  accessToken: string | null | undefined;
-  name: string | null | undefined;
-  image: string | null | undefined;
-  permissions: string[];
-}
+import { User } from "@/app/lib/types";
 
 /**
  * Google authentication session middleware

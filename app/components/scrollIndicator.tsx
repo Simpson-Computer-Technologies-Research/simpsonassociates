@@ -7,7 +7,7 @@ import React from "react";
  * @returns JSX.Element
  */
 export default function ScrollIndicator(): JSX.Element {
-  const [scrollPercent, setScrollPercent] = React.useState(0);
+  const [scrollPercent, setScrollPercent] = React.useState<number>(0);
 
   // Set the window listener
   React.useEffect(() => {

@@ -3,19 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/app/lib/utils";
+import { SetState } from "@/app/lib/types";
 
 /**
  * Navbar Button Component
  * @returns JSX.Element
  */
-export default function NavbarButton(props: {
+interface NavbarButtonProps {
   className?: string;
   text: string;
   href: string;
   id: string;
   underlinedButton: string;
-  setUnderlinedButton: React.Dispatch<React.SetStateAction<string>>;
-}): JSX.Element {
+  setUnderlinedButton: SetState<string>;
+}
+export default function NavbarButton(props: NavbarButtonProps): JSX.Element {
   const underlineWidth: string =
     props.underlinedButton === props.id ? "w-12" : "w-0";
 

@@ -1,10 +1,14 @@
 import React from "react";
 import Input from "./input";
+import { SetState, Agent } from "@/app/lib/types";
 
 /**
  * Modify agent card
  */
-export default function ModifyAgentCard(props: any): JSX.Element {
+export default function ModifyAgentCard(props: {
+  agent: Agent;
+  setModify: SetState<boolean>;
+}): JSX.Element {
   return (
     <div className="my-4 flex flex-col border-b-4 border-b-primary bg-white pb-7">
       <p className="mb-4 text-2xl font-bold text-primary">
@@ -43,14 +47,22 @@ export default function ModifyAgentCard(props: any): JSX.Element {
  * @param props the props of the inputs
  * @returns JSX.Element
  */
-const ModInputs = (props: any): JSX.Element => (
+const ModInputs = (props: { agent: Agent }): JSX.Element => (
   <>
-    <Input ph="Name" id="modify_name" def={props.agent.name} />
-    <Input ph="Email" id="modify_email" def={props.agent.email} />
-    <Input ph="Title" id="modify_title" def={props.agent.title} />
-    <Input ph="Level" id="modify_level" def={props.agent.level} />
-    <Input ph="Languages" id="modify_languages" def={props.agent.lang} />
-    <Input ph="License" id="modify_license" def={props.agent.license} />
+    <Input placeholder="Name" id="modify_name" default={props.agent.name} />
+    <Input placeholder="Email" id="modify_email" default={props.agent.email} />
+    <Input placeholder="Title" id="modify_title" default={props.agent.title} />
+    <Input placeholder="Level" id="modify_level" default={props.agent.level} />
+    <Input
+      placeholder="Languages"
+      id="modify_languages"
+      default={props.agent.lang}
+    />
+    <Input
+      placeholder="License"
+      id="modify_license"
+      default={props.agent.license}
+    />
   </>
 );
 
@@ -58,7 +70,7 @@ const ModInputs = (props: any): JSX.Element => (
  * Permissions Checklist
  * @returns JSX.Element
  */
-const PermissionsChecklist = (props: any): JSX.Element => (
+const PermissionsChecklist = (props: { agent: Agent }): JSX.Element => (
   <div id="modify_permissions" className="flex h-full w-full flex-col gap-2">
     <p className="text-lg font-medium text-primary">Permissions</p>
     <PermissionsCheckbox
@@ -74,7 +86,11 @@ const PermissionsChecklist = (props: any): JSX.Element => (
  * Permissions Checkbox
  * @returns JSX.Element
  */
-const PermissionsCheckbox = (props: any): JSX.Element => (
+const PermissionsCheckbox = (props: {
+  value: string;
+  text: string;
+  agent: Agent;
+}): JSX.Element => (
   <div className="flex flex-row gap-2">
     <input
       type="checkbox"

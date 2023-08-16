@@ -6,6 +6,7 @@ import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/app/lib/utils";
+import { SetState } from "@/app/lib/types";
 
 /**
  * Contact Component
@@ -24,14 +25,14 @@ export default function Contact(props: {
       )}
     >
       <Header />
-      <div className="flex relative h-full w-full flex-row items-center justify-center">
+      <div className="relative flex h-full w-full flex-row items-center justify-center">
         <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
           src="/images/headshots final-26.png"
           alt="..."
           width={500}
           height={500}
-          className="absolute -right-52 z-10 bottom-[43px] scale-150 lg:-right-20 2xl:right-0"
+          className="absolute -right-52 bottom-[43px] z-10 scale-150 lg:-right-20 2xl:right-0"
         />
       </div>
     </section>
@@ -39,16 +40,36 @@ export default function Contact(props: {
 }
 
 /**
+ * Header Component
+ * @returns JSX.Element
+ */
+const Header = (): JSX.Element => (
+  <header className="flex flex-col items-center justify-center text-center">
+    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
+      Contact
+    </h2>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
+    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
+      <i>Where do I start?</i> <i>What is a mortgage?</i>{" "}
+      <i>What is refinancing?</i> <i>What is a fixed rate; variable rate?</i>{" "}
+      <i>What is a pre-approval?</i> These are all questions we&rsquo;re more
+      than happy to answer for you. We are here to help you through the mortgage
+      process and make it as easy as possible for you.
+    </p>
+  </header>
+);
+
+/**
  * Contact Form Component
  * @returns JSX.Element
  */
+interface ContactFields {
+  name: string;
+  phone: string;
+  message: string;
+}
 const ContactForm = (props: { emailTo: string }): JSX.Element => {
-  // Keep track of errors
-  const [errors, setErrors] = React.useState<{
-    name: string;
-    phone: string;
-    message: string;
-  }>({
+  const [errors, setErrors] = React.useState<ContactFields>({
     name: "",
     phone: "",
     message: "",
@@ -139,26 +160,6 @@ const ErrorMessage = (props: { error: string }): JSX.Element => (
 );
 
 /**
- * Header Component
- * @returns JSX.Element
- */
-const Header = (): JSX.Element => (
-  <header className="flex flex-col items-center justify-center text-center">
-    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
-      Contact
-    </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
-      <i>Where do I start?</i> <i>What is a mortgage?</i>{" "}
-      <i>What is refinancing?</i> <i>What is a fixed rate; variable rate?</i>{" "}
-      <i>What is a pre-approval?</i> These are all questions we&rsquo;re more
-      than happy to answer for you. We are here to help you through the mortgage
-      process and make it as easy as possible for you.
-    </p>
-  </header>
-);
-
-/**
  * Sign in Button
  */
 const SignInButton = (): JSX.Element => (
@@ -201,13 +202,7 @@ type SendEmailButtonProps = {
     phone: string;
     message: string;
   };
-  setErrors: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      phone: string;
-      message: string;
-    }>
-  >;
+  setErrors: SetState<any>;
 };
 
 /**

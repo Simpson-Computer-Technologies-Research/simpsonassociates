@@ -11,7 +11,7 @@ import Contact from "@/app/components/sections/contact";
 import "@/app/styles/globals.css";
 
 import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
-
+import { Agent, SetState } from "@/app/lib/types";
 import Fuse from "fuse.js";
 
 /**
@@ -20,7 +20,7 @@ import Fuse from "fuse.js";
  * @param query The query to search for
  * @returns The agents that match the query
  */
-export const fuzzySearch = (agents: any[], query: string) => {
+export const fuzzySearch = (agents: Agent[], query: string) => {
   const fuse = new Fuse(agents, {
     keys: ["region.location", "name", "title", "lang"],
   });
@@ -102,8 +102,8 @@ export default function AgentsPage(): JSX.Element {
  */
 const Agents = (props: {
   initialQuery: string;
-  agents: any;
-  setEmailTo: any;
+  agents: Agent[];
+  setEmailTo: SetState<string>;
 }): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
@@ -168,10 +168,10 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const AgentsGrid = (props: {
-  agents: any[];
+  agents: Agent[];
   query: string;
   location: any;
-  setEmailTo: any;
+  setEmailTo: SetState<string>;
 }): JSX.Element => {
   let results: any[] = props.agents;
 
@@ -205,7 +205,7 @@ const AgentsGrid = (props: {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: { agent: any; setEmailTo: any }): JSX.Element => (
+const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
   <a
     href="#contact"
     onClick={() => props.setEmailTo(props.agent.email)}
