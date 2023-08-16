@@ -50,7 +50,7 @@ const Header = (): JSX.Element => (
     <h2 className="text-5xl font-extrabold text-primary xs:text-6xl lg:text-7xl">
       Commercial Mortgages
     </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
       Whether you are a first-time buyer or an experienced buyer with excellent
       credit, Simpson & Associates has access to the{" "}

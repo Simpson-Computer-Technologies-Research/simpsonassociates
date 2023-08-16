@@ -13,19 +13,19 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="relative flex w-full flex-col items-center justify-center bg-white p-10"
+      className="relative flex w-full flex-col items-center justify-center bg-white px-10 py-14"
     >
-      <div className="z-[2] my-4 bg-white/50 p-10 backdrop-blur-sm">
+      <div className="3xl:ml-0 z-[2] ml-0 bg-white/50 p-10 backdrop-blur-sm lg:ml-48">
         <Header />
         <InputAndButtons />
       </div>
       <Image
-        src="/images/holding_house_transparent.png"
+        src="/images/headshots final-26.png"
         alt="..."
         width={600}
         height={600}
         loading="lazy"
-        className="absolute right-0 top-32 z-[1] h-auto w-auto"
+        className="absolute -left-60 bottom-5 z-[1] h-auto w-auto scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
       />
       <CirclesBackground />
     </section>
@@ -37,9 +37,9 @@ export default function Agents(): JSX.Element {
  * @returns JSX.Element
  */
 const Header = (): JSX.Element => (
-  <header className="z-[2] flex flex-col items-center justify-center text-center">
+  <header className="flex flex-col items-center justify-center text-center">
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">Agents</h2>
-    <span className="mx-10 mb-6 mt-6 block h-1 w-3/5 rounded-full bg-secondary xs:w-2/5 sm:mb-10 sm:mt-8 lg:w-52"></span>
+    <span className="mx-10 mb-6 mt-6 block h-1 w-3/5 rounded-full bg-secondary xs:w-2/5 sm:mt-8 lg:w-52"></span>
     <p className="w-60 px-5 pb-7 text-sm text-primary xs:w-96 lg:text-base">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.
@@ -52,7 +52,7 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const InputAndButtons = (): JSX.Element => {
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = React.useState<string>("");
 
   return (
     <div

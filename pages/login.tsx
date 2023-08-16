@@ -5,7 +5,7 @@ import { signIn, useSession, SessionProvider } from "next-auth/react";
 import React from "react";
 import { useEffect } from "react";
 
-import Loading from "@/app/components/loading";
+import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
 
 /**
@@ -49,7 +49,7 @@ const LoginPage = (props: { redirect: string | null }): JSX.Element => {
     else return <SuccessLogin />;
   }
 
-  return <Loading />;
+  return <LoadingCenter />;
 };
 
 /**

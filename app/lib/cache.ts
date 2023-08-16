@@ -46,3 +46,47 @@ export class AgentsCache {
     this.cache.splice(index, 1);
   }
 }
+
+export class RatesCache {
+  cache: {
+    id: string;
+    BankRate: string;
+    OurRate: string;
+    Terms: string;
+    TermsFr: string;
+    TermsPa: string;
+    BankMonthly: string;
+    OurMonthly: string;
+    Savings: string;
+    updated_at: string;
+    TermsMonth: string;
+  }[];
+
+  constructor() {
+    this.cache = [];
+  }
+
+  isCached() {
+    return this.cache.length > 0;
+  }
+
+  get() {
+    return this.cache;
+  }
+
+  set(rates: any[]) {
+    this.cache = rates;
+  }
+
+  update(index: number, data: any) {
+    this.cache[index] = data;
+  }
+
+  add(rate: any) {
+    this.cache.push(rate);
+  }
+
+  delete(index: number) {
+    this.cache.splice(index, 1);
+  }
+}

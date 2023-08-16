@@ -1,10 +1,13 @@
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import nodemailer from "nodemailer";
+import { context } from "@/app/lib/mongo";
 
 /**
  * Middlewares to limit the number of requests
  */
-const middlewares = getMiddlewares({ limit: 2 }).map(applyMiddleware);
+const middlewares = getMiddlewares({ limit: 2, delayMs: 0 }).map(
+  applyMiddleware,
+);
 
 /**
  * Middleware to limit the number of requests
@@ -24,26 +27,48 @@ const rateLimit = async (req: any, res: any) => {
  * @returns void
  */
 export default async function handler(req: any, res: any) {
-  await rateLimit(req, res);
+  // await rateLimit(req, res);
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, phone, message } = req.body;
-  if (!email || !message || !name || !phone) {
+  const { email_to, name, email, phone, message } = req.body;
+  if (!email_to || !email || !message || !name || !phone) {
     return res.status(400).json({ message: "Missing fields from body" });
   }
 
-  // Send the email. Response is sent in the function
-  await sendEmail(res, name, email, phone, message);
+  // Verify that the email_to is a valid agent email
+  await verifyEmail(email_to).then(
+    async () => await sendEmail(res, email_to, name, email, phone, message),
+  );
 }
+
+/**
+ * Function to verify that the email_to is a valid agent email
+ * @param email The email to verify
+ * @returns Promise
+ * @throws Error
+ */
+const verifyEmail = async (email: string): Promise<void> => {
+  await context(async (database) => {
+    const collection = database.collection("agents");
+    await collection
+      .findOne({
+        email: email,
+      })
+      .then((result) => {
+        if (!result) throw new Error("Email not found");
+      });
+  });
+};
 
 /**
  * Function to send the email using nodemailer
  */
 const sendEmail = async (
   res: any,
+  emailTo: string,
   name: string,
   email: string,
   phone: string,
@@ -60,15 +85,18 @@ const sendEmail = async (
   });
 
   const data = {
-    from: process.env.EMAIL,
-    to: process.env.EMAIL,
-    subject: `Contact form submission by ${name}`,
-    text: `${message} \n\n Sent from: ${email} (${phone})`,
-    html: `<div>${message}</div><p>Sent from: ${email} (${phone})</p>`,
+    from: "Simpson Associates Contact Submission",
+    to: emailTo,
+    subject: `Simpson Associates Contact Submission`,
+    text: `Submission Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage:\n${message}`,
+    html: `<h3>Submission Information:</h3><strong>Name:</strong> ${name}<br/><strong>Email:</strong> ${email}<br/><strong>Phone:</strong> ${phone}<br/><strong>Message:</strong><br/>${message}`,
   };
 
   transporter.sendMail(data, (err: any, msg: any) => {
-    if (err) res.status(500).json({ message: err.message });
-    else res.status(200).json({ message: msg });
+    if (err) {
+      res.status(500).json({ message: err.message });
+      return;
+    }
+    res.status(200).json({ message: msg });
   });
 };

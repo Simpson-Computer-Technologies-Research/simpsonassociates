@@ -2,34 +2,35 @@
 
 import React from "react";
 import Link from "next/link";
+import { SetState } from "@/app/lib/types";
 
 /**
- * Navbar menu button
+ * Navbar Menu Component
  * @returns JSX.Element
  */
-const NavbarMenuButton = (props: {
-  text: string;
-  href: string;
-  onClick: () => void;
-}): JSX.Element => (
-  <div
-    className="group mb-6 flex w-auto flex-col items-center justify-center text-center"
-    onClick={props.onClick}
-  >
-    <Link
-      href={props.href}
-      className="px-4 py-2 text-base font-light tracking-wide text-slate-950 duration-500 ease-in-out md:text-lg"
-    >
-      {props.text}
-    </Link>
-    <span className="block h-0.5 w-0 rounded-full bg-secondary duration-500 ease-in-out group-hover:w-12"></span>
-  </div>
-);
+export default function NavbarMenu(): JSX.Element {
+  const [menuClicked, setMenuClicked] = React.useState<boolean>(false);
+
+  return (
+    <div className="block overflow-y-scroll lg:hidden">
+      {MenuButton(menuClicked, setMenuClicked)}
+      {menuClicked ? DropdownMenuVisible(setMenuClicked) : <></>}
+    </div>
+  );
+}
+
+/**
+ * Menu button wrapper
+ * @returns JSX.Element
+ */
+const MenuButton = (
+  menuClicked: boolean,
+  setMenuClicked: SetState<boolean>,
+): JSX.Element =>
+  menuClicked ? CloseButton(setMenuClicked) : OpenButton(setMenuClicked);
 
 // Close button
-const CloseButton = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
-): JSX.Element => (
+const CloseButton = (setMenuClicked: SetState<boolean>): JSX.Element => (
   <div
     className="group absolute top-10 z-50 ml-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
     onClick={() => setMenuClicked(false)}
@@ -42,9 +43,7 @@ const CloseButton = (
 );
 
 // Open Button
-const OpenButton = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
-): JSX.Element => (
+const OpenButton = (setMenuClicked: SetState<boolean>): JSX.Element => (
   <div
     className="group z-50 ml-8 mt-8 cursor-pointer p-2 outline-tertiary active:outline-2 md:outline-none"
     onClick={() => setMenuClicked(true)}
@@ -57,21 +56,9 @@ const OpenButton = (
   </div>
 );
 
-// Menu button wrapper
-const MenuButton = (
-  menuClicked: boolean,
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
-): JSX.Element =>
-  menuClicked ? CloseButton(setMenuClicked) : OpenButton(setMenuClicked);
-
-// Dropdown menu hidden
-const DropdownMenuHidden = (): JSX.Element => (
-  <div className="absolute z-20 h-0"></div>
-);
-
 // Dropdown menu visible
 const DropdownMenuVisible = (
-  setMenuClicked: React.Dispatch<React.SetStateAction<boolean>>,
+  setMenuClicked: SetState<boolean>,
 ): JSX.Element => (
   <div
     id="menu"
@@ -105,15 +92,25 @@ const DropdownMenuVisible = (
   </div>
 );
 
-export default function NavbarMenu(): JSX.Element {
-  // Menu clicked state
-  const [menuClicked, setMenuClicked] = React.useState(false);
-
-  // Return the component
-  return (
-    <div className="block overflow-y-scroll lg:hidden">
-      {MenuButton(menuClicked, setMenuClicked)}
-      {menuClicked ? DropdownMenuVisible(setMenuClicked) : DropdownMenuHidden()}
-    </div>
-  );
-}
+/**
+ * Navbar menu button
+ * @returns JSX.Element
+ */
+const NavbarMenuButton = (props: {
+  text: string;
+  href: string;
+  onClick: () => void;
+}): JSX.Element => (
+  <div
+    className="group mb-6 flex w-auto flex-col items-center justify-center text-center"
+    onClick={props.onClick}
+  >
+    <Link
+      href={props.href}
+      className="px-4 py-2 text-base font-light tracking-wide text-slate-950 duration-500 ease-in-out md:text-lg"
+    >
+      {props.text}
+    </Link>
+    <span className="block h-0.5 w-0 rounded-full bg-secondary duration-500 ease-in-out group-hover:w-12"></span>
+  </div>
+);

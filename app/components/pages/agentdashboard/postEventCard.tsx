@@ -1,11 +1,11 @@
 import React from "react";
-import { User } from "@/pages/agents/middleware";
+import { User } from "@/app/lib/types";
 
 /**
  * Post event card
+ * @returns JSX.Element
  */
 export default function PostEventCard(props: { user: User }): JSX.Element {
-    // If the user doesn't have the "post_event" permission, don't show the card
     if (!props.user.permissions.includes("post_events")) return <></>;
   
     return (

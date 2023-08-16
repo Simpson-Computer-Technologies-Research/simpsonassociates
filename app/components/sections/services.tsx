@@ -10,10 +10,18 @@ export default function Services(): JSX.Element {
   return (
     <section
       id="services"
-      className="relative mt-10 flex w-full flex-col items-center justify-center pb-4 sm:mt-20"
+      className="relative flex w-full flex-col items-center justify-center pb-4 pt-14"
     >
       <Header />
       <ServicesCardGrid />
+      <Image
+        src="/images/holding_house_transparent.png"
+        alt="..."
+        width={600}
+        height={600}
+        loading="lazy"
+        className="top-3/5 absolute right-0 z-0 h-auto w-auto"
+      />
     </section>
   );
 }
@@ -71,7 +79,7 @@ const Header = (): JSX.Element => (
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Services
     </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
       Whether you are a first-time buyer or an experienced buyer with excellent
       credit, Simpson & Associates has access to the{" "}
@@ -89,17 +97,18 @@ const Header = (): JSX.Element => (
  * @param href
  * @returns Card Component JSX
  */
-const Card = (props: {
+interface CardProps {
   title: string;
   para: string;
   icon: string;
   href: string;
-}): JSX.Element => (
+}
+const Card = (props: CardProps): JSX.Element => (
   <a
     href={props.href}
     rel="noopener noreferrer"
     target="_blank"
-    className="group relative m-2 flex h-44 w-36 flex-col items-center bg-white/80 p-2 px-3 text-center backdrop-blur-md duration-500 ease-in-out hover:scale-105 hover:bg-slate-50/90 hover:duration-100 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:p-7 xl:h-[21.5rem] xl:w-72"
+    className="group relative m-2 flex h-44 w-36 flex-col items-center bg-white/60 p-2 px-3 text-center backdrop-blur-md duration-500 ease-in-out hover:scale-105 hover:bg-slate-50/90 hover:duration-100 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:bg-white/30 lg:p-7 xl:h-[21.5rem] xl:w-72"
   >
     <Image
       src={props.icon}

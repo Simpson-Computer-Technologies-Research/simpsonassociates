@@ -5,13 +5,13 @@ import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
-import Loading from "@/app/components/loading";
+import LoadingCenter from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 import "@/app/styles/globals.css";
 
 import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
-
+import { Agent, SetState } from "@/app/lib/types";
 import Fuse from "fuse.js";
 
 /**
@@ -20,7 +20,7 @@ import Fuse from "fuse.js";
  * @param query The query to search for
  * @returns The agents that match the query
  */
-export const fuzzySearch = (agents: any[], query: string) => {
+export const fuzzySearch = (agents: Agent[], query: string) => {
   const fuse = new Fuse(agents, {
     keys: ["region.location", "name", "title", "lang"],
   });
@@ -49,12 +49,15 @@ const getUrlQueryParam = () =>
 export default function AgentsPage(): JSX.Element {
   const [initialQuery, setInitialQuery] = React.useState("");
   const [agents, setAgents] = React.useState([]);
+  const [emailTo, setEmailTo] = React.useState("");
 
   React.useEffect(() => {
     const query = getUrlQueryParam();
-    if (query) setInitialQuery(query);
+    if (query && !initialQuery) setInitialQuery(query);
 
-    fetchAgents().then((agents: any) => setAgents(agents));
+    if (!agents.length) {
+      fetchAgents().then((res) => setAgents(res));
+    }
   }, []);
 
   if (!agents.length) {
@@ -65,7 +68,7 @@ export default function AgentsPage(): JSX.Element {
         </Head>
         <section>
           <Navbar />
-          <Loading />
+          <LoadingCenter />
         </section>
       </>
     );
@@ -80,9 +83,13 @@ export default function AgentsPage(): JSX.Element {
         <Navbar />
         <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
           <Header />
-          <Agents initialQuery={initialQuery} agents={agents} />
+          <Agents
+            initialQuery={initialQuery}
+            agents={agents}
+            setEmailTo={setEmailTo}
+          />
         </div>
-        <Contact className="bg-slate-50" />
+        <Contact className="bg-slate-50" emailTo={emailTo} />
         <ScrollIndicator />
       </SessionProvider>
     </>
@@ -93,7 +100,11 @@ export default function AgentsPage(): JSX.Element {
  * Agents Component
  * @returns JSX.Element
  */
-const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
+const Agents = (props: {
+  initialQuery: string;
+  agents: Agent[];
+  setEmailTo: SetState<string>;
+}): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({
@@ -131,6 +142,7 @@ const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
         query={query || props.initialQuery}
         agents={props.agents}
         location={location}
+        setEmailTo={props.setEmailTo}
       />
     </section>
   );
@@ -143,7 +155,7 @@ const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
 const Header = (): JSX.Element => (
   <div className="mt-36 flex flex-col items-center justify-center text-center">
     <h2 className="text-7xl font-extrabold text-primary lg:text-8xl">Agents</h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-base text-primary sm:w-1/2">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.
@@ -156,9 +168,10 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const AgentsGrid = (props: {
-  agents: any[];
+  agents: Agent[];
   query: string;
   location: any;
+  setEmailTo: SetState<string>;
 }): JSX.Element => {
   let results: any[] = props.agents;
 
@@ -176,7 +189,13 @@ const AgentsGrid = (props: {
   return (
     <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 xs:justify-center sm:grid-cols-3 md:flex md:flex-wrap">
       {results.map((item: any, i: number) => {
-        return <AgentCard key={i} agent={item.item || item} />;
+        return (
+          <AgentCard
+            key={i}
+            agent={item.item || item}
+            setEmailTo={props.setEmailTo}
+          />
+        );
       })}
     </div>
   );
@@ -186,8 +205,12 @@ const AgentsGrid = (props: {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: { agent: any }): JSX.Element => (
-  <div className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 hover:animate-pulse xs:mx-7 xs:mb-8">
+const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
+  <a
+    href="#contact"
+    onClick={() => props.setEmailTo(props.agent.email)}
+    className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 xs:mx-7 xs:mb-8"
+  >
     <img
       src={props.agent.photo}
       alt="..."
@@ -204,5 +227,8 @@ const AgentCard = (props: { agent: any }): JSX.Element => (
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
     <p className="mt-3 text-sm text-primary">{props.agent.region.location}</p>
     <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-  </div>
+    <button className="mt-4 w-fit bg-primary px-6 py-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+      Contact
+    </button>
+  </a>
 );

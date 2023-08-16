@@ -1,7 +1,7 @@
-import { User } from "@/pages/agents/middleware";
 import React from "react";
 import Input from "./input";
 import { generateAuthorization } from "@/app/lib/auth";
+import { SetState, User, Agent } from "@/app/lib/types";
 
 /**
  * Add Agent Component
@@ -10,8 +10,8 @@ import { generateAuthorization } from "@/app/lib/auth";
  */
 export default function AddAgent(props: {
   user: User;
-  setAgents: any;
-  agents: any[];
+  setAgents: SetState<Agent[]>;
+  agents: Agent[];
 }): JSX.Element {
   const [error, setError] = React.useState<string>("");
 
@@ -46,7 +46,12 @@ export default function AddAgent(props: {
  * @param agents
  * @returns void
  */
-const addAgent = (setError: any, setAgents: any, user: User, agents: any[]) => {
+const addAgent = (
+  setError: SetState<string>,
+  setAgents: SetState<Agent[]>,
+  user: User,
+  agents: Agent[],
+) => {
   // Get the agent info
   const agentInfo = getAgentInfo();
 
@@ -68,12 +73,12 @@ const addAgent = (setError: any, setAgents: any, user: User, agents: any[]) => {
  */
 const AgentInfoInputs = (): JSX.Element => (
   <>
-    <Input ph="Name" id="add_name" def="" />
-    <Input ph="Email" id="add_email" def="" />
-    <Input ph="Title" id="add_title" def="" />
-    <Input ph="Level" id="add_level" def="" />
-    <Input ph="Languages" id="add_lang" def="" />
-    <Input ph="License" id="add_license" def="" />
+    <Input placeholder="Name" id="add_name" />
+    <Input placeholder="Email" id="add_email" />
+    <Input placeholder="Title" id="add_title" />
+    <Input placeholder="Level" id="add_level" />
+    <Input placeholder="Language" id="add_lang" />
+    <Input placeholder="License" id="add_license" />
   </>
 );
 
@@ -112,10 +117,10 @@ const PermissionsChecklist = (): JSX.Element => (
  * @returns JSX.Element
  */
 const AddAgentButton = (props: {
-  setError: any;
-  setAgents: any;
+  setError: SetState<string>;
+  setAgents: SetState<Agent[]>;
   user: User;
-  agents: any[];
+  agents: Agent[];
 }): JSX.Element => (
   <button
     onClick={() =>
@@ -171,14 +176,9 @@ function clearInput(): void {
   const inputs = document.querySelectorAll(
     "#add_name, #add_email, #add_title, #add_level, #add_lang, #add_license",
   );
-
-  // For each input, set the value to an empty string
   inputs.forEach((input) => ((input as HTMLInputElement).value = ""));
 
-  // Get the permissions checklist
   const perms = document.getElementById("add_perms") as HTMLInputElement;
-
-  // Iterate through the children and uncheck them
   for (let i = 0; i < perms.children.length; i++) {
     const child = perms.children[i] as HTMLInputElement;
     child.checked = false;
@@ -191,7 +191,10 @@ function clearInput(): void {
 const putAgent = async (data: {}, accessToken: string, accessEmail: string) => {
   if (!accessToken || !accessEmail) return;
 
-  const authorization = await generateAuthorization(accessToken, accessEmail);
+  const authorization: string = await generateAuthorization(
+    accessToken,
+    accessEmail,
+  );
 
   return await fetch("/api/agents", {
     method: "PUT",
@@ -213,7 +216,7 @@ const getInput = (): any => {
     "#add_name, #add_email, #add_title, #add_level, #add_lang, #add_license",
   );
 
-  let result = {};
+  let result: any = {};
   for (let i = 0; i < values.length; i++) {
     const value = (values[i] as HTMLInputElement).value;
 
@@ -233,10 +236,10 @@ const getInput = (): any => {
  * Get the permissions
  */
 const getPermissions = (): string[] => {
-  const result = ["agent"];
+  const result: string[] = ["agent"];
   const perms = document.getElementById("add_perms") as HTMLInputElement;
 
-  // Iterate through the children and add the checked 
+  // Iterate through the children and add the checked
   // ones to the permissions array
   for (let i = 0; i < perms.children.length; i++) {
     const child = perms.children[i] as HTMLInputElement;

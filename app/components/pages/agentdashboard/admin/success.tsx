@@ -1,8 +1,6 @@
 import React from "react";
 
-import { User } from "@/pages/agents/middleware";
-import { signOut } from "next-auth/react";
-
+import { User, Agent } from "@/app/lib/types";
 import AddAgent from "./addAgent";
 import Agents from "./allAgents";
 import SideMenu from "./sideMenu";
@@ -11,6 +9,7 @@ import "@/app/styles/globals.css";
 
 /**
  * Fetch the agents
+ * @returns Promise<any>
  */
 const fetchAgents = async () => {
   return await fetch("/api/agents")
@@ -20,6 +19,7 @@ const fetchAgents = async () => {
 
 /**
  * Success section
+ * @returns JSX.Element
  */
 export default function Success(user: User): JSX.Element {
   return (
@@ -39,15 +39,15 @@ export default function Success(user: User): JSX.Element {
  */
 function _Success(props: { user: User }): JSX.Element {
   // Fetch the current agents
-  const [agents, setAgents] = React.useState<any>(null);
-  if (agents === null) {
+  const [agents, setAgents] = React.useState<Agent[]>([]);
+  if (!agents || agents.length === 0) {
     fetchAgents().then((agents: any) => setAgents(agents));
   }
 
   return (
     <>
-      <AddAgent user={props.user} agents={agents} setAgents={setAgents} />
-      <Agents agents={agents} setAgents={setAgents} user={props.user} />
+      <AddAgent user={props.user} agents={agents || []} setAgents={setAgents} />
+      <Agents agents={agents || []} setAgents={setAgents} user={props.user} />
     </>
   );
 }

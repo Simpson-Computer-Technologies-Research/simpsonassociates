@@ -6,28 +6,33 @@ import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/app/lib/utils";
+import { SetState } from "@/app/lib/types";
+
 /**
  * Contact Component
  * @returns JSX.Element
  */
-export default function Contact(props: { className?: string }): JSX.Element {
+export default function Contact(props: {
+  className?: string;
+  emailTo?: string;
+}): JSX.Element {
   return (
     <section
       id="contact"
       className={cn(
-        "group relative flex w-screen flex-col items-center justify-center p-10 pt-14 sm:py-16 sm:pt-20",
+        "group flex w-screen flex-col items-center justify-center p-10 pt-14",
         props.className,
       )}
     >
       <Header />
-      <div className="flex h-full w-full flex-row items-center justify-center">
-        <ContactForm />
+      <div className="relative flex h-full w-full flex-row items-center justify-center p-4">
+        <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
-          src="/images/happy_couple_contact.png"
+          src="/images/headshots final-21.png"
           alt="..."
-          width={500}
-          height={500}
-          className="absolute -right-40 bottom-0 z-10 lg:-right-20 xl:right-0"
+          width={700}
+          height={700}
+          className="absolute -right-64 bottom-0 z-[1] lg:-right-40 2xl:-right-20"
         />
       </div>
     </section>
@@ -35,16 +40,36 @@ export default function Contact(props: { className?: string }): JSX.Element {
 }
 
 /**
+ * Header Component
+ * @returns JSX.Element
+ */
+const Header = (): JSX.Element => (
+  <header className="flex flex-col items-center justify-center text-center">
+    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
+      Contact
+    </h2>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
+    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
+      <i>Where do I start?</i> <i>What is a mortgage?</i>{" "}
+      <i>What is refinancing?</i> <i>What is a fixed rate; variable rate?</i>{" "}
+      <i>What is a pre-approval?</i> These are all questions we&rsquo;re more
+      than happy to answer for you. We are here to help you through the mortgage
+      process and make it as easy as possible for you.
+    </p>
+  </header>
+);
+
+/**
  * Contact Form Component
  * @returns JSX.Element
  */
-const ContactForm = (): JSX.Element => {
-  // Keep track of errors
-  const [errors, setErrors] = React.useState<{
-    name: string;
-    phone: string;
-    message: string;
-  }>({
+interface ContactFields {
+  name: string;
+  phone: string;
+  message: string;
+}
+const ContactForm = (props: { emailTo: string }): JSX.Element => {
+  const [errors, setErrors] = React.useState<ContactFields>({
     name: "",
     phone: "",
     message: "",
@@ -55,11 +80,17 @@ const ContactForm = (): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="z-[2] flex flex-col bg-white/50 p-6 backdrop-blur-sm lg:mr-40 xl:mr-0">
+      <input
+        disabled={true}
+        className="w-60 border-b-[2.5px] border-b-primary bg-white p-2 text-xs text-primary xs:w-96 xs:text-sm sm:text-base"
+        value={`To: ${props.emailTo}`}
+      />
+
       {/* Name input */}
       <input
         id="contact-name"
-        className="w-60 border-b-[2.5px] border-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 w-60 border-b-[2.5px] border-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         placeholder="Name"
         onChange={(e) => {
           if (!isValidName(e.target.value)) {
@@ -74,8 +105,8 @@ const ContactForm = (): JSX.Element => {
       {/* Phone number input */}
       <input
         id="contact-phone"
-        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
-        placeholder="Phone Number"
+        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        placeholder="Phone Number (Not Required)"
         onChange={(e) => {
           if (!isValidPhone(e.target.value))
             setErrors({
@@ -91,7 +122,7 @@ const ContactForm = (): JSX.Element => {
       <textarea
         id="contact-message"
         placeholder="Message"
-        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         onChange={(e) => {
           if (!isValidMessage(e.target.value))
             setErrors({ ...errors, message: "Message is required" });
@@ -106,6 +137,7 @@ const ContactForm = (): JSX.Element => {
       {/* If the user is logged in */}
       {session && session.user && session.user.email && (
         <SendEmailButton
+          emailTo={props.emailTo}
           email={session.user.email}
           errors={errors}
           setErrors={setErrors}
@@ -128,31 +160,11 @@ const ErrorMessage = (props: { error: string }): JSX.Element => (
 );
 
 /**
- * Header Component
- * @returns JSX.Element
- */
-const Header = (): JSX.Element => (
-  <header className="flex flex-col items-center justify-center text-center">
-    <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
-      Contact
-    </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
-      <i>Where do I start?</i> <i>What is a mortgage?</i>{" "}
-      <i>What is refinancing?</i> <i>What is a fixed rate; variable rate?</i>{" "}
-      <i>What is a pre-approval?</i> These are all questions we&rsquo;re more
-      than happy to answer for you. We are here to help you through the mortgage
-      process and make it as easy as possible for you.
-    </p>
-  </header>
-);
-
-/**
  * Sign in Button
  */
 const SignInButton = (): JSX.Element => (
   <Link
-    className="mb-2 mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
+    className="mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
     href="/login"
     target="_blank"
     rel="noopener noreferrer"
@@ -180,43 +192,42 @@ const ChangeEmailButton = (): JSX.Element => (
 );
 
 /**
- * Send email button
+ * Send email button props
  */
-const SendEmailButton = (props: {
+type SendEmailButtonProps = {
+  emailTo: string;
   email: string;
   errors: {
     name: string;
     phone: string;
     message: string;
   };
-  setErrors: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      phone: string;
-      message: string;
-    }>
-  >;
-}): JSX.Element => {
-  // Manage sending state
+  setErrors: SetState<any>;
+};
+
+/**
+ * Send email button
+ */
+const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
   const [sending, setSending] = React.useState<boolean>(false);
 
   // Send the email
   const sendEmail = async () => {
-    // Get the form values
     const name = getElementValue("contact-name");
     const phone = getElementValue("contact-phone");
     const message = getElementValue("contact-message");
 
-    // Make sure the values are valid
     if (!isValidName(name)) {
       return props.setErrors({ ...props.errors, name: "Name is required" });
     }
+
     if (!isValidPhone(phone)) {
       return props.setErrors({
         ...props.errors,
         phone: "Invalid phone number",
       });
     }
+
     if (!isValidMessage(message)) {
       return props.setErrors({
         ...props.errors,
@@ -224,15 +235,20 @@ const SendEmailButton = (props: {
       });
     }
 
-    // Post the email
-    const resp: string = await postEmail(name, props.email, phone, message);
+    const resp: string = await postEmail(
+      props.emailTo,
+      name,
+      props.email,
+      phone,
+      message,
+    );
+
     props.setErrors({ ...props.errors, message: resp });
   };
 
-  // Return the component jsx
   return (
     <button
-      className="mb-2 mt-2 w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
+      className="my-2 w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
       onClick={() => {
         setSending(true);
         sendEmail().then(() => setSending(false));
@@ -326,6 +342,7 @@ const isValidName = (name: string): boolean => name.length > 2;
  * Post the email to the api
  */
 const postEmail = async (
+  emailTo: string,
   name: string,
   email: string,
   phone: string,
@@ -337,7 +354,7 @@ const postEmail = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, email, phone, message }),
+    body: JSON.stringify({ email_to: emailTo, name, email, phone, message }),
   }).then((res) => {
     if (res.status === 200) {
       clearFormValues();

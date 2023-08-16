@@ -1,18 +1,18 @@
 "use client";
 
 import React from "react";
-import Landing from "./components/sections/landing";
-import Loading from "./components/loading";
-import Cards from "./components/sections/cards";
-import Services from "./components/sections/services";
-import Navbar from "./components/navbar/navbar";
-import Lenders from "./components/sections/lenders";
-import Bottom from "./components/sections/bottom";
-import Team from "./components/sections/team";
-import Agents from "./components/sections/agents";
-import Testimonials from "./components/sections/testimonials";
-import Contact from "./components/sections/contact";
-import ScrollIndicator from "./components/scrollIndicator";
+import Landing from "@/app/components/sections/landing";
+import LoadingCenter from "@/app/components/loading";
+import Cards from "@/app/components/sections/cards";
+import Services from "@/app/components/sections/services";
+import Navbar from "@/app/components/navbar/navbar";
+import Lenders from "@/app/components/sections/lenders";
+import Bottom from "@/app/components/sections/bottom";
+import Team from "@/app/components/sections/team";
+import Agents from "@/app/components/sections/agents";
+import Testimonials from "@/app/components/sections/testimonials";
+import Contact from "@/app/components/sections/contact";
+import ScrollIndicator from "@/app/components/scrollIndicator";
 
 /**
  * Home Page Component
@@ -31,7 +31,7 @@ export default function Home() {
     return (
       <section>
         <Navbar />
-        <Loading />
+        <LoadingCenter />
       </section>
     );
 

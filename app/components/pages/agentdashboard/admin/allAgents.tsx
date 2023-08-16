@@ -1,6 +1,7 @@
 import React from "react";
 import ModifyAgentCard from "./modifyAgent";
 import RemoveAgentButton from "./removeAgent";
+import { SetState, User, Agent } from "@/app/lib/types";
 
 /**
  * Current Agents and Modify Agents
@@ -8,9 +9,9 @@ import RemoveAgentButton from "./removeAgent";
  * @returns JSX.Element
  */
 export default function Agents(props: {
-  agents: any;
-  user: any;
-  setAgents: any;
+  agents: Agent[];
+  user: User;
+  setAgents: SetState<Agent[]>;
 }): JSX.Element {
   return (
     <section
@@ -45,7 +46,12 @@ export default function Agents(props: {
  * @param props the props of the card
  * @returns JSX.Element
  */
-const AgentCard = (props: any): JSX.Element => {
+const AgentCard = (props: {
+  agent: Agent;
+  user: User;
+  setAgents: SetState<Agent[]>;
+  setModify: SetState<boolean>;
+}): JSX.Element => {
   return (
     <div className="my-4 flex h-24 w-full flex-row items-center justify-between rounded-md bg-primary">
       <div className="flex h-full w-full flex-row items-center justify-between px-4">

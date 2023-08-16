@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { cn } from "@/app/lib/utils";
 
 /**
  * Bottom Component
@@ -141,7 +142,10 @@ const Offices = (): JSX.Element => {
     className?: string;
   }): JSX.Element => (
     <div
-      className={`mt-6 flex w-32 flex-col md:ml-8 md:mt-0 xl:ml-14 ${props.className}`}
+      className={cn(
+        "mt-6 flex w-32 flex-col md:ml-8 md:mt-0 xl:ml-14",
+        props.className,
+      )}
     >
       <h2 className="text-base font-bold tracking-wider text-white md:text-xl">
         {props.title}
