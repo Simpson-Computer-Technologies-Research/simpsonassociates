@@ -15,7 +15,7 @@ export default function Agents(): JSX.Element {
       id="agents"
       className="relative flex w-full flex-col items-center justify-center bg-white px-10 py-14"
     >
-      <div className="3xl:ml-0 z-[2] ml-0 bg-white/50 p-10 backdrop-blur-sm lg:ml-48">
+      <div className="z-[2] ml-0 p-10 sm:bg-white/50 sm:backdrop-blur-sm lg:ml-48 3xl:ml-0">
         <Header />
         <InputAndButtons />
       </div>
@@ -25,7 +25,7 @@ export default function Agents(): JSX.Element {
         width={600}
         height={600}
         loading="eager"
-        className="absolute -left-60 bottom-5 z-[1] h-auto w-auto scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
+        className="absolute hidden xs:block bottom-5 z-[1] xs:-left-52 xs:scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
       />
       <CirclesBackground />
     </section>
