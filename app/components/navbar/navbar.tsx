@@ -63,6 +63,14 @@ export default function Navbar() {
           setUnderlinedButton={setUnderlinedButton}
         />
         <NavbarButton
+          text="Rates"
+          className="hidden xl:flex"
+          href="/#rates"
+          id="rates"
+          underlinedButton={underlinedButton}
+          setUnderlinedButton={setUnderlinedButton}
+        />
+        <NavbarButton
           text="Services"
           className="hidden lg:flex"
           href="/#services"
@@ -71,26 +79,10 @@ export default function Navbar() {
           setUnderlinedButton={setUnderlinedButton}
         />
         <NavbarButton
-          text="Team"
-          className="hidden xl:flex"
-          href="/#team"
-          id="team"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
-        />
-        <NavbarButton
           text="Agents"
           className="hidden lg:flex"
           href="/#agents"
           id="agents"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
-        />
-        <NavbarButton
-          text="Rates"
-          className="hidden xl:flex"
-          href="/#rates"
-          id="rates"
           underlinedButton={underlinedButton}
           setUnderlinedButton={setUnderlinedButton}
         />
