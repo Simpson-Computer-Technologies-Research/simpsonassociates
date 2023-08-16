@@ -20,12 +20,12 @@ export default function Contact(props: {
     <section
       id="contact"
       className={cn(
-        "group flex w-screen flex-col items-center justify-center p-10 pt-14",
+        "group relative flex w-screen flex-col items-center justify-center p-10 pt-14",
         props.className,
       )}
     >
       <Header />
-      <div className="relative flex h-full w-full flex-row items-center justify-center p-4">
+      <div className="flex h-full w-full flex-row items-center justify-center px-4">
         <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
           src="/images/headshots final-21.png"
@@ -33,7 +33,7 @@ export default function Contact(props: {
           width={750}
           height={750}
           loading="eager"
-          className="xxs:block absolute -bottom-4 -right-44 z-[1] hidden scale-125 xs:-bottom-10 xs:-right-60 xs:block xs:scale-100 sm:-right-64 lg:-right-40 2xl:-right-20"
+          className="xxs:-right-44 absolute -right-36 bottom-0 xs:-right-60 sm:-right-72 md:-right-72 lg:-right-40"
         />
       </div>
     </section>
@@ -81,7 +81,7 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="z-[2] flex flex-col p-6 sm:bg-white/50 sm:backdrop-blur-sm lg:mr-40 xl:mr-0">
+    <section className="z-[2] flex flex-col p-6 py-4 sm:bg-white/50 sm:backdrop-blur-sm lg:mr-40 xl:mr-0">
       <input
         disabled={true}
         className="w-60 border-b-[2.5px] border-b-primary bg-white p-2 text-xs text-primary xs:w-96 xs:text-sm sm:text-base"
