@@ -20,7 +20,7 @@ export default function Agents(): JSX.Element {
         <InputAndButtons />
       </div>
       <Image
-        src="/images/headshots final-21.png"
+        src="/images/headshots final-26.png"
         alt="..."
         width={600}
         height={600}

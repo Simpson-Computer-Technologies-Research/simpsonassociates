@@ -9,7 +9,7 @@ import Link from "next/link";
  */
 export default function SideMenu(props: { user: User }): JSX.Element {
     return (
-      <div className="z-10 flex h-auto w-screen flex-col bg-slate-50 p-4 sm:fixed sm:h-screen sm:w-64">
+      <div className="z-[1] flex h-auto w-screen flex-col bg-slate-50 p-4 sm:fixed sm:h-screen sm:w-64">
         <div className="flex flex-row items-center justify-start">
           <img
             src={props.user.image || "/images/default_agent_headshot.png"}

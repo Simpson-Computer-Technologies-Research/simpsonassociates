@@ -76,7 +76,7 @@ interface CardProps {
 const Card = (props: CardProps): JSX.Element => (
   <section
     className={cn(
-      "group z-10 bg-white p-10 py-10 sm:py-16 lg:p-12",
+      "group z-[1] bg-white p-10 py-10 sm:py-16 lg:p-12",
       props.className,
     )}
   >
@@ -119,7 +119,7 @@ const RatesCard = (): JSX.Element => {
   }, []);
 
   return (
-    <section className="group z-10 mx-10 mb-10 rounded-xl bg-white p-10 py-10 sm:py-16 md:mx-14 lg:p-12">
+    <section className="group z-[1] mx-10 mb-10 rounded-xl bg-white p-10 py-10 sm:py-16 md:mx-14 lg:p-12">
       <div className="flex flex-col items-center justify-center text-center duration-500 ease-in-out">
         <h1 className="mb-4 text-4xl font-extrabold text-primary">Rates</h1>
         <span className="mb-4 h-[3px] w-28 rounded-full bg-secondary duration-500 ease-in-out group-hover:w-40"></span>

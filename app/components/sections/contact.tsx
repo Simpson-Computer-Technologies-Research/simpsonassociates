@@ -20,19 +20,19 @@ export default function Contact(props: {
     <section
       id="contact"
       className={cn(
-        "group relative flex w-screen flex-col items-center justify-center p-10 pt-14",
+        "group flex w-screen flex-col items-center justify-center p-10 pt-14",
         props.className,
       )}
     >
       <Header />
-      <div className="relative flex h-full w-full flex-row items-center justify-center">
+      <div className="relative flex h-full w-full flex-row items-center justify-center p-4">
         <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
-          src="/images/headshots final-26.png"
+          src="/images/headshots final-21.png"
           alt="..."
-          width={500}
-          height={500}
-          className="absolute -right-52 bottom-[43px] z-10 scale-150 lg:-right-20 2xl:right-0"
+          width={700}
+          height={700}
+          className="absolute -right-64 bottom-0 z-[1] lg:-right-40 2xl:-right-20"
         />
       </div>
     </section>
@@ -80,7 +80,7 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
 
   // Return the component jsx
   return (
-    <section className="z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+    <section className="z-[2] flex flex-col bg-white/50 p-6 backdrop-blur-sm lg:mr-40 xl:mr-0">
       <input
         disabled={true}
         className="w-60 border-b-[2.5px] border-b-primary bg-white p-2 text-xs text-primary xs:w-96 xs:text-sm sm:text-base"
@@ -164,7 +164,7 @@ const ErrorMessage = (props: { error: string }): JSX.Element => (
  */
 const SignInButton = (): JSX.Element => (
   <Link
-    className="mb-2 mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
+    className="mt-2 flex w-60 flex-row items-center justify-center bg-white py-3 shadow-xl duration-500 ease-in-out hover:animate-pulse xs:w-96"
     href="/login"
     target="_blank"
     rel="noopener noreferrer"
@@ -246,10 +246,9 @@ const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
     props.setErrors({ ...props.errors, message: resp });
   };
 
-  // Return the component jsx
   return (
     <button
-      className="mb-2 mt-2 w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
+      className="my-2 w-60 bg-primary p-2 text-center text-xs text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96 xs:text-sm sm:text-base"
       onClick={() => {
         setSending(true);
         sendEmail().then(() => setSending(false));
