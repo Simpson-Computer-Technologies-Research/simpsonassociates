@@ -25,7 +25,7 @@ export default function Agents(): JSX.Element {
         width={600}
         height={600}
         loading="eager"
-        className="absolute hidden xs:block bottom-5 z-[1] xs:-left-52 xs:scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
+        className="xxs:block absolute -left-40 bottom-9 z-[1] hidden scale-125 xs:-left-52 xs:bottom-5 xs:scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
       />
       <CirclesBackground />
     </section>

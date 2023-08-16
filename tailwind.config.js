@@ -29,6 +29,7 @@ export const theme = {
     },
     colors: schema,
     screens: {
+      xxs: "380px",
       xs: "475px",
       sm: "640px",
       md: "768px",
