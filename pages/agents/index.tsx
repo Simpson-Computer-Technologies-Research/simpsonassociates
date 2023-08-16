@@ -5,7 +5,7 @@ import Head from "next/head";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
-import Loading from "@/app/components/loading";
+import LoadingCenter from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 import "@/app/styles/globals.css";
@@ -65,7 +65,7 @@ export default function AgentsPage(): JSX.Element {
         </Head>
         <section>
           <Navbar />
-          <Loading />
+          <LoadingCenter />
         </section>
       </>
     );
@@ -143,7 +143,7 @@ const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
 const Header = (): JSX.Element => (
   <div className="mt-36 flex flex-col items-center justify-center text-center">
     <h2 className="text-7xl font-extrabold text-primary lg:text-8xl">Agents</h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="mb-4 w-3/4 text-base text-primary sm:w-1/2">
       Our agents are here to help you find the perfect home. Use the search
       filters to find the right agent for you.

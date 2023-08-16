@@ -56,6 +56,7 @@ export default function Navbar() {
       <div className="m-10 mr-10 mt-7 hidden flex-row space-x-12 lg:flex">
         <NavbarButton
           text="Home"
+          className="hidden lg:flex"
           href="/#home"
           id="home"
           underlinedButton={underlinedButton}
@@ -63,6 +64,7 @@ export default function Navbar() {
         />
         <NavbarButton
           text="Services"
+          className="hidden lg:flex"
           href="/#services"
           id="services"
           underlinedButton={underlinedButton}
@@ -70,13 +72,31 @@ export default function Navbar() {
         />
         <NavbarButton
           text="Team"
+          className="hidden xl:flex"
           href="/#team"
           id="team"
           underlinedButton={underlinedButton}
           setUnderlinedButton={setUnderlinedButton}
         />
         <NavbarButton
+          text="Agents"
+          className="hidden lg:flex"
+          href="/#agents"
+          id="agents"
+          underlinedButton={underlinedButton}
+          setUnderlinedButton={setUnderlinedButton}
+        />
+        <NavbarButton
+          text="Rates"
+          className="hidden xl:flex"
+          href="/#rates"
+          id="rates"
+          underlinedButton={underlinedButton}
+          setUnderlinedButton={setUnderlinedButton}
+        />
+        <NavbarButton
           text="Contact"
+          className="hidden lg:flex"
           href="/#contact"
           id="contact"
           underlinedButton={underlinedButton}

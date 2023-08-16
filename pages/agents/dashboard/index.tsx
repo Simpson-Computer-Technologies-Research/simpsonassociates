@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { signOut } from "next-auth/react";
 
-import PermissionMiddleware from "@/pages/agents/middleware";
+import PermissionMiddleware from "@/pages/agents/dashboard/middleware";
 import Success from "@/app/components/pages/agentdashboard/success";
 
 import "@/app/styles/globals.css";

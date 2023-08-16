@@ -1,4 +1,4 @@
-import { User } from "@/pages/agents/middleware";
+import { User } from "@/pages/agents/dashboard/middleware";
 import { signOut } from "next-auth/react";
 
 /**

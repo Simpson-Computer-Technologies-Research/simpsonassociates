@@ -1,7 +1,25 @@
 import { decodeAuthorization } from "@/app/lib/auth";
 import { context } from "@/app/lib/mongo";
+import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+
+/**
+ * Middlewares to limit the number of requests
+ */
+const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(applyMiddleware);
+
+/**
+ * Middleware to limit the number of requests
+ */
+const rateLimit = async (req: any, res: any) => {
+  try {
+    await Promise.all(middlewares.map((mw: any) => mw(req, res)));
+  } catch (_err: any) {
+    return res.status(429).send(`Too many requests`);
+  }
+};
 
 export default async function handler(req: any, res: any) {
+  await rateLimit(req, res);
   if (req.method !== "GET") {
     return res
       .status(405)

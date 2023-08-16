@@ -4,7 +4,7 @@ import { generateAuthorization } from "@/app/lib/auth";
 import { useSession } from "next-auth/react";
 import { SessionProvider } from "@/app/components/providers";
 
-import Loading from "@/app/components/loading";
+import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
 
 /**
@@ -68,7 +68,7 @@ function _PermissionMiddleware({
   // If the session is loading or not authenticated, return a loading component
   // This should be already handled with the above useEffect, but just in case.
   if (status === "loading" || permissionsStatus === "loading")
-    return <Loading />;
+    return <LoadingCenter />;
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.

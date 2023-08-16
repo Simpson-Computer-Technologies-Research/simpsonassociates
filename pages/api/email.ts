@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 /**
  * Middlewares to limit the number of requests
  */
-const middlewares = getMiddlewares({ limit: 2 }).map(applyMiddleware);
+const middlewares = getMiddlewares({ limit: 2, delayMs: 0 }).map(applyMiddleware);
 
 /**
  * Middleware to limit the number of requests

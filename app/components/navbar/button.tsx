@@ -2,12 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
+import { cn } from "@/app/lib/utils";
 
 /**
  * Navbar Button Component
  * @returns JSX.Element
  */
 export default function NavbarButton(props: {
+  className?: string;
   text: string;
   href: string;
   id: string;
@@ -18,7 +20,12 @@ export default function NavbarButton(props: {
     props.underlinedButton === props.id ? "w-12" : "w-0";
 
   return (
-    <div className="navbar-button group hidden flex-col items-center justify-center text-center lg:flex">
+    <div
+      className={cn(
+        "navbar-button group flex-col items-center justify-center text-center",
+        props.className,
+      )}
+    >
       <Link
         href={props.href}
         onClick={() => props.setUnderlinedButton(props.id)}

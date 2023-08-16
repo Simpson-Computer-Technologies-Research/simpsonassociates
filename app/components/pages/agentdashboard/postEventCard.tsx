@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@/pages/agents/middleware";
+import { User } from "@/pages/agents/dashboard/middleware";
 
 /**
  * Post event card

@@ -12,7 +12,7 @@ export default function Testimonials(): JSX.Element {
   return (
     <section
       id="testimonials"
-      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 pb-7 pt-16 md:pt-20"
+      className="group relative flex w-full flex-col items-center justify-center bg-slate-50 pb-7 pt-14"
     >
       <Header />
       <TestimonialCards testimonials={testimonials} />
@@ -29,7 +29,7 @@ const Header = (): JSX.Element => (
     <h2 className="text-5xl font-extrabold text-primary xs:text-6xl sm:text-7xl">
       Testimonials
     </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="mb-6 w-3/4 text-sm text-primary sm:w-1/2 sm:text-base">
       Trusting the right mortgage brokerage is vital. Because of our dedication
       to <strong>exceptional service</strong> and{" "}

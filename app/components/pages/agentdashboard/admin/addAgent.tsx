@@ -1,4 +1,4 @@
-import { User } from "@/pages/agents/middleware";
+import { User } from "@/pages/agents/dashboard/middleware";
 import React from "react";
 import Input from "./input";
 import { generateAuthorization } from "@/app/lib/auth";

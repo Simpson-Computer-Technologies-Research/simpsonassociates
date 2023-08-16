@@ -12,7 +12,7 @@ export default function Lenders(): JSX.Element {
   return (
     <section
       id="lenders"
-      className="group relative flex w-screen flex-col items-center justify-center bg-slate-50 px-10 pb-12 pt-12 sm:pt-16"
+      className="group relative flex w-screen flex-col items-center justify-center bg-slate-50 px-10 pb-12 pt-14"
     >
       <Header />
       <LenderImages lenders={lenders} />
@@ -52,7 +52,7 @@ const Header = (): JSX.Element => (
     <h2 className="text-6xl font-extrabold text-primary lg:text-7xl">
       Lenders
     </h2>
-    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mb-10 sm:mt-7 lg:w-72"></span>
+    <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
     <p className="w-3/4 text-sm text-primary xs:text-base sm:mb-4 sm:w-1/2">
       We have access to <strong>hundreds</strong> of reputable lending
       institutions to provide you with more options - and the{" "}

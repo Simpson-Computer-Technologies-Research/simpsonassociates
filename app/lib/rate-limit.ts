@@ -38,7 +38,7 @@ export const getMiddlewares = (
     limit: 100,
     windowMs: 60 * 1000,
     delayAfter: 10,
-    delayMs: 1000,
+    delayMs: 100,
   }
 ) => [
   slowDown({

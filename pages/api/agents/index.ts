@@ -1,6 +1,25 @@
 import { context } from "@/app/lib/mongo";
 import { AgentsCache } from "@/app/lib/cache";
 import { decodeAuthorization, generateUserId } from "@/app/lib/auth";
+import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+
+/**
+ * Middlewares to limit the number of requests
+ */
+const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
+  applyMiddleware,
+);
+
+/**
+ * Middleware to limit the number of requests
+ */
+const rateLimit = async (req: any, res: any) => {
+  try {
+    await Promise.all(middlewares.map((mw: any) => mw(req, res)));
+  } catch (_err: any) {
+    return res.status(429).send(`Too many requests`);
+  }
+};
 
 // Create a new agents cache
 const cache = new AgentsCache();
@@ -46,7 +65,8 @@ const verifyAuth = async (
         email: decoded.email,
         access_token: decoded.accessToken,
       };
-    });
+    })
+    .catch((_: any) => false);
 };
 
 /**
@@ -76,8 +96,8 @@ const verifyAdmin = async (authorization: string): Promise<boolean> => {
   }).catch((_) => false);
 };
 
-// Get the agents from the database and return them as JSON
 export default async function handler(req: any, res: any) {
+  await rateLimit(req, res);
   // Getting agents
   if (req.method === "GET") {
     await getAgents(req, res);
@@ -130,7 +150,11 @@ const getAgents = async (_: any, res: any) => {
           res.status(200).json({ message: "Success", result });
         }
       });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((error) => {
+    if (!hasResponded) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 };
 
 /**
