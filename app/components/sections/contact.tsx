@@ -30,9 +30,10 @@ export default function Contact(props: {
         <Image
           src="/images/headshots final-21.png"
           alt="..."
-          width={700}
-          height={700}
-          className="absolute -right-64 bottom-0 z-[1] lg:-right-40 2xl:-right-20"
+          width={750}
+          height={750}
+          loading="eager"
+          className="absolute -right-64 -bottom-10 z-[1] lg:-right-40 2xl:-right-20"
         />
       </div>
     </section>
