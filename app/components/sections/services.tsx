@@ -10,10 +10,18 @@ export default function Services(): JSX.Element {
   return (
     <section
       id="services"
-      className="relative flex w-full flex-col items-center justify-center pb-4 pt-12"
+      className="relative flex w-full flex-col items-center justify-center pb-4 pt-14"
     >
       <Header />
       <ServicesCardGrid />
+      <Image
+        src="/images/holding_house_transparent.png"
+        alt="..."
+        width={600}
+        height={600}
+        loading="lazy"
+        className="top-3/5 absolute right-0 z-0 h-auto w-auto"
+      />
     </section>
   );
 }
@@ -99,7 +107,7 @@ const Card = (props: {
     href={props.href}
     rel="noopener noreferrer"
     target="_blank"
-    className="group relative m-2 flex h-44 w-36 flex-col items-center bg-white/80 p-2 px-3 text-center backdrop-blur-md duration-500 ease-in-out hover:scale-105 hover:bg-slate-50/90 hover:duration-100 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:p-7 xl:h-[21.5rem] xl:w-72"
+    className="group relative m-2 flex h-44 w-36 flex-col items-center bg-white/60 lg:bg-white/30 p-2 px-3 text-center backdrop-blur-md duration-500 ease-in-out hover:scale-105 hover:bg-slate-50/90 hover:duration-100 xs:h-52 xs:w-48 xs:p-4 sm:h-60 sm:w-48 sm:p-5 md:m-4 md:h-[15.5rem] md:w-52 lg:h-[18.5rem] lg:w-72 lg:p-7 xl:h-[21.5rem] xl:w-72"
   >
     <Image
       src={props.icon}

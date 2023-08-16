@@ -49,12 +49,15 @@ const getUrlQueryParam = () =>
 export default function AgentsPage(): JSX.Element {
   const [initialQuery, setInitialQuery] = React.useState("");
   const [agents, setAgents] = React.useState([]);
+  const [emailTo, setEmailTo] = React.useState("");
 
   React.useEffect(() => {
     const query = getUrlQueryParam();
-    if (query) setInitialQuery(query);
+    if (query && !initialQuery) setInitialQuery(query);
 
-    fetchAgents().then((agents: any) => setAgents(agents));
+    if (!agents.length) {
+      fetchAgents().then((res) => setAgents(res));
+    }
   }, []);
 
   if (!agents.length) {
@@ -80,9 +83,13 @@ export default function AgentsPage(): JSX.Element {
         <Navbar />
         <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
           <Header />
-          <Agents initialQuery={initialQuery} agents={agents} />
+          <Agents
+            initialQuery={initialQuery}
+            agents={agents}
+            setEmailTo={setEmailTo}
+          />
         </div>
-        <Contact className="bg-slate-50" />
+        <Contact className="bg-slate-50" emailTo={emailTo} />
         <ScrollIndicator />
       </SessionProvider>
     </>
@@ -93,7 +100,11 @@ export default function AgentsPage(): JSX.Element {
  * Agents Component
  * @returns JSX.Element
  */
-const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
+const Agents = (props: {
+  initialQuery: string;
+  agents: any;
+  setEmailTo: any;
+}): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
   const [location, setLocation] = React.useState({
@@ -131,6 +142,7 @@ const Agents = (props: { initialQuery: string; agents: any }): JSX.Element => {
         query={query || props.initialQuery}
         agents={props.agents}
         location={location}
+        setEmailTo={props.setEmailTo}
       />
     </section>
   );
@@ -159,6 +171,7 @@ const AgentsGrid = (props: {
   agents: any[];
   query: string;
   location: any;
+  setEmailTo: any;
 }): JSX.Element => {
   let results: any[] = props.agents;
 
@@ -176,7 +189,13 @@ const AgentsGrid = (props: {
   return (
     <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 xs:justify-center sm:grid-cols-3 md:flex md:flex-wrap">
       {results.map((item: any, i: number) => {
-        return <AgentCard key={i} agent={item.item || item} />;
+        return (
+          <AgentCard
+            key={i}
+            agent={item.item || item}
+            setEmailTo={props.setEmailTo}
+          />
+        );
       })}
     </div>
   );
@@ -186,8 +205,12 @@ const AgentsGrid = (props: {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: { agent: any }): JSX.Element => (
-  <div className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 hover:animate-pulse xs:mx-7 xs:mb-8">
+const AgentCard = (props: { agent: any; setEmailTo: any }): JSX.Element => (
+  <a
+    href="#contact"
+    onClick={() => props.setEmailTo(props.agent.email)}
+    className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 xs:mx-7 xs:mb-8"
+  >
     <img
       src={props.agent.photo}
       alt="..."
@@ -204,5 +227,8 @@ const AgentCard = (props: { agent: any }): JSX.Element => (
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
     <p className="mt-3 text-sm text-primary">{props.agent.region.location}</p>
     <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-  </div>
+    <button className="mt-4 w-fit bg-primary px-6 py-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+      Contact
+    </button>
+  </a>
 );

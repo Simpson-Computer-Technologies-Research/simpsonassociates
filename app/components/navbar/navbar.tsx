@@ -16,7 +16,7 @@ export default function Navbar() {
 
   // Set the window listener
   React.useEffect(() => {
-    const buttons: string[] = ["home", "services", "team", "contact"];
+    const buttons: string[] = ["home", "rates", "services", "agents", "contact"];
 
     window.addEventListener("scroll", () => {
       // If the window size is less than medium, return

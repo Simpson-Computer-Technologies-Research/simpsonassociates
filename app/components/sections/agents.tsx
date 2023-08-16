@@ -13,19 +13,19 @@ export default function Agents(): JSX.Element {
   return (
     <section
       id="agents"
-      className="relative flex w-full flex-col items-center justify-center bg-white px-10 pt-14 pb-20"
+      className="relative flex w-full flex-col items-center justify-center bg-white px-10 py-14"
     >
-      <div className="z-[2] bg-white/50 backdrop-blur-sm">
+      <div className="3xl:ml-0 z-[2] ml-0 bg-white/50 p-10 backdrop-blur-sm lg:ml-48">
         <Header />
         <InputAndButtons />
       </div>
       <Image
-        src="/images/holding_house_transparent.png"
+        src="/images/headshots final-21.png"
         alt="..."
         width={600}
         height={600}
         loading="lazy"
-        className="absolute right-0 top-32 z-[1] h-auto w-auto"
+        className="absolute -left-60 bottom-5 z-[1] h-auto w-auto scale-110 md:-left-40 lg:-left-20 lg:bottom-[3.1rem] lg:scale-125 xl:left-0"
       />
       <CirclesBackground />
     </section>

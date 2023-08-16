@@ -6,11 +6,15 @@ import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/app/lib/utils";
+
 /**
  * Contact Component
  * @returns JSX.Element
  */
-export default function Contact(props: { className?: string }): JSX.Element {
+export default function Contact(props: {
+  className?: string;
+  emailTo?: string;
+}): JSX.Element {
   return (
     <section
       id="contact"
@@ -20,14 +24,14 @@ export default function Contact(props: { className?: string }): JSX.Element {
       )}
     >
       <Header />
-      <div className="flex h-full w-full flex-row items-center justify-center">
-        <ContactForm />
+      <div className="flex relative h-full w-full flex-row items-center justify-center">
+        <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
-          src="/images/happy_couple_contact.png"
+          src="/images/headshots final-26.png"
           alt="..."
           width={500}
           height={500}
-          className="absolute -right-40 bottom-0 z-10 lg:-right-20 xl:right-0"
+          className="absolute -right-52 z-10 bottom-[43px] scale-150 lg:-right-20 2xl:right-0"
         />
       </div>
     </section>
@@ -38,7 +42,7 @@ export default function Contact(props: { className?: string }): JSX.Element {
  * Contact Form Component
  * @returns JSX.Element
  */
-const ContactForm = (): JSX.Element => {
+const ContactForm = (props: { emailTo: string }): JSX.Element => {
   // Keep track of errors
   const [errors, setErrors] = React.useState<{
     name: string;
@@ -56,10 +60,16 @@ const ContactForm = (): JSX.Element => {
   // Return the component jsx
   return (
     <section className="z-20 mt-4 flex flex-col bg-white/50 p-6 backdrop-blur-sm xs:mt-6 md:mt-6 lg:mr-40 lg:mt-10 xl:mr-0">
+      <input
+        disabled={true}
+        className="w-60 border-b-[2.5px] border-b-primary bg-white p-2 text-xs text-primary xs:w-96 xs:text-sm sm:text-base"
+        value={`To: ${props.emailTo}`}
+      />
+
       {/* Name input */}
       <input
         id="contact-name"
-        className="w-60 border-b-[2.5px] border-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 w-60 border-b-[2.5px] border-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         placeholder="Name"
         onChange={(e) => {
           if (!isValidName(e.target.value)) {
@@ -74,8 +84,8 @@ const ContactForm = (): JSX.Element => {
       {/* Phone number input */}
       <input
         id="contact-phone"
-        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
-        placeholder="Phone Number"
+        className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        placeholder="Phone Number (Not Required)"
         onChange={(e) => {
           if (!isValidPhone(e.target.value))
             setErrors({
@@ -91,7 +101,7 @@ const ContactForm = (): JSX.Element => {
       <textarea
         id="contact-message"
         placeholder="Message"
-        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
+        className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         onChange={(e) => {
           if (!isValidMessage(e.target.value))
             setErrors({ ...errors, message: "Message is required" });
@@ -106,6 +116,7 @@ const ContactForm = (): JSX.Element => {
       {/* If the user is logged in */}
       {session && session.user && session.user.email && (
         <SendEmailButton
+          emailTo={props.emailTo}
           email={session.user.email}
           errors={errors}
           setErrors={setErrors}
@@ -180,9 +191,10 @@ const ChangeEmailButton = (): JSX.Element => (
 );
 
 /**
- * Send email button
+ * Send email button props
  */
-const SendEmailButton = (props: {
+type SendEmailButtonProps = {
+  emailTo: string;
   email: string;
   errors: {
     name: string;
@@ -196,27 +208,31 @@ const SendEmailButton = (props: {
       message: string;
     }>
   >;
-}): JSX.Element => {
-  // Manage sending state
+};
+
+/**
+ * Send email button
+ */
+const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
   const [sending, setSending] = React.useState<boolean>(false);
 
   // Send the email
   const sendEmail = async () => {
-    // Get the form values
     const name = getElementValue("contact-name");
     const phone = getElementValue("contact-phone");
     const message = getElementValue("contact-message");
 
-    // Make sure the values are valid
     if (!isValidName(name)) {
       return props.setErrors({ ...props.errors, name: "Name is required" });
     }
+
     if (!isValidPhone(phone)) {
       return props.setErrors({
         ...props.errors,
         phone: "Invalid phone number",
       });
     }
+
     if (!isValidMessage(message)) {
       return props.setErrors({
         ...props.errors,
@@ -224,8 +240,14 @@ const SendEmailButton = (props: {
       });
     }
 
-    // Post the email
-    const resp: string = await postEmail(name, props.email, phone, message);
+    const resp: string = await postEmail(
+      props.emailTo,
+      name,
+      props.email,
+      phone,
+      message,
+    );
+
     props.setErrors({ ...props.errors, message: resp });
   };
 
@@ -326,6 +348,7 @@ const isValidName = (name: string): boolean => name.length > 2;
  * Post the email to the api
  */
 const postEmail = async (
+  emailTo: string,
   name: string,
   email: string,
   phone: string,
@@ -337,7 +360,7 @@ const postEmail = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, email, phone, message }),
+    body: JSON.stringify({ email_to: emailTo, name, email, phone, message }),
   }).then((res) => {
     if (res.status === 200) {
       clearFormValues();
