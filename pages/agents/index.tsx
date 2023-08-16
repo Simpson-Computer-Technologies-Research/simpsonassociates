@@ -211,7 +211,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
   <a
     href="#contact"
     onClick={() => props.setEmailTo(props.agent.email)}
-    className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 xs:mx-7 xs:mb-8"
+    className="group mb-24 flex cursor-pointer flex-col text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
   >
     <img
       src={props.agent.photo}
@@ -231,7 +231,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
       {props.agent.region && props.agent.region.location}
     </p>
     <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-    <button className="mt-4 w-fit bg-primary px-6 py-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+    <button className="mt-4 w-fit bg-secondary rounded-full px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
       Contact
     </button>
   </a>
