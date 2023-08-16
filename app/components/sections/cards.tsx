@@ -146,11 +146,11 @@ const RatesTable = (props: { rates: any[] }): JSX.Element => {
     <table id="rates" className="w-full text-sm text-primary sm:text-base">
       <thead className="border-b-2 border-slate-100">
         <tr className="text-left">
-          <th className="px-2 py-2 font-medium">Term</th>
+          <th className="px-2 py-2 font-bold">Term</th>
           <th className="px-2 py-2 font-medium">Bank Rate</th>
-          <th className="px-2 py-2 font-medium">Our Rate</th>
+          <th className="px-2 py-2 font-bold">Our Rate</th>
           <th className="px-2 py-2 font-medium">Monthly Payment</th>
-          <th className="px-2 py-2 font-medium">Savings</th>
+          <th className="px-2 py-2 font-bold">Savings</th>
         </tr>
       </thead>
       <tbody>
@@ -158,11 +158,11 @@ const RatesTable = (props: { rates: any[] }): JSX.Element => {
           if (!rate.BankRate || !rate.OurRate) return <></>;
           return (
             <tr key={rate.id} className="border-b-2 border-slate-100">
-              <td className="px-2 py-2">{rate.Terms}</td>
+              <td className="px-2 py-2 font-bold">{rate.Terms}</td>
               <td className="px-2 py-2">{rate.BankRate}</td>
-              <td className="px-2 py-2">{rate.OurRate}</td>
+              <td className="px-2 py-2 font-bold">{rate.OurRate}</td>
               <td className="px-2 py-2">{rate.OurMonthly}</td>
-              <td className="px-2 py-2">{rate.Savings}</td>
+              <td className="px-2 py-2 font-bold">{rate.Savings}</td>
             </tr>
           );
         })}
