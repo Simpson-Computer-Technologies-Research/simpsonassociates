@@ -36,14 +36,12 @@ export default function Login(props: {
 const LoginPage = (props: { redirect: string | null }): JSX.Element => {
   const { data: session, status } = useSession();
 
-  // If the user is not logged in, log them in
   useEffect(() => {
     if (status === "unauthenticated") {
       signIn("google");
     }
   }, [session]);
 
-  // Depending on the response, return the appropriate component
   if (status === "authenticated") {
     if (props.redirect) window.location.href = props.redirect;
     else return <SuccessLogin />;

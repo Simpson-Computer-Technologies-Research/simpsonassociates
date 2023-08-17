@@ -14,15 +14,15 @@ export default NextAuth({
       if (account) {
         token.id_token = account.id_token;
         token.provider = account.provider;
-        token.accessToken = account.access_token;
       }
       return token;
     },
     async session({ session, token }) {
       const bearerSecret: string = process.env.BEARER_SECRET ?? "";
-      const idToken: string = token.id_token as string;
+      const email: string = session?.user?.email as string;
+      // const idToken: string = token.id_token as string;
 
-      session.accessToken = await sha256(idToken + bearerSecret);
+      session.accessToken = await sha256(email + bearerSecret);
       return session;
     },
   },

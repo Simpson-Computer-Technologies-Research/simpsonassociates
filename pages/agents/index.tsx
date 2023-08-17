@@ -231,7 +231,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
       {props.agent.region && props.agent.region.location}
     </p>
     <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-    <button className="mt-4 w-fit bg-secondary rounded-full px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+    <button className="mt-4 w-fit rounded-full bg-secondary px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
       Contact
     </button>
   </a>

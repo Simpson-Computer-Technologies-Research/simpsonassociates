@@ -12,36 +12,30 @@ export default function Bottom(): JSX.Element {
   return (
     <section
       id="bottom"
-      className="relative flex w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-10 pb-20 md:items-center lg:flex-row lg:justify-center"
+      className="relative flex w-screen flex-col justify-between border-t-4 border-t-secondary bg-primary px-7 pb-14 md:items-center xl:flex-row xl:justify-center"
     >
-      {/* Before Image, Show on larger screens */}
-      <div className="hidden justify-center lg:flex lg:flex-row">
+      <div className="mt-28 hidden justify-center gap-12 xl:flex xl:flex-row">
         <NavigationLinks />
         <Services />
       </div>
 
-      {/* Logo */}
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center justify-center text-center">
         <Image
           key={Math.random()}
           width={781}
           height={736}
           loading="lazy"
-          src="/images/dominion_lending_logo_noBg.png"
+          src="/images/simpson_associates_logo_noBg.png"
           alt="..."
-          className="mx-5 mt-10 flex h-44 w-44"
+          className="mx-14 mb-8 mt-10 flex h-32 w-[26rem]"
         />
       </div>
 
-      {/* After Image */}
-      <div className="flex flex-col md:flex-row lg:flex-col">
-        {/* Show on smaller screens */}
-        <div className="flex flex-row justify-between lg:hidden">
+      <div className="flex flex-col gap-12 md:flex-row xl:flex-col">
+        <div className="flex flex-row justify-between gap-12 xl:hidden">
           <NavigationLinks />
           <Services />
         </div>
-
-        {/* Always show offices */}
         <Offices />
       </div>
     </section>
@@ -69,7 +63,7 @@ const NavigationLinks = (): JSX.Element => {
 
   // Return JSX
   return (
-    <div className="mt-6 flex flex-col lg:mt-24 xl:mr-7">
+    <div className="flex flex-col">
       <h2 className="mb-1 text-lg font-bold tracking-wider text-white md:text-xl">
         Navigation
       </h2>
@@ -104,7 +98,7 @@ const Services = (): JSX.Element => {
 
   // Return JSX
   return (
-    <div className="ml-8 mt-6 flex flex-col text-right md:text-left lg:mr-6 lg:mt-24 xl:mr-16">
+    <div className="flex flex-col text-right md:text-left">
       <h2 className="mb-1 text-lg font-bold tracking-wider text-white md:text-xl">
         Services
       </h2>
@@ -140,12 +134,13 @@ const Offices = (): JSX.Element => {
     phone: string;
     address: string;
     className?: string;
+    href: string;
   }): JSX.Element => (
-    <div
-      className={cn(
-        "mt-6 flex w-32 flex-col md:ml-8 md:mt-0 xl:ml-14",
-        props.className,
-      )}
+    <a
+      href={props.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn("flex h-auto w-36 flex-col", props.className)}
     >
       <h2 className="text-base font-bold tracking-wider text-white md:text-xl">
         {props.title}
@@ -156,23 +151,25 @@ const Offices = (): JSX.Element => {
       <a className="mb-2 text-sm text-para underline underline-offset-4 hover:text-secondary md:text-base">
         {props.address}
       </a>
-    </div>
+    </a>
   );
 
   // Return JSX
   return (
-    <div className="mt-6 flex flex-row justify-between xl:ml-3">
+    <div className="flex h-fit w-auto flex-row justify-between gap-12">
       <Office
-        title="Sportsworld"
+        title="Head Office"
         phone="+1 519-885-8852"
         address="50 Sportsworld Crossing - Unit 230"
         className="text-left"
+        href="https://www.google.com/maps/place/50+Sportsworld+Crossing+Road+Unit+230,+Kitchener,+ON+N2P+0A4/@43.4097612,-80.3969364,16.97z/data=!3m1!5s0x882b8a889ababc0f:0x8072572b7fdf209!4m6!3m5!1s0x882b8a43e63fc10f:0xcbcdb2ec22aa2a10!8m2!3d43.4097598!4d-80.3943144!16s%2Fg%2F11pvctt148?entry=ttu"
       />
       <Office
         title="Victoria St."
         phone="+1 519-885-8852"
-        address="901 Victoria St Kitchener"
+        address="901 Victoria St N Kitchener"
         className="text-right md:text-left"
+        href="https://www.google.com/maps/place/901+Victoria+St+N,+Kitchener,+ON+N2B+3C3/@43.4633473,-80.4674275,17z/data=!3m1!4b1!4m6!3m5!1s0x882bf4af40e30be9:0x41f13fdcfc7663c2!8m2!3d43.4633473!4d-80.4648526!16s%2Fg%2F11flt11t4r?entry=ttu"
       />
     </div>
   );
