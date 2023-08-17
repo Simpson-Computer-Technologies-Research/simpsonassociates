@@ -226,7 +226,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
       {props.agent.name}
     </h3>
     <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
-      {props.agent.title} - Level {props.agent.level}
+      {props.agent.title}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
     <p className="mt-3 text-sm text-primary">

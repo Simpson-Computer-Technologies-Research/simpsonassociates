@@ -29,7 +29,7 @@ export default function SelectRegion(props: {
       .then((res) => res.json())
       .then((json) => {
         if (!json) return;
-        const slicedJson: any[] = json.slice(0, 5);
+        const slicedJson: any[] = json.slice(0, 3);
         setRegions(slicedJson);
       });
   };
@@ -47,23 +47,23 @@ export default function SelectRegion(props: {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+          className="w-full rounded-md bg-white px-2 py-2 font-medium"
           placeholder="Enter Region (Example: Kitchener)"
         />
         <button
           onClick={onSearch}
-          className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+          className="w-full rounded-md bg-white px-2 py-2 font-medium"
         >
           Search for region
         </button>
       </div>
       <div className="mt-2 flex flex-col gap-2">
         {regions &&
-          regions.map((region) => (
+          regions.map((region, i: number) => (
             <button
               onClick={() => onRegionSelect(region)}
               key={region.place_id}
-              className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+              className="w-full rounded-md bg-white px-2 py-2 text-left font-medium hover:bg-slate-200"
             >
               {region.display_name}
             </button>

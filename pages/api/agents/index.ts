@@ -50,10 +50,7 @@ export default async function handler(
 
   switch (req.method) {
     case "POST":
-      await postAgent(req, res);
-      return;
-    case "PUT":
-      await putAgent(req, res);
+      await addAgent(req, res);
       return;
     case "DELETE":
       await deleteAgent(req, res);
@@ -94,48 +91,13 @@ const getAgents = async (_: any, res: any) => {
 };
 
 /**
- * Update an agent
- * @param req The request
- * @param res The response
- * @returns void
- */
-const postAgent = async (req: any, res: any): Promise<void> =>
-  await context(async (database) => {
-    const collection = database.collection("agents");
-    const { agent_id } = req.body;
-
-    await collection.findOne({ user_id: agent_id }).then(async (result) => {
-      if (!result) {
-        res.status(404).json({ message: "Not found", update: null });
-        return;
-      }
-
-      await collection
-        .findOneAndUpdate(
-          { user_id: agent_id },
-          { $set: req.body },
-          { upsert: true },
-        )
-        .then((update) => {
-          if (!update) {
-            res.status(404).json({ message: "Not found", update: null });
-            return;
-          }
-
-          cache.update_agent(agent_id, req.body);
-          res.status(200).json({ message: "Success", update });
-        });
-    });
-  }).catch((error) => res.status(500).json({ message: error.message }));
-
-/**
  * Add an agent
  * @param req The request
  * @param res The response
  * @returns void
  */
-const putAgent = async (req: any, res: any) => {
-  if (!isValidPutAgentBody(req.body)) {
+const addAgent = async (req: any, res: any) => {
+  if (!isValidAgentBody(req.body)) {
     return res
       .status(400)
       .json({ message: "Missing required fields", result: null });
@@ -206,7 +168,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 };
 
 // Check if the body of the request is valid
-const isValidPutAgentBody = (body: any) =>
+const isValidAgentBody = (body: any) =>
   body.name &&
   body.email &&
   body.license &&
@@ -214,5 +176,4 @@ const isValidPutAgentBody = (body: any) =>
   body.title &&
   body.photo &&
   body.lang &&
-  body.level &&
   body.permissions.length > 0;

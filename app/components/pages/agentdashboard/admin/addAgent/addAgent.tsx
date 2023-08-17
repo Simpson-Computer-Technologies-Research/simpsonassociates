@@ -21,8 +21,7 @@ export default function AddAgent(props: {
   setAgents: SetState<Agent[]>;
   agents: Agent[];
 }): JSX.Element {
-  const [error, setError] = React.useState<string>("");
-
+  const errorRef = React.useRef<string>("");
   const regionRef = React.useRef<any>(null);
   const photoRef = React.useRef<string>("");
 
@@ -50,8 +49,10 @@ export default function AddAgent(props: {
       {/* Save Changes and Clear Input Button */}
       <div className="flex flex-row gap-4">
         <AddAgentButton
-          {...props}
-          setError={setError}
+          user={props.user}
+          agents={props.agents}
+          setAgents={props.setAgents}
+          errorRef={errorRef}
           region={regionRef.current}
           photo={photoRef.current}
         />
@@ -59,7 +60,9 @@ export default function AddAgent(props: {
       </div>
 
       {/* Error */}
-      <p className="mt-4 text-lg font-medium text-red-500">{error}</p>
+      <p className="mt-4 text-lg font-medium text-red-500">
+        {errorRef.current}
+      </p>
     </section>
   );
 }
@@ -110,7 +113,7 @@ const PermissionsCheckbox = (props: {
  * @returns JSX.Element
  */
 const AddAgentButton = (props: {
-  setError: SetState<string>;
+  errorRef: React.MutableRefObject<string>;
   setAgents: SetState<Agent[]>;
   user: User;
   agents: Agent[];
@@ -126,28 +129,31 @@ const AddAgentButton = (props: {
         props.user.email,
       );
 
-      const inputValues: any = getInputValues().catch((e) =>
-        props.setError(inputValues.error),
+      const inputValues: any = await getInputValues().catch(
+        (e) => (props.errorRef.current = e.message),
       );
 
+      const body: Agent = {
+        ...inputValues,
+        permissions: getPermissions(),
+        photo: props.photo || "/images/default_agent_headshot.png",
+        region: props.region,
+      };
+
       return await fetch("/api/agents", {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           authorization,
         },
-        body: JSON.stringify({
-          ...inputValues,
-          permissions: getPermissions(),
-          photo: props.photo || "/images/default_agent_headshot.png",
-          region: props.region,
-        }),
+        body: JSON.stringify(body),
       }).then((res) => {
         if (res.status === 200) {
           clearInput();
           props.setAgents([...props.agents, inputValues]);
+          props.errorRef.current = "";
         } else {
-          props.setError("Error adding agent");
+          props.errorRef.current = "Failed to add agent.";
         }
       });
     }}

@@ -12,13 +12,18 @@ export default function UploadPhoto(props: {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
-    reader.onloadend = () => (props.photoRef.current = reader.result);
+    reader.onloadend = () => {
+      props.photoRef.current = reader.result;
+      console.log(props.photoRef.current);
+    };
   };
 
   return (
     <input
+      id="photo"
       onChange={onChange}
       type="file"
+      accept="image/*"
       className="mt-4 w-full rounded-md bg-white px-2 py-2"
     />
   );

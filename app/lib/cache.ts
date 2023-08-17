@@ -6,7 +6,6 @@ export class AgentsCache {
     title: string;
     photo: string;
     lang: string;
-    level: string;
     permissions: string[];
     license: string;
     region: {

@@ -8,7 +8,6 @@ export default function AgentInputs(): JSX.Element {
       <Input placeholder="Name" id="name" />
       <Input placeholder="Email" id="email" />
       <Input placeholder="Title" id="title" />
-      <Input placeholder="Level" id="level" />
       <Input placeholder="Language" id="lang" />
       <Input placeholder="License" id="license" />
     </>
@@ -53,16 +52,29 @@ export const ClearInputButton = (): JSX.Element => (
  * Clear the add agent input
  */
 export const clearInput = (): void => {
+  clearFields();
+  clearPermissions();
+  clearPhoto();
+};
+
+const clearFields = () => {
   const inputs = document.querySelectorAll(
-    "#name, #email, #title, #level, #lang, #license",
+    "#name, #email, #title, #lang, #license",
   );
   inputs.forEach((input) => ((input as HTMLInputElement).value = ""));
+};
 
+const clearPermissions = () => {
   const perms = document.getElementById("perms") as HTMLInputElement;
   for (let i = 0; i < perms.children.length; i++) {
     const child = perms.children[i] as HTMLInputElement;
     child.checked = false;
   }
+};
+
+const clearPhoto = () => {
+  const photo = document.getElementById("photo") as HTMLInputElement;
+  photo.files = null;
 };
 
 /**
@@ -74,11 +86,10 @@ export const getInputValues = (): Promise<any> => {
     const name = document.getElementById("name") as HTMLInputElement;
     const email = document.getElementById("email") as HTMLInputElement;
     const title = document.getElementById("title") as HTMLInputElement;
-    const level = document.getElementById("level") as HTMLInputElement;
     const lang = document.getElementById("lang") as HTMLInputElement;
     const license = document.getElementById("license") as HTMLInputElement;
 
-    if (!name.value || !email.value || !title.value || !level.value) {
+    if (!name.value || !email.value || !title.value) {
       reject({ error: "Missing required fields" });
     }
 
@@ -86,9 +97,8 @@ export const getInputValues = (): Promise<any> => {
       name: name.value,
       email: email.value,
       title: title.value,
-      level: level.value,
       lang: lang.value,
-      license: license.value,
+      license: "License #" + license.value,
     };
 
     resolve(result);
