@@ -40,20 +40,16 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 function _Success(props: { user: User }): JSX.Element {
-  const [agents, setAgents] = React.useState<Agent[]>([]);
+  const agentsRef: React.MutableRefObject<Agent[]> = React.useRef([]);
 
-  if (!agents || agents.length === 0) {
-    fetchAgents().then((agents: any) => setAgents(agents));
+  if (!agentsRef.current.length) {
+    fetchAgents().then((agents: any) => (agentsRef.current = agents));
   }
 
   return (
     <>
-      <UpdateAgent
-        user={props.user}
-        agents={agents || []}
-        setAgents={setAgents}
-      />
-      <Agents agents={agents || []} setAgents={setAgents} user={props.user} />
+      <UpdateAgent user={props.user} agentsRef={agentsRef} />
+      <Agents agentsRef={agentsRef} user={props.user} />
     </>
   );
 }

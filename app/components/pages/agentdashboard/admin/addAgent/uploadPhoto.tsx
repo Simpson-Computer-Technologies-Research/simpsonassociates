@@ -4,9 +4,10 @@ import React from "react";
  * Upload Photo Button
  * @returns JSX.Element
  */
-export default function UploadPhoto(props: {
+interface UploadPhotoProps {
   photoRef: React.MutableRefObject<any>;
-}): JSX.Element {
+}
+export default function UploadPhoto(props: UploadPhotoProps): JSX.Element {
   const onChange = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();

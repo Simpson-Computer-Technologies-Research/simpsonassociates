@@ -13,11 +13,11 @@ import PermissionsChecklist from "./permissionsChecklist";
  * @param props
  * @returns JSX.Element
  */
-export default function AddAgent(props: {
+interface AddAgentProps {
   user: User;
-  setAgents: SetState<Agent[]>;
-  agents: Agent[];
-}): JSX.Element {
+  agentsRef: React.MutableRefObject<Agent[]>;
+}
+export default function AddAgent(props: AddAgentProps): JSX.Element {
   const errorRef = React.useRef<string>("");
   const regionRef = React.useRef<any>(null);
   const photoRef = React.useRef<string>("");
@@ -46,8 +46,7 @@ export default function AddAgent(props: {
       <div className="flex flex-row gap-4">
         <AddAgentButton
           user={props.user}
-          agents={props.agents}
-          setAgents={props.setAgents}
+          agentsRef={props.agentsRef}
           errorRef={errorRef}
           region={regionRef.current}
           photo={photoRef.current}
@@ -65,16 +64,16 @@ export default function AddAgent(props: {
  * @param props
  * @returns JSX.Element
  */
-const AddAgentButton = (props: {
-  errorRef: React.MutableRefObject<string>;
-  setAgents: SetState<Agent[]>;
+interface AddAgentButtonProps {
   user: User;
-  agents: Agent[];
+  agentsRef: React.MutableRefObject<Agent[]>;
+  errorRef: React.MutableRefObject<string>;
   region: any;
   photo: string;
-}): JSX.Element => (
-  <button
-    onClick={async () => {
+}
+const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
+  const onClick = async () => {
+    {
       if (!props.user.accessToken || !props.user.email) return;
 
       const authorization: string = await generateAuthorization(
@@ -103,18 +102,24 @@ const AddAgentButton = (props: {
       }).then((res) => {
         if (res.status === 200) {
           clearInput();
-          props.setAgents([...props.agents, inputValues]);
+          props.agentsRef.current = [...props.agentsRef.current, inputValues];
           props.errorRef.current = "";
         } else {
           props.errorRef.current = "Failed to add agent.";
         }
       });
-    }}
-    className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
-  >
-    Add
-  </button>
-);
+    }
+  };
+
+  return (
+    <button
+      className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary hover:bg-slate-200"
+      onClick={onClick}
+    >
+      Add
+    </button>
+  );
+};
 
 /**
  * Get the permissions

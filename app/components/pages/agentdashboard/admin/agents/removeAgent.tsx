@@ -1,5 +1,5 @@
 import React from "react";
-import { Agent, User } from "@/app/lib/types";
+import { Agent, SetState, User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 
 /**
@@ -7,21 +7,25 @@ import { generateAuthorization } from "@/app/lib/auth";
  * @param props the props of the button
  * @returns JSX.Element
  */
-export default function RemoveAgentButton(props: {
+interface RemoveAgentButtonProps {
   user: User;
   agent: Agent;
-}): JSX.Element {
+  agentsRef: React.MutableRefObject<Agent[]>;
+}
+export default function RemoveAgentButton(
+  props: RemoveAgentButtonProps,
+): JSX.Element {
   if (!props.agent) {
     return <></>;
   }
-  const [confirm, setConfirm] = React.useState<boolean>(false);
+  const [confirmation, setConfirmation] = React.useState<boolean>(false);
 
-  return confirm ? (
-    <RemoveConfirmation setConfirm={setConfirm} {...props} />
+  return confirmation ? (
+    <RemoveConfirmation setConfirmation={setConfirmation} {...props} />
   ) : (
     <button
       className="rounded-md bg-white px-10 py-2 font-medium text-primary"
-      onClick={() => setConfirm(true)}
+      onClick={() => setConfirmation(true)}
     >
       Remove
     </button>
@@ -33,23 +37,37 @@ export default function RemoveAgentButton(props: {
  * @param props the props of the confirmation
  * @returns JSX.Element
  */
-const RemoveConfirmation = (props: {
-  setConfirm: (confirm: boolean) => void;
+interface RemoveConfirmationProps {
+  setConfirmation: SetState<boolean>;
+  agentsRef: React.MutableRefObject<Agent[]>;
   user: User;
   agent: Agent;
-}): JSX.Element => {
+}
+const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
+  const [newAgents, setNewAgents] = React.useState<Agent[]>(
+    props.agentsRef.current,
+  );
+  props.agentsRef.current = newAgents;
+
   return (
     <div className="flex flex-row items-center justify-center">
       <p className="mr-4 text-lg font-medium text-white">Are you sure?</p>
       <div className="flex flex-row items-center justify-between">
         <button
           onClick={async () => {
-            props.setConfirm(false);
+            props.setConfirmation(false);
             await removeAgent(
               props.user.accessToken || "",
               props.user.email || "",
               props.agent.user_id,
-            );
+            ).then((success) => {
+              if (success) {
+                const filteredAgents = newAgents.filter((agent) => {
+                  if (agent !== props.agent) return agent;
+                });
+                setNewAgents(filteredAgents);
+              }
+            });
           }}
           className="mx-2 rounded-md bg-white px-10 py-2 font-medium text-primary"
         >
@@ -57,7 +75,7 @@ const RemoveConfirmation = (props: {
         </button>
         <button
           className="mx-2 rounded-md bg-white px-10 py-2 font-medium text-primary"
-          onClick={() => props.setConfirm(false)}
+          onClick={() => props.setConfirmation(false)}
         >
           Cancel
         </button>

@@ -3,11 +3,12 @@
  * @param props
  * @returns JSX.Element
  */
-export default function Input(props: {
+interface InputProps {
   placeholder: string;
   id: string;
-  default?: string | undefined;
-}): JSX.Element {
+  default?: string;
+}
+export default function Input(props: InputProps): JSX.Element {
   return (
     <input
       id={props.id}
@@ -26,7 +27,7 @@ export default function Input(props: {
 export const ClearInputButton = (): JSX.Element => (
   <button
     onClick={clearInput}
-    className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+    className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary hover:bg-slate-200"
   >
     Clear
   </button>
@@ -82,7 +83,7 @@ export const getInputValues = (): Promise<any> => {
       email: email.value,
       title: title.value,
       lang: lang.value,
-      license: "License #" + license.value,
+      license: license.value,
     };
 
     resolve(result);

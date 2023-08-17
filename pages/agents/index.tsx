@@ -231,7 +231,9 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => {
       <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
         {props.agent.title}
       </p>
-      <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
+      <p className="mt-1 text-xs text-primary">
+        License #{props.agent.license}
+      </p>
       <p className="mt-3 text-sm text-primary">
         {props.agent.region && props.agent.region.location}
       </p>

@@ -19,11 +19,12 @@ export default function PermissionsChecklist(): JSX.Element {
  * @param props
  * @returns JSX.Element
  */
-const PermissionsCheckbox = (props: {
+interface PermissionsCheckboxProps {
   value: string;
   label: string;
   permissions?: string[];
-}): JSX.Element => {
+}
+const PermissionsCheckbox = (props: PermissionsCheckboxProps): JSX.Element => {
   const defaultChecked: boolean =
     (props.permissions && props.permissions.includes(props.value)) || false;
 
