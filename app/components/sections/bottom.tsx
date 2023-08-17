@@ -27,7 +27,7 @@ export default function Bottom(): JSX.Element {
           loading="lazy"
           src="/images/simpson_associates_logo_noBg.png"
           alt="..."
-          className="mx-14 mb-8 mt-10 flex h-32 w-[26rem]"
+          className="mx-14 mb-8 mt-10 flex h-20 w-auto xxs:h-28 xs:h-32 sm:h-44"
         />
       </div>
 
