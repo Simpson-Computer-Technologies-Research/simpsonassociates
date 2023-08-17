@@ -41,18 +41,18 @@ export default function SelectRegion(props: {
   };
 
   return (
-    <>
+    <div>
       <div className="flex flex-row gap-4">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full rounded-md bg-white px-2 py-2 font-medium"
+          className="w-full rounded-md bg-white px-2 py-2"
           placeholder="Enter Region (Example: Kitchener)"
         />
         <button
           onClick={onSearch}
-          className="w-full rounded-md bg-white px-2 py-2 font-medium"
+          className="w-full rounded-md bg-white px-2 py-2 text-primary"
         >
           Search for region
         </button>
@@ -63,17 +63,17 @@ export default function SelectRegion(props: {
             <button
               onClick={() => onRegionSelect(region)}
               key={region.place_id}
-              className="w-full rounded-md bg-white px-2 py-2 text-left font-medium hover:bg-slate-200"
+              className="w-full rounded-md bg-white px-2 py-2 text-left hover:bg-slate-200"
             >
               {region.display_name}
             </button>
           ))}
       </div>
       {location.location && (
-        <p className="mt-1 text-white">
+        <p className="text-white">
           Selected Region: {location.location} ({location.lat}, {location.long})
         </p>
       )}
-    </>
+    </div>
   );
 }

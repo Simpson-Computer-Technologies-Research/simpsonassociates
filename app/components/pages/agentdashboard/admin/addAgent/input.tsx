@@ -12,7 +12,7 @@ export default function Input(props: {
     <input
       id={props.id}
       type="text"
-      className="w-auto rounded-md border-2 border-primary px-2 py-2"
+      className="w-auto rounded-md px-2 py-2"
       placeholder={props.placeholder}
       defaultValue={props.default || ""}
     />
