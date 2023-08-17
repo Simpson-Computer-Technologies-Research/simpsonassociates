@@ -5,7 +5,9 @@ import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 /**
  * Middlewares to limit the number of requests
  */
-const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(applyMiddleware);
+const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
+  applyMiddleware,
+);
 
 /**
  * Middleware to limit the number of requests

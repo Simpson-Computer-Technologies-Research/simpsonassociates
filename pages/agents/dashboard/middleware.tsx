@@ -42,9 +42,8 @@ function _PermissionMiddleware({
 }: any): JSX.Element {
   const { data: session, status } = useSession();
   const [userPermissions, setUserPermissions] = React.useState<string[]>([]);
-  const [permissionsStatus, setPermissionsStatus] =
-    React.useState<string>("none");
-
+  const [permissionsFetched, setPermissionsFetched] =
+    React.useState<boolean>(false);
   const [authorizationUpdated, setAuthorizationUpdated] =
     React.useState<boolean>(false);
 
@@ -55,32 +54,27 @@ function _PermissionMiddleware({
     }
   }, [session]);
 
+  // Fetch the users permissions
+  if (!permissionsFetched && status === "authenticated") {
+    generateAuthorization(
+      session?.accessToken || "",
+      session?.user?.email || "",
+    ).then((auth) => {
+      fetchPermissions(auth).then((permissions) => {
+        setUserPermissions(permissions);
+        setPermissionsFetched(true);
+      });
+    });
+  }
+
   // If the session is loading or not authenticated, return a loading component
   // This should be already handled with the above useEffect, but just in case.
-  if (status === "loading" || permissionsStatus === "loading")
+  if (status !== "authenticated" || !permissionsFetched)
     return <LoadingCenter />;
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
-  if (permissionsStatus === "none") {
-    setPermissionsStatus("loading");
-    generateAuthorization(
-      session?.accessToken || "",
-      session?.user?.email || "",
-    ).then((auth) =>
-      fetchPermissions(auth).then((permissions) => {
-        setUserPermissions(permissions);
-        setPermissionsStatus("done");
-      }),
-    );
-  }
-
-  // If the user is not an agent, return an error message
-  if (
-    (!userPermissions ||
-      !permissions.every((p: any) => userPermissions.includes(p))) &&
-    permissionsStatus === "done"
-  )
+  if (!permissions.every((p: any) => userPermissions.includes(p)))
     return unauthorized();
 
   // Update the users authorization token
@@ -88,8 +82,12 @@ function _PermissionMiddleware({
     generateAuthorization(
       session?.accessToken || "",
       session?.user?.email || "",
-    ).then((auth) => updateAuthorization(auth));
-    setAuthorizationUpdated(true);
+    ).then(
+      async (auth) =>
+        await updateAuthorization(auth).then(() =>
+          setAuthorizationUpdated(true),
+        ),
+    );
   }
 
   // Return the success component

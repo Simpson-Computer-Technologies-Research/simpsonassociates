@@ -34,7 +34,6 @@ const searchConfig = {
   photo: 1,
   lang: 1,
   level: 1,
-  permissions: 1,
   user_id: 1,
 };
 

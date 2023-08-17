@@ -8,6 +8,7 @@ import Navbar from "@/app/components/navbar/navbar";
 import LoadingCenter from "@/app/components/loading";
 import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
+import Bottom from "@/app/components/sections/bottom";
 import "@/app/styles/globals.css";
 
 import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
@@ -91,6 +92,7 @@ export default function AgentsPage(): JSX.Element {
         </div>
         <Contact className="bg-slate-50" emailTo={emailTo} />
         <ScrollIndicator />
+        <Bottom />
       </SessionProvider>
     </>
   );
@@ -209,7 +211,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
   <a
     href="#contact"
     onClick={() => props.setEmailTo(props.agent.email)}
-    className="group mb-24 flex cursor-pointer flex-col text-left hover:scale-105 xs:mx-7 xs:mb-8"
+    className="group mb-24 flex cursor-pointer flex-col text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
   >
     <img
       src={props.agent.photo}
@@ -225,9 +227,11 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
       {props.agent.title} - Level {props.agent.level}
     </p>
     <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-3 text-sm text-primary">{props.agent.region.location}</p>
+    <p className="mt-3 text-sm text-primary">
+      {props.agent.region && props.agent.region.location}
+    </p>
     <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-    <button className="mt-4 w-fit bg-primary px-6 py-2 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+    <button className="mt-4 w-fit rounded-full bg-secondary px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
       Contact
     </button>
   </a>

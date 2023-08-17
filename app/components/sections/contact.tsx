@@ -9,10 +9,20 @@ import { cn } from "@/app/lib/utils";
 import { SetState } from "@/app/lib/types";
 
 /**
+ * Store the contact images which will be randomly selected
+ */
+const contactImages: string[] = [
+  "/images/headshots final-21.png",
+  "/images/headshots final-23.png",
+  "/images/headshots final-27.jpg",
+];
+
+/**
  * Contact Component
  * @returns JSX.Element
  */
 export default function Contact(props: {
+  image?: string;
   className?: string;
   emailTo?: string;
 }): JSX.Element {
@@ -28,7 +38,7 @@ export default function Contact(props: {
       <div className="flex h-full w-full flex-row items-center justify-center px-4">
         <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
         <Image
-          src="/images/headshots final-21.png"
+          src={props.image || contactImages[Math.floor(Math.random() * 3)]}
           alt="..."
           width={750}
           height={750}
