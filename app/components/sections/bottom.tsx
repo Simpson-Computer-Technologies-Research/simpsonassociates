@@ -69,6 +69,7 @@ const NavigationLinks = (): JSX.Element => {
       </h2>
       <Link href="#home" text="Home" />
       <Link href="#services" text="Services" />
+      <Link href="#agents" text="Agents" />
       <Link href="#about" text="About" />
       <Link href="#contact" text="Contact" />
     </div>

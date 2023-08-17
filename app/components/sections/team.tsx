@@ -20,9 +20,9 @@ export default function Team(): JSX.Element {
         width={1920}
         height={1080}
         loading="eager"
-        className="absolute h-[90%] w-[90%] rounded-lg duration-700 ease-in-out"
+        className="absolute h-[90%] w-[90%] rounded-md"
       />
-      <div className="absolute h-[90%] w-[90%] rounded-md bg-primary opacity-60 brightness-110 duration-700 ease-in-out group-hover:brightness-125"></div>
+      <div className="absolute h-[90%] w-[90%] rounded-md bg-primary opacity-80 brightness-100 duration-700 ease-in-out group-hover:opacity-90 group-hover:brightness-75"></div>
 
       <h1 className="z-[1] text-2xl font-black italic tracking-wider text-white duration-700 ease-in-out group-hover:-mb-4 group-hover:mt-9 group-hover:scale-125 group-hover:tracking-widest xs:text-3xl sm:text-4xl sm:group-hover:-mb-6 sm:group-hover:mt-12 sm:group-hover:scale-125 md:text-5xl md:group-hover:mt-20 md:group-hover:scale-110 lg:text-6xl lg:group-hover:scale-125 xl:group-hover:scale-150">
         MEET THE TEAM

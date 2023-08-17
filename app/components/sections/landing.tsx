@@ -10,7 +10,7 @@ import { schema } from "../../../schema.module.js";
 export default function Landing(): JSX.Element {
   return (
     <section
-      className="relative flex h-[750px] flex-row xs:h-[710px] sm:h-[860px]"
+      className="relative flex h-[750px] flex-row xs:h-[710px] sm:h-[820px] lg:h-[900px]"
       id="home"
     >
       {/* Background */}

@@ -43,7 +43,7 @@ export default function Contact(props: {
           width={750}
           height={750}
           loading="eager"
-          className="xxs:-right-44 absolute -right-36 bottom-0 xs:-right-60 sm:-right-72 md:-right-72 lg:-right-40"
+          className="absolute -right-36 bottom-0 xxs:-right-44 xs:-right-60 sm:-right-72 md:-right-72 lg:-right-40"
         />
       </div>
     </section>
