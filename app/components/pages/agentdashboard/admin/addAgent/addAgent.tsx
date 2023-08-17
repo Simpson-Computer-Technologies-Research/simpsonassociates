@@ -2,7 +2,7 @@ import React from "react";
 
 import { generateAuthorization } from "@/app/lib/auth";
 import { User, Agent, Location } from "@/app/lib/types";
-import { objState, ObjectState } from "@/app/lib/state";
+import { ObjectState } from "@/app/lib/state";
 
 import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
 import SelectRegion from "./selectRegion";
@@ -19,9 +19,9 @@ interface AddAgentProps {
   agents: ObjectState<Agent[]>;
 }
 export default function AddAgent(props: AddAgentProps): JSX.Element {
-  const error = objState<string>("");
-  const region = objState<Location | null>(null);
-  const photo = objState<string>("/images/default_agent_headshot.png");
+  const error = new ObjectState<string>("");
+  const region = new ObjectState<Location | null>(null);
+  const photo = new ObjectState<string>("/images/default_agent_headshot.png");
 
   // Eeturn the component jsx
   return (

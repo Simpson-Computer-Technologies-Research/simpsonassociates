@@ -8,7 +8,7 @@ import AddAgent from "./addAgent/addAgent";
 import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import UpdateAgent from "./addAgent/addAgent";
-import { objState } from "@/app/lib/state";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Fetch the agents
@@ -41,7 +41,7 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 function _Success(props: { user: User }): JSX.Element {
-  const agents = objState<Agent[]>([]);
+  const agents = new ObjectState<Agent[]>([]);
 
   if (!agents.value.length) {
     fetchAgents().then((result: Agent[]) => agents.set(result));
