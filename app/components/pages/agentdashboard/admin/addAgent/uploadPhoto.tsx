@@ -1,3 +1,4 @@
+import { ObjectState } from "@/app/lib/state";
 import React from "react";
 
 /**
@@ -5,7 +6,7 @@ import React from "react";
  * @returns JSX.Element
  */
 interface UploadPhotoProps {
-  photoRef: React.MutableRefObject<any>;
+  photo: ObjectState<string>;
 }
 export default function UploadPhoto(props: UploadPhotoProps): JSX.Element {
   const onChange = (e: any) => {
@@ -13,10 +14,7 @@ export default function UploadPhoto(props: UploadPhotoProps): JSX.Element {
     const reader = new FileReader();
 
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      props.photoRef.current = reader.result;
-      console.log(props.photoRef.current);
-    };
+    reader.onloadend = () => props.photo.set(reader.result as string);
   };
 
   return (

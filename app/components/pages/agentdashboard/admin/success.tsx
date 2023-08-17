@@ -8,6 +8,7 @@ import AddAgent from "./addAgent/addAgent";
 import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import UpdateAgent from "./addAgent/addAgent";
+import { objState } from "@/app/lib/state";
 
 /**
  * Fetch the agents
@@ -40,16 +41,16 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 function _Success(props: { user: User }): JSX.Element {
-  const agentsRef: React.MutableRefObject<Agent[]> = React.useRef([]);
+  const agents = objState<Agent[]>([]);
 
-  if (!agentsRef.current.length) {
-    fetchAgents().then((agents: any) => (agentsRef.current = agents));
+  if (!agents.value.length) {
+    fetchAgents().then((result: Agent[]) => agents.set(result));
   }
 
   return (
     <>
-      <UpdateAgent user={props.user} agentsRef={agentsRef} />
-      <Agents agentsRef={agentsRef} user={props.user} />
+      <UpdateAgent user={props.user} agents={agents} />
+      <Agents agents={agents} user={props.user} />
     </>
   );
 }

@@ -3,6 +3,7 @@ import React from "react";
 import { SetState, User, Agent } from "@/app/lib/types";
 
 import RemoveAgentButton from "./removeAgent";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Current Agents
@@ -10,7 +11,7 @@ import RemoveAgentButton from "./removeAgent";
  * @returns JSX.Element
  */
 interface AgentsProps {
-  agentsRef: React.MutableRefObject<Agent[]>;
+  agents: ObjectState<Agent[]>;
   user: User;
 }
 export default function Agents(props: AgentsProps): JSX.Element {
@@ -24,12 +25,8 @@ export default function Agents(props: AgentsProps): JSX.Element {
         Remove agents from the list below.
       </p>
       <div className="flex flex-col gap-4">
-        {props.agentsRef.current.map((agent: Agent, i: number) => (
-          <AgentCard
-            agent={agent}
-            user={props.user}
-            agentsRef={props.agentsRef}
-          />
+        {props.agents.value.map((agent: Agent, i: number) => (
+          <AgentCard agent={agent} user={props.user} agents={props.agents} />
         ))}
       </div>
     </section>
@@ -44,7 +41,7 @@ export default function Agents(props: AgentsProps): JSX.Element {
 interface AgentCardProps {
   agent: Agent;
   user: User;
-  agentsRef: React.MutableRefObject<Agent[]>;
+  agents: ObjectState<Agent[]>;
 }
 const AgentCard = (props: AgentCardProps): JSX.Element => {
   return (

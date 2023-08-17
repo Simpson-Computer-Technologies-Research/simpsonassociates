@@ -107,6 +107,9 @@ const Card = (props: CardProps): JSX.Element => (
  * @returns JSX.Element
  */
 const RatesCard = (): JSX.Element => {
+  // convert React.useState<Rate[]>([]) to an object with get, and set
+  React.useState<Rate[]>([]);
+
   const [rates, setRates] = React.useState<Rate[]>([]);
   React.useEffect(() => {
     if (rates.length) return;

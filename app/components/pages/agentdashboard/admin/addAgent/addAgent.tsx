@@ -1,11 +1,12 @@
 import React from "react";
 
 import { generateAuthorization } from "@/app/lib/auth";
-import { SetState, User, Agent } from "@/app/lib/types";
+import { User, Agent, Location } from "@/app/lib/types";
+import { objState, ObjectState } from "@/app/lib/state";
 
+import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
 import SelectRegion from "./selectRegion";
 import UploadPhoto from "./uploadPhoto";
-import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
 import PermissionsChecklist from "./permissionsChecklist";
 
 /**
@@ -15,12 +16,12 @@ import PermissionsChecklist from "./permissionsChecklist";
  */
 interface AddAgentProps {
   user: User;
-  agentsRef: React.MutableRefObject<Agent[]>;
+  agents: ObjectState<Agent[]>;
 }
 export default function AddAgent(props: AddAgentProps): JSX.Element {
-  const errorRef = React.useRef<string>("");
-  const regionRef = React.useRef<any>(null);
-  const photoRef = React.useRef<string>("");
+  const error = objState<string>("");
+  const region = objState<Location | null>(null);
+  const photo = objState<string>("/images/default_agent_headshot.png");
 
   // Eeturn the component jsx
   return (
@@ -37,24 +38,24 @@ export default function AddAgent(props: AddAgentProps): JSX.Element {
         <Input placeholder="Title" id="title" />
         <Input placeholder="Language" id="lang" />
         <Input placeholder="License #" id="license" />
-        <SelectRegion regionRef={regionRef} agent={null} />
+        <SelectRegion region={region} agent={null} />
       </div>
 
       <PermissionsChecklist />
-      <UploadPhoto photoRef={photoRef} />
+      <UploadPhoto photo={photo} />
 
       <div className="flex flex-row gap-4">
         <AddAgentButton
           user={props.user}
-          agentsRef={props.agentsRef}
-          errorRef={errorRef}
-          region={regionRef.current}
-          photo={photoRef.current}
+          agents={props.agents}
+          error={error}
+          region={region}
+          photo={photo}
         />
         <ClearInputButton />
       </div>
 
-      <p className="text-base font-medium text-red-500">{errorRef.current}</p>
+      <p className="text-base font-medium text-red-500">{error.value}</p>
     </section>
   );
 }
@@ -66,10 +67,10 @@ export default function AddAgent(props: AddAgentProps): JSX.Element {
  */
 interface AddAgentButtonProps {
   user: User;
-  agentsRef: React.MutableRefObject<Agent[]>;
-  errorRef: React.MutableRefObject<string>;
-  region: any;
-  photo: string;
+  agents: ObjectState<Agent[]>;
+  error: ObjectState<string>;
+  region: ObjectState<Location | null>;
+  photo: ObjectState<string>;
 }
 const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
   const onClick = async () => {
@@ -81,15 +82,15 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
         props.user.email,
       );
 
-      const inputValues: any = await getInputValues().catch(
-        (e) => (props.errorRef.current = e.message),
+      const inputValues: any = await getInputValues().catch((e) =>
+        props.error.set(e.message),
       );
 
       const body: Agent = {
         ...inputValues,
         permissions: getPermissions(),
-        photo: props.photo || "/images/default_agent_headshot.png",
-        region: props.region,
+        photo: props.photo.value,
+        region: (props.region && props.region.value) || {},
       };
 
       return await fetch("/api/agents", {
@@ -102,10 +103,10 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       }).then((res) => {
         if (res.status === 200) {
           clearInput();
-          props.agentsRef.current = [...props.agentsRef.current, inputValues];
-          props.errorRef.current = "";
+          props.agents.value = [...props.agents.value, inputValues];
+          props.error.set("");
         } else {
-          props.errorRef.current = "Failed to add agent.";
+          props.error.set("Failed to add agent.");
         }
       });
     }

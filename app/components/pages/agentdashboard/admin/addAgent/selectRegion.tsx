@@ -1,30 +1,24 @@
 import React from "react";
 
-import { Agent } from "@/app/lib/types";
+import { Agent, Location } from "@/app/lib/types";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Select Region Component
  * @returns JSX.Element
  */
-interface Location {
-  location: string;
-  lat: number;
-  long: number;
-}
 interface SelectRegionProps {
   agent: Agent | null;
-  regionRef: React.MutableRefObject<Location>;
+  region: ObjectState<Location | null>;
 }
 export default function SelectRegion(props: SelectRegionProps): JSX.Element {
-  const [input, setInput] = React.useState<string>("");
   const [geo, setGeo] = React.useState<any[]>([]);
-  const [loc, setLoc] = React.useState<any>({});
-  props.regionRef.current = loc;
 
-  const onSearch = () => {
-    if (!input) return;
+  const onSearch = (): void => {
+    const input = document.getElementById("region") as HTMLInputElement;
+    if (!input.value) return;
 
-    const url: string = "https://geocode.maps.co/search?q=" + input;
+    const url: string = "https://geocode.maps.co/search?q=" + input.value;
     fetch(url)
       .then((res) => res.json())
       .then((json) => {
@@ -33,12 +27,15 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
       });
   };
 
-  const onRegionSelect = (region: any) => {
-    let { lat, lon } = region;
+  const onRegionSelect = (result: any) => {
+    const input = document.getElementById("region") as HTMLInputElement;
+    if (!input.value) return;
+
+    let { lat, lon } = result;
     if (!lat || !lon) return;
     setGeo([]);
-    setLoc({
-      location: region.display_name,
+    props.region.set({
+      location: input.value,
       lat,
       long: lon,
     });
@@ -49,8 +46,7 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
       <div className="flex flex-row gap-4">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          id="region"
           className="w-full rounded-md bg-white px-2 py-2"
           placeholder="Enter Region (Example: Kitchener)"
         />
@@ -72,10 +68,10 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
           </button>
         ))}
       </div>
-      {props.regionRef.current && props.regionRef.current.location && (
+      {props.region.value && props.region.value.location && (
         <p className="text-white">
-          Selected Region: {props.regionRef.current.location} (
-          {props.regionRef.current.lat}, {props.regionRef.current.long})
+          Selected Region: {props.region.value.location} (
+          {props.region.value.lat}, {props.region.value.long})
         </p>
       )}
     </div>

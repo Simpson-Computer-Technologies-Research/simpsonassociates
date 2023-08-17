@@ -216,7 +216,7 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => {
     <a
       href="#contact"
       onClick={() => props.setEmailTo(props.agent.email)}
-      className="group mb-24 flex cursor-pointer flex-col text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
+      className="group mb-24 flex cursor-pointer flex-col p-4 text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
     >
       <img
         src={props.agent.photo}

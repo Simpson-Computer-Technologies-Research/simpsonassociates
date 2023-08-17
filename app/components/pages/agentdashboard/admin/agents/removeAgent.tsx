@@ -1,6 +1,7 @@
 import React from "react";
 import { Agent, SetState, User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Remove Agent Button
@@ -10,7 +11,7 @@ import { generateAuthorization } from "@/app/lib/auth";
 interface RemoveAgentButtonProps {
   user: User;
   agent: Agent;
-  agentsRef: React.MutableRefObject<Agent[]>;
+  agents: ObjectState<Agent[]>;
 }
 export default function RemoveAgentButton(
   props: RemoveAgentButtonProps,
@@ -39,16 +40,11 @@ export default function RemoveAgentButton(
  */
 interface RemoveConfirmationProps {
   setConfirmation: SetState<boolean>;
-  agentsRef: React.MutableRefObject<Agent[]>;
+  agents: ObjectState<Agent[]>;
   user: User;
   agent: Agent;
 }
 const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
-  const [newAgents, setNewAgents] = React.useState<Agent[]>(
-    props.agentsRef.current,
-  );
-  props.agentsRef.current = newAgents;
-
   return (
     <div className="flex flex-row items-center justify-center">
       <p className="mr-4 text-lg font-medium text-white">Are you sure?</p>
@@ -62,10 +58,10 @@ const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
               props.agent.user_id,
             ).then((success) => {
               if (success) {
-                const filteredAgents = newAgents.filter((agent) => {
+                const filteredAgents = props.agents.value.filter((agent) => {
                   if (agent !== props.agent) return agent;
                 });
-                setNewAgents(filteredAgents);
+                props.agents.set(filteredAgents);
               }
             });
           }}
