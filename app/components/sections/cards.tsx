@@ -120,7 +120,7 @@ const RatesCard = (): JSX.Element => {
         if (!json || json.error) return;
 
         const half = Math.ceil(json.length / 2);
-        let res = [...json].splice(0, half);
+        const res = [...json].splice(0, half);
         setRates(res);
       });
   }, []);

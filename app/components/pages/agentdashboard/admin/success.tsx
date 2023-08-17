@@ -4,7 +4,6 @@ import "@/app/styles/globals.css";
 
 import { User, Agent } from "@/app/lib/types";
 
-import AddAgent from "./addAgent/addAgent";
 import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import UpdateAgent from "./addAgent/addAgent";

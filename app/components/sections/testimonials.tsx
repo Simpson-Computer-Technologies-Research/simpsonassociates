@@ -3,7 +3,10 @@
 import React from "react";
 import Link from "next/link";
 
-// Return the component
+/**
+ * Testimonials (Google Reviews)
+ * @returns JSX.Element
+ */
 export default function Testimonials(): JSX.Element {
   return (
     <section
@@ -114,7 +117,7 @@ const StarSVG = (): JSX.Element => (
 );
 
 /**
- * Get the testimonials.
+ * Testimonials array.
  */
 const testimonials: {
   name: string;

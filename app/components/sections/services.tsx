@@ -28,6 +28,7 @@ export default function Services(): JSX.Element {
 
 /**
  * Services Card Grid Component
+ * @returns JSX.Element
  */
 export const ServicesCardGrid = (): JSX.Element => (
   <div className="z-[1] grid grid-cols-2 gap-6 pt-4 sm:grid-cols-3 md:p-10 md:pt-4">

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SetState, User, Agent } from "@/app/lib/types";
+import { User, Agent } from "@/app/lib/types";
 
 import RemoveAgentButton from "./removeAgent";
 import { ObjectState } from "@/app/lib/state";

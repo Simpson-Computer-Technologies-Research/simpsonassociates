@@ -16,9 +16,8 @@ interface RemoveAgentButtonProps {
 export default function RemoveAgentButton(
   props: RemoveAgentButtonProps,
 ): JSX.Element {
-  if (!props.agent) {
-    return <></>;
-  }
+  if (!props.agent) return <></>;
+
   const [confirmation, setConfirmation] = React.useState<boolean>(false);
 
   return confirmation ? (
