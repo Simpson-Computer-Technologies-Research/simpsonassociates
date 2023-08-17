@@ -74,7 +74,11 @@ function _PermissionMiddleware({
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
-  if (!permissions.every((p: any) => userPermissions.includes(p)))
+  if (
+    !userPermissions ||
+    !userPermissions.length ||
+    !permissions.every((p: any) => userPermissions.includes(p))
+  )
     return unauthorized();
 
   // Update the users authorization token

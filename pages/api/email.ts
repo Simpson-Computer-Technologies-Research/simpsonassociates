@@ -1,6 +1,7 @@
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import nodemailer from "nodemailer";
 import { context } from "@/app/lib/mongo";
+import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * Middlewares to limit the number of requests
@@ -26,7 +27,10 @@ const rateLimit = async (req: any, res: any) => {
  * @param res The http response
  * @returns void
  */
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   // await rateLimit(req, res);
 
   if (req.method !== "POST") {

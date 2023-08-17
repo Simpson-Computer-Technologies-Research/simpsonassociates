@@ -57,7 +57,9 @@ export default function AgentsPage(): JSX.Element {
     if (query && !initialQuery) setInitialQuery(query);
 
     if (!agents.length) {
-      fetchAgents().then((res) => setAgents(res));
+      fetchAgents().then((res) => {
+        if (res.length) setAgents(res);
+      });
     }
   }, []);
 

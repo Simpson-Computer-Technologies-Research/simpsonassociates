@@ -1,5 +1,6 @@
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { RatesCache } from "@/app/lib/cache";
+import { NextApiRequest, NextApiResponse } from "next";
 
 // Create a new cache instance
 const cache = new RatesCache();
@@ -22,7 +23,10 @@ const rateLimit = async (req: any, res: any) => {
   }
 };
 
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   await rateLimit(req, res);
 
   let hasResponded: boolean = false;

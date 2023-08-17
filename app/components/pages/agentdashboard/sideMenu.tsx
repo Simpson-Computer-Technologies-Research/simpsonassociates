@@ -1,7 +1,8 @@
 import React from "react";
+import Link from "next/link";
+
 import { User } from "@/app/lib/types";
 import { signOut } from "next-auth/react";
-import Link from "next/link";
 
 /**
  * Side menu
