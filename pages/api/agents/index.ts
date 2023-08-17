@@ -112,6 +112,7 @@ const addAgent = async (req: any, res: any) => {
       .insertOne({
         ...req.body,
         user_id: userId,
+        hidden: false,
       })
       .then((result) => {
         if (!result.acknowledged) {

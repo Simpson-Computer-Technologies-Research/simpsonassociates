@@ -5,11 +5,8 @@ import { SetState, User, Agent } from "@/app/lib/types";
 
 import SelectRegion from "./selectRegion";
 import UploadPhoto from "./uploadPhoto";
-import AgentInputs, {
-  ClearInputButton,
-  clearInput,
-  getInputValues,
-} from "./input";
+import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
+import PermissionsChecklist from "./permissionsChecklist";
 
 /**
  * Add Agent Component
@@ -29,15 +26,23 @@ export default function AddAgent(props: {
   return (
     <section
       id="add-agent"
-      className="flex h-fit w-full flex-col bg-primary p-7"
+      className="flex h-fit w-full flex-col gap-2 bg-primary p-7"
     >
       <h1 className="text-4xl font-bold text-white">Add Agent</h1>
-      <p className="mt-2 text-sm text-white">Add an agent to your team!</p>
+      <p className="text-sm text-white">Add an agent to your team!</p>
 
-      <AgentInputs />
+      <div className="flex flex-col gap-2">
+        <Input placeholder="Name" id="name" />
+        <Input placeholder="Email" id="email" />
+        <Input placeholder="Title" id="title" />
+        <Input placeholder="Language" id="lang" />
+        <Input placeholder="License #" id="license" />
+        <SelectRegion regionRef={regionRef} agent={null} />
+      </div>
+
       <PermissionsChecklist />
-      <SelectRegion regionRef={regionRef} agent={null} />
       <UploadPhoto photoRef={photoRef} />
+
       <div className="flex flex-row gap-4">
         <AddAgentButton
           user={props.user}
@@ -50,52 +55,10 @@ export default function AddAgent(props: {
         <ClearInputButton />
       </div>
 
-      <p className="mt-4 text-lg font-medium text-red-500">
-        {errorRef.current}
-      </p>
+      <p className="text-base font-medium text-red-500">{errorRef.current}</p>
     </section>
   );
 }
-
-/**
- * Permissions checklist
- * @returns JSX.Element
- */
-const PermissionsChecklist = (): JSX.Element => (
-  <div id="perms" className="flex h-full w-full flex-col gap-2">
-    <p className="font-medium text-white">Permissions</p>
-    <div className="flex flex-wrap gap-4 ">
-      <PermissionsCheckbox value="post_events" label="Post Events" />
-      <PermissionsCheckbox value="admin" label="Admin" />
-    </div>
-  </div>
-);
-
-/**
- * Permissions checkbox
- * @param props
- * @returns JSX.Element
- */
-const PermissionsCheckbox = (props: {
-  value: string;
-  label: string;
-  permissions?: string[];
-}): JSX.Element => {
-  const defaultChecked: boolean =
-    (props.permissions && props.permissions.includes(props.value)) || false;
-
-  return (
-    <div className="flex flex-row gap-2 text-white">
-      <input
-        defaultChecked={defaultChecked}
-        type="checkbox"
-        value={props.value}
-        className="h-6 w-6"
-      />
-      <label htmlFor={props.value}>{props.label}</label>
-    </div>
-  );
-};
 
 /**
  * Add Agent Button
@@ -147,7 +110,7 @@ const AddAgentButton = (props: {
         }
       });
     }}
-    className="mt-4 w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+    className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
   >
     Add
   </button>

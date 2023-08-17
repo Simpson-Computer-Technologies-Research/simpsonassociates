@@ -6,6 +6,7 @@ export interface Agent {
   name: string;
   email: string;
   title: string;
+  hidden: boolean;
   lang: string;
   license: string;
   user_id: string;

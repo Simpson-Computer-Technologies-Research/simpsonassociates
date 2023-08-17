@@ -24,7 +24,7 @@ export default function UploadPhoto(props: {
       onChange={onChange}
       type="file"
       accept="image/*"
-      className="mt-4 w-full rounded-md bg-white px-2 py-2"
+      className="w-full rounded-md bg-white px-2 py-2"
     />
   );
 }

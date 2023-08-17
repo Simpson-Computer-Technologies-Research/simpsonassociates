@@ -1,29 +1,13 @@
 /**
- * Agent Info Inputs
- * @returns JSX.Element
- */
-export default function AgentInputs(): JSX.Element {
-  return (
-    <div className="my-2 flex flex-col gap-2">
-      <Input placeholder="Name" id="name" />
-      <Input placeholder="Email" id="email" />
-      <Input placeholder="Title" id="title" />
-      <Input placeholder="Language" id="lang" />
-      <Input placeholder="License" id="license" />
-    </div>
-  );
-}
-
-/**
  * Input Component
  * @param props
  * @returns JSX.Element
  */
-const Input = (props: {
+export default function Input(props: {
   placeholder: string;
   id: string;
   default?: string | undefined;
-}): JSX.Element => {
+}): JSX.Element {
   return (
     <input
       id={props.id}
@@ -33,7 +17,7 @@ const Input = (props: {
       defaultValue={props.default || ""}
     />
   );
-};
+}
 
 /**
  * Clear Input Button
@@ -42,7 +26,7 @@ const Input = (props: {
 export const ClearInputButton = (): JSX.Element => (
   <button
     onClick={clearInput}
-    className="mt-4 w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
+    className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary"
   >
     Clear
   </button>

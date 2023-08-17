@@ -41,8 +41,8 @@ export default function SelectRegion(props: {
   };
 
   return (
-    <div className="mt-4">
-      <div className="mt-2 flex flex-row gap-4">
+    <>
+      <div className="flex flex-row gap-4">
         <input
           type="text"
           value={input}
@@ -74,6 +74,6 @@ export default function SelectRegion(props: {
           Selected Region: {location.location} ({location.lat}, {location.long})
         </p>
       )}
-    </div>
+    </>
   );
 }

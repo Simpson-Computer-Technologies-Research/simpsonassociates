@@ -40,6 +40,7 @@ export const publicAgentSearchConfig = {
   lang: 1,
   user_id: 1,
   permissions: 1,
+  hidden: 1,
 };
 
 /**

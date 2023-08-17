@@ -209,32 +209,36 @@ const AgentsGrid = (props: {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => (
-  <a
-    href="#contact"
-    onClick={() => props.setEmailTo(props.agent.email)}
-    className="group mb-24 flex cursor-pointer flex-col text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
-  >
-    <img
-      src={props.agent.photo}
-      alt="..."
-      width={150}
-      height={150}
-      className="h-32 w-32 rounded-full lg:h-40 lg:w-40"
-    />
-    <h3 className="mt-4 font-extrabold tracking-wide text-primary lg:text-xl">
-      {props.agent.name}
-    </h3>
-    <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
-      {props.agent.title}
-    </p>
-    <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
-    <p className="mt-3 text-sm text-primary">
-      {props.agent.region && props.agent.region.location}
-    </p>
-    <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-    <button className="mt-4 w-fit rounded-full bg-secondary px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
-      Contact
-    </button>
-  </a>
-);
+const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => {
+  if (props.agent.hidden) return <></>;
+
+  return (
+    <a
+      href="#contact"
+      onClick={() => props.setEmailTo(props.agent.email)}
+      className="group mb-24 flex cursor-pointer flex-col text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
+    >
+      <img
+        src={props.agent.photo}
+        alt="..."
+        width={150}
+        height={150}
+        className="h-32 w-32 rounded-full lg:h-40 lg:w-40"
+      />
+      <h3 className="mt-4 font-extrabold tracking-wide text-primary lg:text-xl">
+        {props.agent.name}
+      </h3>
+      <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
+        {props.agent.title}
+      </p>
+      <p className="mt-1 text-xs text-primary">{props.agent.license}</p>
+      <p className="mt-3 text-sm text-primary">
+        {props.agent.region && props.agent.region.location}
+      </p>
+      <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
+      <button className="mt-4 w-fit rounded-full bg-secondary px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+        Contact
+      </button>
+    </a>
+  );
+};
