@@ -24,6 +24,7 @@ export default function Cards(): JSX.Element {
           button={{
             href: "https://calculators.dominionlending.ca/",
             text: "Start Calculating",
+            target: "_blank",
           }}
         />
         <Card
@@ -34,6 +35,7 @@ export default function Cards(): JSX.Element {
           button={{
             href: "https://velocity-client.newton.ca/en/client/journey/home?shortCode=1c12wgprkn05s",
             text: "Apply Now",
+            target: "_blank",
           }}
         />
         <Card
@@ -43,6 +45,7 @@ export default function Cards(): JSX.Element {
           button={{
             href: "#contact",
             text: "Contact Us",
+            target: "",
           }}
         />
       </div>
@@ -65,6 +68,7 @@ interface CardProps {
   button: {
     href: string;
     text: string;
+    target: string;
   };
   className: string;
 }
@@ -89,7 +93,7 @@ const Card = (props: CardProps): JSX.Element => (
       <a
         href={props.button.href}
         rel="noopener noreferrer"
-        target="_blank"
+        target={props.button.target}
         className="mt-7 rounded-full bg-secondary px-8 py-3 text-base font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] md:outline-none"
       >
         {props.button.text}
