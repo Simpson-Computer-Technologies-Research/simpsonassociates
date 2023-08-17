@@ -34,19 +34,10 @@ export default function AddAgent(props: {
       <h1 className="text-4xl font-bold text-white">Add Agent</h1>
       <p className="mt-2 text-sm text-white">Add an agent to your team!</p>
 
-      {/* Agent Info Inputs */}
-      <div className="mt-2 grid h-auto w-auto grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <AgentInputs />
-        <PermissionsChecklist />
-      </div>
-
-      {/* Select Region Input and Search Button */}
+      <AgentInputs />
+      <PermissionsChecklist />
       <SelectRegion regionRef={regionRef} agent={null} />
-
-      {/* Upload Photo Button */}
       <UploadPhoto photoRef={photoRef} />
-
-      {/* Save Changes and Clear Input Button */}
       <div className="flex flex-row gap-4">
         <AddAgentButton
           user={props.user}
@@ -59,7 +50,6 @@ export default function AddAgent(props: {
         <ClearInputButton />
       </div>
 
-      {/* Error */}
       <p className="mt-4 text-lg font-medium text-red-500">
         {errorRef.current}
       </p>

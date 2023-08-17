@@ -58,7 +58,7 @@ const getDistance = (
   a: { lat: number; long: number },
   b: { lat: number; long: number },
 ) => {
-  const R = 6371; // Radius of the earth in km
+  const R = 200; // Distance radius in km
   const dLat = deg2rad(b.lat - a.lat);
   const dLon = deg2rad(b.long - a.long);
   const x =

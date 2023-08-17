@@ -4,13 +4,13 @@
  */
 export default function AgentInputs(): JSX.Element {
   return (
-    <>
+    <div className="my-2 flex flex-col gap-2">
       <Input placeholder="Name" id="name" />
       <Input placeholder="Email" id="email" />
       <Input placeholder="Title" id="title" />
       <Input placeholder="Language" id="lang" />
       <Input placeholder="License" id="license" />
-    </>
+    </div>
   );
 }
 
