@@ -143,8 +143,12 @@ const getPermissions = (): string[] => {
   for (let i = 0; i < perms.children.length; i++) {
     const child = perms.children[i] as HTMLInputElement;
 
-    if (child.checked) {
-      result.push(child.value);
+    for (let j = 0; j < child.children.length; j++) {
+      const grandchild = child.children[j] as HTMLInputElement;
+
+      if (grandchild.checked) {
+        result.push(grandchild.value);
+      }
     }
   }
 
@@ -161,8 +165,12 @@ const getTeam = (): string => {
   for (let i = 0; i < team.children.length; i++) {
     const child = team.children[i] as HTMLInputElement;
 
-    if (child.checked) {
-      return child.value;
+    for (let j = 0; j < child.children.length; j++) {
+      const grandchild = child.children[j] as HTMLInputElement;
+
+      if (grandchild.checked) {
+        return grandchild.value;
+      }
     }
   }
 
@@ -179,8 +187,12 @@ const getPriority = (): boolean => {
   for (let i = 0; i < priority.children.length; i++) {
     const child = priority.children[i] as HTMLInputElement;
 
-    if (child.checked) {
-      return true;
+    for (let j = 0; j < child.children.length; j++) {
+      const grandchild = child.children[j] as HTMLInputElement;
+
+      if (grandchild.checked) {
+        return true;
+      }
     }
   }
   return false;

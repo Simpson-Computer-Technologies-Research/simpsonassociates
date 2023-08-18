@@ -4,9 +4,9 @@
  */
 export default function PermissionsChecklist(): JSX.Element {
   return (
-    <div id="perms" className="mb-3 flex h-full w-full flex-col gap-2">
+    <div className="mb-3 flex h-full w-full flex-col gap-2">
       <p className="font-medium text-white">Permissions</p>
-      <div className="flex flex-wrap gap-4 ">
+      <div className="flex flex-wrap gap-4" id="perms">
         <PermissionsCheckbox value="post_events" label="Post Events" />
         <PermissionsCheckbox value="admin" label="Admin" />
       </div>
@@ -16,9 +16,9 @@ export default function PermissionsChecklist(): JSX.Element {
 
 export const TeamChecklist = (): JSX.Element => {
   return (
-    <div id="team" className="mb-3 flex h-full w-full flex-col gap-2">
+    <div className="mb-3 flex h-full w-full flex-col gap-2">
       <p className="font-medium text-white">Team</p>
-      <div className="flex flex-wrap gap-4 ">
+      <div className="flex flex-wrap gap-4" id="team">
         <Checkbox default={false} value="executive" label="Executive" />
         <Checkbox default={false} value="sales" label="Support" />
         <Checkbox default={false} value="marketing" label="Marketing" />
@@ -51,13 +51,11 @@ const PermissionsCheckbox = (props: PermissionsCheckboxProps): JSX.Element => {
     (props.permissions && props.permissions.includes(props.value)) || false;
 
   return (
-    <div className="flex flex-row gap-2 text-white">
-      <Checkbox
-        default={defaultChecked}
-        value={props.value}
-        label={props.label}
-      />
-    </div>
+    <Checkbox
+      default={defaultChecked}
+      value={props.value}
+      label={props.label}
+    />
   );
 };
 
