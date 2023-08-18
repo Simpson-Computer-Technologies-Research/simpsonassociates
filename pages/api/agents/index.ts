@@ -173,8 +173,14 @@ const isValidAgentBody = (body: any) =>
   body.name &&
   body.email &&
   body.license &&
-  body.region &&
   body.title &&
   body.photo &&
   body.lang &&
+  body.priority !== undefined &&
+  body.team &&
+  body.region &&
+  body.region.location &&
+  body.region.lat !== undefined &&
+  body.region.lon !== undefined &&
+  body.permissions &&
   body.permissions.length > 0;

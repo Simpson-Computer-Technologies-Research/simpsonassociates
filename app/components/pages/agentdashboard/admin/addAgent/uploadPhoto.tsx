@@ -11,8 +11,9 @@ interface UploadPhotoProps {
 export default function UploadPhoto(props: UploadPhotoProps): JSX.Element {
   const onChange = (e: any) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
+    if (!file) return;
 
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => props.photo.set(reader.result as string);
   };

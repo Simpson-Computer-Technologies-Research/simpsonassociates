@@ -7,7 +7,10 @@ import { ObjectState } from "@/app/lib/state";
 import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
 import SelectRegion from "./selectRegion";
 import UploadPhoto from "./uploadPhoto";
-import PermissionsChecklist from "./permissionsChecklist";
+import PermissionsChecklist, {
+  PriorityCheckbox,
+  TeamChecklist,
+} from "./checklists";
 
 /**
  * Add Agent Component
@@ -41,7 +44,12 @@ export default function AddAgent(props: AddAgentProps): JSX.Element {
         <SelectRegion region={region} agent={null} />
       </div>
 
-      <PermissionsChecklist />
+      <div className="flex flex-row gap-6">
+        <PermissionsChecklist />
+        <TeamChecklist />
+        <PriorityCheckbox />
+      </div>
+
       <UploadPhoto photo={photo} />
 
       <div className="flex flex-row gap-4">
@@ -89,6 +97,8 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       const body: Agent = {
         ...inputValues,
         permissions: getPermissions(),
+        team: getTeam(),
+        priority: getPriority(),
         photo: props.photo.value,
         region: (props.region && props.region.value) || {},
       };
@@ -139,4 +149,39 @@ const getPermissions = (): string[] => {
   }
 
   return result;
+};
+
+/**
+ * Get the team (checklist)
+ * @return the team
+ */
+const getTeam = (): string => {
+  const team = document.getElementById("team") as HTMLInputElement;
+
+  for (let i = 0; i < team.children.length; i++) {
+    const child = team.children[i] as HTMLInputElement;
+
+    if (child.checked) {
+      return child.value;
+    }
+  }
+
+  return "none";
+};
+
+/**
+ * Get whether the agent is a priority agent
+ * @return boolean
+ */
+const getPriority = (): boolean => {
+  const priority = document.getElementById("priority") as HTMLInputElement;
+
+  for (let i = 0; i < priority.children.length; i++) {
+    const child = priority.children[i] as HTMLInputElement;
+
+    if (child.checked) {
+      return true;
+    }
+  }
+  return false;
 };

@@ -6,6 +6,8 @@ export interface Agent {
   name: string;
   email: string;
   title: string;
+  priority: boolean;
+  team: string;
   hidden: boolean;
   lang: string;
   license: string;
@@ -14,7 +16,7 @@ export interface Agent {
   region: {
     location: string;
     lat: number;
-    long: number;
+    lon: number;
   };
   permissions: string[];
 }
@@ -52,5 +54,5 @@ export interface Rate {
 export interface Location {
   location: string;
   lat: number;
-  long: number;
+  lon: number;
 }

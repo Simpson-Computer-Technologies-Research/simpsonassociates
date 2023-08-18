@@ -115,7 +115,7 @@ const Agents = (props: {
     loading: false,
     active: false,
     lat: 0,
-    long: 0,
+    lon: 0,
   });
 
   return (
@@ -186,12 +186,16 @@ const AgentsGrid = (props: {
   if (props.location.active) {
     results = nearbyAgents(props.agents, {
       lat: props.location.lat,
-      long: props.location.long,
+      lon: props.location.lon,
     });
   }
 
+  if (!props.query) {
+    results = sortByPriority(results);
+  }
+
   return (
-    <div className="mt-12 grid grid-cols-1 xs:grid-cols-2 xs:justify-center sm:grid-cols-3 md:flex md:flex-wrap">
+    <div className="mt-12 flex flex-wrap justify-center">
       {results.map((item: any, i: number) => {
         return (
           <AgentCard
@@ -206,6 +210,17 @@ const AgentsGrid = (props: {
 };
 
 /**
+ * Sort the agents by priority
+ * @param agents The agents to sort
+ * @returns The sorted agents
+ */
+const sortByPriority = (agents: Agent[]) => {
+  const priorityAgents = agents.filter((agent) => agent.priority);
+  const nonPriorityAgents = agents.filter((agent) => !agent.priority);
+  return [...priorityAgents, ...nonPriorityAgents];
+};
+
+/**
  * Agent Card Component
  * @returns JSX.Element
  */
@@ -216,30 +231,30 @@ const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => {
     <a
       href="#contact"
       onClick={() => props.setEmailTo(props.agent.email)}
-      className="group mb-24 flex cursor-pointer flex-col p-4 text-left duration-500 ease-in-out hover:scale-105 xs:mx-7 xs:mb-8"
+      className="group relative mb-8 flex h-auto w-80 scale-100 cursor-pointer flex-col items-center p-6 text-center duration-500 ease-in-out hover:scale-105 hover:bg-slate-50 xs:mx-7 md:h-[34rem]"
     >
       <img
         src={props.agent.photo}
         alt="..."
-        width={150}
-        height={150}
-        className="h-32 w-32 rounded-full lg:h-40 lg:w-40"
+        width={600}
+        height={600}
+        className="h-32 w-32 rounded-full xs:h-60 xs:w-60 lg:h-60 lg:w-60"
       />
-      <h3 className="mt-4 font-extrabold tracking-wide text-primary lg:text-xl">
+      <h3 className="mt-4 text-2xl font-extrabold tracking-wide text-primary xs:text-3xl">
         {props.agent.name}
       </h3>
-      <p className="mt-1 text-xs text-primary xs:text-sm lg:text-base">
+      <p className="text-sm font-medium text-primary xs:text-base">
         {props.agent.title}
       </p>
       <p className="mt-1 text-xs text-primary">
         License #{props.agent.license}
       </p>
-      <p className="mt-3 text-sm text-primary">
+      <p className="mt-3 text-base text-primary">
         {props.agent.region && props.agent.region.location}
       </p>
-      <p className="mt-1 text-sm text-primary">{props.agent.lang}</p>
-      <button className="mt-4 w-fit rounded-full bg-secondary px-10 py-3 text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
-        Contact
+      <p className="mt-1 text-base text-primary">{props.agent.lang}</p>
+      <button className="mt-3 w-fit bg-primary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 group-hover:bg-secondary md:absolute md:bottom-4">
+        Get in touch
       </button>
     </a>
   );

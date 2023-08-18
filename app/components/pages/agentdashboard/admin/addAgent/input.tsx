@@ -73,6 +73,7 @@ export const getInputValues = (): Promise<any> => {
     const title = document.getElementById("title") as HTMLInputElement;
     const lang = document.getElementById("lang") as HTMLInputElement;
     const license = document.getElementById("license") as HTMLInputElement;
+    const team = document.getElementById("team") as HTMLInputElement;
 
     if (!name.value || !email.value || !title.value) {
       reject({ error: "Missing required fields" });
@@ -84,6 +85,7 @@ export const getInputValues = (): Promise<any> => {
       title: title.value,
       lang: lang.value,
       license: license.value,
+      team: team.value,
     };
 
     resolve(result);

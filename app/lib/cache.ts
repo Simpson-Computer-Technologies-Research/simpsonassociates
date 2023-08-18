@@ -2,6 +2,8 @@ export class AgentsCache {
   cache: {
     name: string;
     user_id: string;
+    priority: boolean;
+    team: string;
     email: string;
     title: string;
     photo: string;
@@ -11,7 +13,7 @@ export class AgentsCache {
     region: {
       location: string;
       lat: string;
-      long: string;
+      lon: string;
     };
   }[];
 

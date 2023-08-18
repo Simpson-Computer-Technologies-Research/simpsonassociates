@@ -30,14 +30,19 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
   const onRegionSelect = (result: any) => {
     const input = document.getElementById("region") as HTMLInputElement;
     if (!input.value) return;
+    props.region.set({
+      lat: (props.region.value && props.region.value.lat) || 0.0,
+      lon: (props.region.value && props.region.value.lon) || 0.0,
+      location: input.value,
+    });
 
     let { lat, lon } = result;
     if (!lat || !lon) return;
     setGeo([]);
     props.region.set({
       location: input.value,
-      lat,
-      long: lon,
+      lat: parseFloat(lat),
+      lon: parseFloat(lon),
     });
   };
 
@@ -71,7 +76,7 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
       {props.region.value && props.region.value.location && (
         <p className="text-white">
           Selected Region: {props.region.value.location} (
-          {props.region.value.lat}, {props.region.value.long})
+          {props.region.value.lat}, {props.region.value.lon})
         </p>
       )}
     </div>

@@ -1,5 +1,6 @@
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
+import { Agent, Location } from "./types";
 
 /**
  * Fetch the agents from the api
@@ -22,7 +23,7 @@ export const getLocation = (loc: any, setLoc: any, setErr: any): void => {
 
   // If the user has already searched by location but
   // the location is not active, set the location to active
-  if (loc.lat && loc.long) {
+  if (loc.lat && loc.lon) {
     setLoc({ ...location, active: true, loading: false });
   }
 
@@ -33,12 +34,12 @@ export const getLocation = (loc: any, setLoc: any, setErr: any): void => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
-        const long = position.coords.longitude;
+        const lon = position.coords.longitude;
         setLoc({
           loading: false,
           active: true,
           lat: lat,
-          long: long,
+          lon: lon,
         });
       },
       (error) => setErr(error.message),
@@ -50,17 +51,17 @@ export const getLocation = (loc: any, setLoc: any, setErr: any): void => {
 
 /**
  * Get the distance between agents
- * @param a - The first agent long/lat
- * @param b - The second agent long/lat
+ * @param a - The first agent lon/lat
+ * @param b - The second agent lon/lat
  */
 const deg2rad = (deg: number) => deg * (Math.PI / 180);
 const getDistance = (
-  a: { lat: number; long: number },
-  b: { lat: number; long: number },
+  a: { lat: number; lon: number },
+  b: { lat: number; lon: number },
 ) => {
-  const R = 200; // Distance radius in km
+  const R = 100; // Distance radius in km
   const dLat = deg2rad(b.lat - a.lat);
-  const dLon = deg2rad(b.long - a.long);
+  const dLon = deg2rad(b.lon - a.lon);
   const x =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(a.lat)) *
@@ -78,19 +79,26 @@ const getDistance = (
  * @param userLocation The user's location
  * @returns The agents sorted by distance
  */
-export const nearbyAgents = (agents: any[], userLocation: any) => {
+export const nearbyAgents = (
+  agents: Agent[],
+  userLocation: {
+    lat: number;
+    lon: number;
+  },
+) => {
   return agents
     .map((agent) => {
       const distance = getDistance(
         {
-          lat: userLocation.lat,
-          long: userLocation.long,
+          lat: userLocation.lat as number,
+          lon: userLocation.lon as number,
         },
         {
-          lat: agent.region.lat,
-          long: agent.region.long,
+          lat: agent.region.lat as number,
+          lon: agent.region.lon as number,
         },
       );
+      console.log(distance);
       return { ...agent, distance };
     })
     .sort((a, b) => a.distance - b.distance);
