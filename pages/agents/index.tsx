@@ -14,6 +14,7 @@ import "@/app/styles/globals.css";
 import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
 import { Agent, SetState } from "@/app/lib/types";
 import Fuse from "fuse.js";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Get the agents that match the query
@@ -48,22 +49,25 @@ const getUrlQueryParam = () =>
  * @returns JSX.Element
  */
 export default function AgentsPage(): JSX.Element {
-  const [initialQuery, setInitialQuery] = React.useState("");
-  const [agents, setAgents] = React.useState([]);
-  const [emailTo, setEmailTo] = React.useState("");
+  const initialQuery: ObjectState<string> = new ObjectState("");
+
+  const emptyAgents: Agent[] = [];
+  const agents: ObjectState<Agent[]> = new ObjectState(emptyAgents);
+  const emailTo: ObjectState<string> = new ObjectState("");
+  const image: ObjectState<string> = new ObjectState("");
 
   React.useEffect(() => {
     const query = getUrlQueryParam();
-    if (query && !initialQuery) setInitialQuery(query);
+    if (query && !initialQuery.value) initialQuery.set(query);
 
-    if (!agents.length) {
+    if (!agents.value.length) {
       fetchAgents().then((res) => {
-        if (res.length) setAgents(res);
+        if (res.length) agents.set(randomized(res));
       });
     }
   }, []);
 
-  if (!agents.length) {
+  if (!agents.value.length) {
     return (
       <>
         <Head>
@@ -89,10 +93,15 @@ export default function AgentsPage(): JSX.Element {
           <Agents
             initialQuery={initialQuery}
             agents={agents}
-            setEmailTo={setEmailTo}
+            emailTo={emailTo}
+            image={image}
           />
         </div>
-        <Contact className="bg-slate-50" emailTo={emailTo} />
+        <Contact
+          className="bg-slate-50"
+          emailTo={emailTo.value}
+          image={image.value}
+        />
         <ScrollIndicator />
         <Bottom />
       </SessionProvider>
@@ -105,9 +114,10 @@ export default function AgentsPage(): JSX.Element {
  * @returns JSX.Element
  */
 const Agents = (props: {
-  initialQuery: string;
-  agents: Agent[];
-  setEmailTo: SetState<string>;
+  initialQuery: ObjectState<string>;
+  agents: ObjectState<Agent[]>;
+  emailTo: ObjectState<string>;
+  image: ObjectState<string>;
 }): JSX.Element => {
   const [query, setQuery] = React.useState("");
   const [error, setError] = React.useState("");
@@ -123,7 +133,7 @@ const Agents = (props: {
       <input
         className="mb-4 w-60 border-b-[2.5px] border-b-primary p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
         type="text"
-        defaultValue={props.initialQuery}
+        defaultValue={props.initialQuery.value}
         placeholder="Enter an agent name, city, or language"
         onChange={(e) => {
           setQuery(e.target.value);
@@ -143,10 +153,11 @@ const Agents = (props: {
       </button>
       <p className="text-sm font-semibold text-red-500">{error}</p>
       <AgentsGrid
-        query={query || props.initialQuery}
+        query={query || props.initialQuery.value}
         agents={props.agents}
         location={location}
-        setEmailTo={props.setEmailTo}
+        emailTo={props.emailTo}
+        image={props.image}
       />
     </section>
   );
@@ -172,19 +183,20 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const AgentsGrid = (props: {
-  agents: Agent[];
+  agents: ObjectState<Agent[]>;
   query: string;
   location: any;
-  setEmailTo: SetState<string>;
+  emailTo: ObjectState<string>;
+  image: ObjectState<string>;
 }): JSX.Element => {
-  let results: any[] = props.agents;
+  let results: any[] = props.agents.value;
 
   if (props.query && !props.location.active) {
-    results = fuzzySearch(props.agents, props.query);
+    results = fuzzySearch(props.agents.value, props.query);
   }
 
   if (props.location.active) {
-    results = nearbyAgents(props.agents, {
+    results = nearbyAgents(props.agents.value, {
       lat: props.location.lat,
       lon: props.location.lon,
     });
@@ -201,12 +213,23 @@ const AgentsGrid = (props: {
           <AgentCard
             key={i}
             agent={item.item || item}
-            setEmailTo={props.setEmailTo}
+            emailTo={props.emailTo}
+            image={props.image}
           />
         );
       })}
     </div>
   );
+};
+
+/**
+ * Randomize the agents
+ * @param agents The agents to randomize
+ * @returns The randomized agents
+ */
+const randomized = (agents: Agent[]) => {
+  const randomizedAgents = agents.sort(() => Math.random() - 0.5);
+  return randomizedAgents;
 };
 
 /**
@@ -224,13 +247,21 @@ const sortByPriority = (agents: Agent[]) => {
  * Agent Card Component
  * @returns JSX.Element
  */
-const AgentCard = (props: { agent: Agent; setEmailTo: SetState<string> }) => {
+interface AgentCardProps {
+  agent: Agent;
+  emailTo: ObjectState<string>;
+  image: ObjectState<string>;
+}
+const AgentCard = (props: AgentCardProps): JSX.Element => {
   if (props.agent.hidden) return <></>;
 
   return (
     <a
       href="#contact"
-      onClick={() => props.setEmailTo(props.agent.email)}
+      onClick={() => {
+        props.emailTo.set(props.agent.email);
+        props.image.set(props.agent.photo);
+      }}
       className="group relative mb-8 flex h-auto w-80 scale-100 cursor-pointer flex-col items-center p-6 text-center duration-500 ease-in-out hover:scale-105 hover:bg-slate-50 xs:mx-7 md:h-[34rem]"
     >
       <img
