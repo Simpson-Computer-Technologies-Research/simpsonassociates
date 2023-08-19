@@ -54,7 +54,7 @@ const NavigationLinks = (): JSX.Element => {
   const Link = (props: { text: string; href: string }): JSX.Element => (
     <a
       href={props.href}
-      className="my-1 text-base text-para underline underline-offset-4 hover:text-secondary"
+      className="my-1 text-base text-para hover:text-secondary"
     >
       {props.text}
     </a>
@@ -90,7 +90,7 @@ const Services = (): JSX.Element => {
       href={props.href}
       rel="noreferrer"
       target="_blank"
-      className="my-1 text-sm text-para underline underline-offset-4 hover:text-secondary md:text-base"
+      className="my-1 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.text}
     </a>
@@ -152,16 +152,16 @@ const Office = (props: {
     <h2 className="text-base font-bold tracking-wider text-white md:text-xl">
       {props.title}
     </h2>
-    <p className="my-2 text-sm text-para underline underline-offset-4 hover:text-secondary md:text-base">
-      {props.phone}
-    </p>
     <a
       href={props.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="mb-2 text-sm text-para underline underline-offset-4 hover:text-secondary md:text-base"
+      className="mb-2 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.address}
     </a>
+    <p className="my-2 text-sm text-para hover:text-secondary md:text-base">
+      {props.phone}
+    </p>
   </div>
 );

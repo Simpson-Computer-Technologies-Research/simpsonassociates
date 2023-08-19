@@ -75,7 +75,7 @@ const DropdownMenuVisible = (
       onClick={() => setMenuClicked(false)}
     />
     <NavbarMenuButton
-      text="Team"
+      text="Agents"
       href="/#team"
       onClick={() => setMenuClicked(false)}
     />
