@@ -21,11 +21,12 @@ const contactImages: string[] = [
  * Contact Component
  * @returns JSX.Element
  */
-export default function Contact(props: {
+interface ContactProps {
   image?: string;
   className?: string;
   emailTo?: string;
-}): JSX.Element {
+}
+export default function Contact(props: ContactProps): JSX.Element {
   return (
     <section
       id="contact"
@@ -36,14 +37,18 @@ export default function Contact(props: {
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center px-4">
-        <ContactForm emailTo={props.emailTo || "heytristaann@gmail.com"} />
+        <ContactForm
+          emailTo={props.emailTo || "contact@simpsonassociates.ca"}
+        />
         <Image
-          src={props.image || contactImages[Math.floor(Math.random() * 3)]}
+          src={
+            /* props.image || */ contactImages[Math.floor(Math.random() * 3)]
+          }
           alt="..."
           width={750}
           height={750}
           loading="eager"
-          className="xxs:-right-44 absolute -right-36 bottom-0 xs:-right-60 sm:-right-72 md:-right-72 lg:-right-40"
+          className="absolute -right-36 bottom-0 xxs:-right-44 xs:-right-60 sm:-right-72 md:-right-72 lg:-right-40"
         />
       </div>
     </section>
@@ -80,11 +85,8 @@ interface ContactFields {
   message: string;
 }
 const ContactForm = (props: { emailTo: string }): JSX.Element => {
-  const [errors, setErrors] = React.useState<ContactFields>({
-    name: "",
-    phone: "",
-    message: "",
-  });
+  const emptyFields: ContactFields = { name: "", phone: "", message: "" };
+  const [errors, setErrors] = React.useState<ContactFields>(emptyFields);
 
   // Google session
   const { data: session } = useSession();
@@ -161,6 +163,7 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
 
 /**
  * Error message component
+ * @returns JSX.Element
  */
 const ErrorMessage = (props: { error: string }): JSX.Element => (
   <p
@@ -172,6 +175,7 @@ const ErrorMessage = (props: { error: string }): JSX.Element => (
 
 /**
  * Sign in Button
+ * @returns JSX.Element
  */
 const SignInButton = (): JSX.Element => (
   <Link
@@ -189,6 +193,7 @@ const SignInButton = (): JSX.Element => (
 
 /**
  * Change email button
+ * @returns JSX.Element
  */
 const ChangeEmailButton = (): JSX.Element => (
   <Link
@@ -203,22 +208,20 @@ const ChangeEmailButton = (): JSX.Element => (
 );
 
 /**
- * Send email button props
+ * Send email button component
+ * @returns JSX.Element
  */
-type SendEmailButtonProps = {
+interface EmailErrors {
+  name: string;
+  phone: string;
+  message: string;
+}
+interface SendEmailButtonProps {
   emailTo: string;
   email: string;
-  errors: {
-    name: string;
-    phone: string;
-    message: string;
-  };
-  setErrors: SetState<any>;
-};
-
-/**
- * Send email button
- */
+  errors: EmailErrors;
+  setErrors: SetState<EmailErrors>;
+}
 const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
   const [sending, setSending] = React.useState<boolean>(false);
 
@@ -279,6 +282,7 @@ const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
 
 /**
  * Google Svg
+ * @returns JSX.Element
  */
 const GoogleSvg = (): JSX.Element => (
   <svg
@@ -327,6 +331,7 @@ const clearFormValues = (): void => {
 
 /**
  * Get an element value via id
+ * @returns string
  */
 const getElementValue = (id: string): string =>
   (document.getElementById(id) as HTMLInputElement).value;
@@ -351,6 +356,7 @@ const isValidName = (name: string): boolean => name.length > 2;
 
 /**
  * Post the email to the api
+ * @returns Promise<string>
  */
 const postEmail = async (
   emailTo: string,
@@ -358,9 +364,8 @@ const postEmail = async (
   email: string,
   phone: string,
   message: string,
-): Promise<string> => {
-  // Send the email using the api
-  return await fetch("/api/email", {
+): Promise<string> =>
+  await fetch("/api/email", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -373,4 +378,3 @@ const postEmail = async (
     }
     return "Failed to send email";
   });
-};

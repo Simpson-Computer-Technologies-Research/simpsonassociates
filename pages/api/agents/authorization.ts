@@ -1,7 +1,7 @@
 import { decodeAuthorization } from "@/app/lib/auth";
 import { context } from "@/app/lib/mongo";
-
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * Middlewares to limit the number of requests
@@ -21,7 +21,10 @@ const rateLimit = async (req: any, res: any) => {
   }
 };
 
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   await rateLimit(req, res);
 
   // If the requestg method is not a PUT
@@ -32,6 +35,11 @@ export default async function handler(req: any, res: any) {
 
   // Get the authorization token from the request header
   const { authorization } = req.headers;
+  if (!authorization) {
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+
   const decoded = await decodeAuthorization(authorization);
   if (!decoded || !decoded.email || !decoded.accessToken) {
     res.status(401).json({ message: "Unauthorized" });

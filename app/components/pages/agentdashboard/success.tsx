@@ -1,5 +1,7 @@
 import React from "react";
+
 import { User, Event } from "@/app/lib/types";
+
 import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
 import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 

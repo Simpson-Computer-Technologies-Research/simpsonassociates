@@ -2,17 +2,18 @@ export class AgentsCache {
   cache: {
     name: string;
     user_id: string;
+    priority: boolean;
+    team: string;
     email: string;
     title: string;
     photo: string;
     lang: string;
-    level: string;
     permissions: string[];
     license: string;
     region: {
       location: string;
       lat: string;
-      long: string;
+      lon: string;
     };
   }[];
 

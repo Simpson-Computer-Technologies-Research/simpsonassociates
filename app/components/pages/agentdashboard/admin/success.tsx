@@ -1,11 +1,13 @@
 import React from "react";
 
-import { User, Agent } from "@/app/lib/types";
-import AddAgent from "./addAgent";
-import Agents from "./allAgents";
-import SideMenu from "./sideMenu";
-
 import "@/app/styles/globals.css";
+
+import { User, Agent } from "@/app/lib/types";
+
+import Agents from "./agents/agents";
+import SideMenu from "./adminSideMenu";
+import UpdateAgent from "./addAgent/addAgent";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Fetch the agents
@@ -38,16 +40,16 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 function _Success(props: { user: User }): JSX.Element {
-  // Fetch the current agents
-  const [agents, setAgents] = React.useState<Agent[]>([]);
-  if (!agents || agents.length === 0) {
-    fetchAgents().then((agents: any) => setAgents(agents));
+  const agents = new ObjectState<Agent[]>([]);
+
+  if (!agents.value.length) {
+    fetchAgents().then((result: Agent[]) => agents.set(result));
   }
 
   return (
     <>
-      <AddAgent user={props.user} agents={agents || []} setAgents={setAgents} />
-      <Agents agents={agents || []} setAgents={setAgents} user={props.user} />
+      <UpdateAgent user={props.user} agents={agents} />
+      <Agents agents={agents} user={props.user} />
     </>
   );
 }
