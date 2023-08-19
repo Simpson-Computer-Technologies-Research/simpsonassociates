@@ -15,7 +15,7 @@ export default function Team(): JSX.Element {
       className="group relative flex h-[50vw] w-full cursor-pointer flex-col items-center justify-center bg-slate-50"
     >
       <Image
-        src="/images/headshots final-34.jpg"
+        src="/images/group_photo_silly.jpg"
         alt="..."
         width={1920}
         height={1080}

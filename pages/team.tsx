@@ -70,10 +70,10 @@ const AgentCard = (): JSX.Element => (
   <div className="mt-7 flex flex-col items-center justify-center duration-500 ease-in-out hover:scale-105 lg:flex-row">
     <div className="flex flex-col items-center justify-center">
       <Image
-        src="/images/team/dansimpson.png"
+        src=""
         alt="Dan Simpson"
-        width={300}
-        height={300}
+        width={600}
+        height={600}
         className="rounded-full border-4 border-primary"
       />
       <h4 className="mb-1 mt-2 text-4xl font-bold tracking-wide text-primary">

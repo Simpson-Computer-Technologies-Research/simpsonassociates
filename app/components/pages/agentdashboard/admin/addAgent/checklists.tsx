@@ -19,9 +19,8 @@ export const TeamChecklist = (): JSX.Element => {
     <div className="mb-3 flex h-full w-full flex-col gap-2">
       <p className="font-medium text-white">Team</p>
       <div className="flex flex-wrap gap-4" id="team">
-        <Checkbox default={false} value="executive" label="Executive" />
-        <Checkbox default={false} value="sales" label="Support" />
-        <Checkbox default={false} value="marketing" label="Marketing" />
+        <Checkbox default={false} value="leadership" label="Leadership" />
+        <Checkbox default={false} value="support" label="Support" />
       </div>
     </div>
   );
