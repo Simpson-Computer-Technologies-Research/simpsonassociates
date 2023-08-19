@@ -17,17 +17,6 @@ export default function Cards(): JSX.Element {
     >
       <div className="grid grid-cols-1 px-10 py-8 md:grid-cols-2 md:px-14 lg:grid-cols-3">
         <Card
-          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-r-none md:border-r-2 md:border-r-slate-100"
-          title="Calculators"
-          description="Our Interactive Mortgage Calculators will allow you to explore 
-            your Mortgage options to make the right home financing decision."
-          button={{
-            href: "https://calculators.dominionlending.ca/",
-            text: "Start Calculating",
-            target: "_blank",
-          }}
-        />
-        <Card
           className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-l-none lg:rounded-r-none lg:border-r-2 lg:border-r-slate-100"
           title="Apply"
           description="Applying for a mortgage couldn’t be easier. 
@@ -35,6 +24,17 @@ export default function Cards(): JSX.Element {
           button={{
             href: "https://velocity-client.newton.ca/en/client/journey/home?shortCode=1c12wgprkn05s",
             text: "Apply Now",
+            target: "_blank",
+          }}
+        />
+        <Card
+          className="my-5 w-full rounded-l-xl rounded-r-xl md:rounded-r-none md:border-r-2 md:border-r-slate-100"
+          title="Calculators"
+          description="Our Interactive Mortgage Calculators will allow you to explore 
+            your Mortgage options to make the right home financing decision."
+          button={{
+            href: "https://calculators.dominionlending.ca/",
+            text: "Start Calculating",
             target: "_blank",
           }}
         />

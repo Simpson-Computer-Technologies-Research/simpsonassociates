@@ -156,11 +156,11 @@ const Office = (props: {
       href={props.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="mb-2 text-sm text-para hover:text-secondary md:text-base"
+      className="my-2 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.address}
     </a>
-    <p className="my-2 text-sm text-para hover:text-secondary md:text-base">
+    <p className="mb-2 text-sm text-para hover:text-secondary md:text-base">
       {props.phone}
     </p>
   </div>

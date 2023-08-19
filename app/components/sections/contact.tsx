@@ -12,10 +12,13 @@ import { SetState } from "@/app/lib/types";
  * Store the contact images which will be randomly selected
  */
 const defaultImages: string[] = [
-  "/images/agents/dan_headshot.png",
   "/images/agents/dave_headshot.png",
   "/images/agents/marina_headshot.png",
-  "/images/agents/paula_headshot.png",
+  "/images/agents/babar_headshot.png",
+  "/images/agents/fil_headshot.png",
+  "/images/agents/celeste_headshot.png",
+  "/images/agents/debby_headshot.png",
+  "/images/agents/marita_headshot.png",
 ];
 
 /**
