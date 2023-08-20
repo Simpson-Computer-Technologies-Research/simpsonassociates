@@ -29,7 +29,7 @@ export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
   });
 }
 
-// Search config
+// Search configs
 export const publicAgentSearchConfig = {
   name: 1,
   email: 1,
@@ -42,6 +42,13 @@ export const publicAgentSearchConfig = {
   permissions: 1,
   hidden: 1,
   priority: 1,
+  team: 1,
+};
+export const publicTeamSearchConfig = {
+  name: 1,
+  email: 1,
+  title: 1,
+  photo: 1,
   team: 1,
 };
 

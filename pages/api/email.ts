@@ -17,7 +17,7 @@ const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+    return true;
   }
 };
 
@@ -31,10 +31,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // await rateLimit(req, res);
-
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
   }
 
   const { email_to, name, email, phone, message } = req.body;
@@ -98,8 +100,7 @@ const sendEmail = async (
 
   transporter.sendMail(data, (err: any, msg: any) => {
     if (err) {
-      res.status(500).json({ message: err.message });
-      return;
+      return res.status(500).json({ message: err.message });
     }
     res.status(200).json({ message: msg });
   });

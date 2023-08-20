@@ -117,7 +117,7 @@ const Card = (props: CardProps): JSX.Element => (
       width={100}
       height={100}
       loading="lazy"
-      className="mt-1 w-[50px] lg:w-[100px]"
+      className="mt-1 w-[50px] bg-cover lg:w-[100px]"
     />
     <h3 className="mt-1 text-xs font-extrabold tracking-wide text-primary sm:mt-2 sm:text-sm md:text-base xl:text-2xl">
       {props.title}

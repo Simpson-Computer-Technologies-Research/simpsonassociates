@@ -100,7 +100,7 @@ export default function AgentsPage(): JSX.Element {
         <Contact
           className="bg-slate-50"
           emailTo={emailTo.value}
-          image={image.value}
+          // image={image.value}
         />
         <ScrollIndicator />
         <Bottom />
@@ -284,7 +284,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
         {props.agent.region && props.agent.region.location}
       </p>
       <p className="mt-1 text-base text-primary">{props.agent.lang}</p>
-      <button className="mt-3 w-fit bg-primary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 group-hover:bg-secondary md:absolute md:bottom-4">
+      <button className="mt-5 w-fit rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 md:absolute md:bottom-4">
         Get in touch
       </button>
     </a>

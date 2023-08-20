@@ -18,7 +18,7 @@ const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+    return true;
   }
 };
 
@@ -29,35 +29,32 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
+  }
+
   // Getting agents
   if (req.method === "GET") {
-    await getAgents(req, res);
-    return;
+    return await getAgents(req, res);
   }
 
   const { authorization } = req.headers;
   if (!authorization) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   const isAdmin = await verifyAdmin(authorization);
   if (!isAdmin) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   switch (req.method) {
     case "POST":
-      await addAgent(req, res);
-      return;
+      return await addAgent(req, res);
     case "DELETE":
-      await deleteAgent(req, res);
-      return;
+      return await deleteAgent(req, res);
     default:
-      res.status(405).json({ message: "Method not allowed" });
-      return;
+      return res.status(405).json({ message: "Method not allowed" });
   }
 }
 
@@ -82,11 +79,12 @@ const getAgents = async (_: any, res: any) => {
         if (!hasResponded) {
           res.status(200).json({ message: "Success", result });
         }
+      })
+      .catch((error) => {
+        if (!hasResponded) res.status(500).json({ message: error.message });
       });
   }).catch((error) => {
-    if (!hasResponded) {
-      res.status(500).json({ message: error.message });
-    }
+    if (!hasResponded) res.status(500).json({ message: error.message });
   });
 };
 
@@ -116,10 +114,9 @@ const addAgent = async (req: any, res: any) => {
       })
       .then((result) => {
         if (!result.acknowledged) {
-          res
+          return res
             .status(409)
             .json({ message: "Failed to add agent", result: null });
-          return;
         }
 
         cache.add_agent({ ...req.body, user_id: userId });
@@ -155,10 +152,9 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
       // Delete the agent from the database
       await collection.deleteOne({ user_id: agent_id }).then((result) => {
         if (result.deletedCount === 0) {
-          res
+          return res
             .status(409)
             .json({ message: "Failed to delete agent", result: null });
-          return;
         }
 
         cache.delete_agent(agent_id);

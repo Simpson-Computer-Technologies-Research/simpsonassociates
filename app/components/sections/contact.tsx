@@ -43,9 +43,7 @@ export default function Contact(props: ContactProps): JSX.Element {
       <div className="flex h-full w-full flex-row items-center justify-center px-4">
         <ContactForm emailTo={props.emailTo || "contact@dansimpson.ca"} />
         <Image
-          src={
-            /* props.image || */ defaultImages[Math.floor(Math.random() * 3)]
-          }
+          src={props.image || defaultImages[Math.floor(Math.random() * 3)]}
           alt="..."
           width={750}
           height={750}

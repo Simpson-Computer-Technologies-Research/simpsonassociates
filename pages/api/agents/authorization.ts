@@ -17,7 +17,7 @@ const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+    return true;
   }
 };
 
@@ -25,25 +25,24 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
-
   // If the requestg method is not a PUT
   if (req.method !== "POST") {
-    res.status(400).json({ message: "Method not allowed" });
-    return;
+    return res.status(400).json({ message: "Method not allowed" });
+  }
+
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
   }
 
   // Get the authorization token from the request header
   const { authorization } = req.headers;
   if (!authorization) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   const decoded = await decodeAuthorization(authorization);
   if (!decoded || !decoded.email || !decoded.accessToken) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   await context(async (database) => {
@@ -53,8 +52,9 @@ export default async function handler(
     });
 
     if (user && user.access_token) {
-      res.status(400).json({ message: "Authorization token already set" });
-      return;
+      return res
+        .status(400)
+        .json({ message: "Authorization token already set" });
     }
 
     await collection
@@ -65,10 +65,9 @@ export default async function handler(
       )
       .then((result) => {
         if (result.modifiedCount !== 1) {
-          res
+          return res
             .status(400)
             .json({ message: "Failed to update authorization token" });
-          return;
         }
         res.status(200).json({ message: "Authorization token set", result });
       });

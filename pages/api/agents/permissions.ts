@@ -17,7 +17,7 @@ const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+    return true;
   }
 };
 
@@ -25,11 +25,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
   if (req.method !== "GET") {
     return res
       .status(405)
       .json({ message: "Method not allowed", permissions: [] });
+  }
+
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
   }
 
   const { authorization } = req.headers;
@@ -50,12 +53,14 @@ export default async function handler(
       })
       .then((result) => {
         if (!result) {
-          res.status(401).json({ message: "Unauthorized", permissions: [] });
-          return;
+          return res
+            .status(401)
+            .json({ message: "Unauthorized", permissions: [] });
         }
 
-        const permissions = result.permissions;
-        res.status(200).json({ message: "OK", permissions });
+        res
+          .status(200)
+          .json({ message: "OK", permissions: result.permissions });
       });
   }).catch((error) => res.status(500).json({ message: error.message }));
 }

@@ -19,7 +19,7 @@ const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
   } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+    return true;
   }
 };
 
@@ -27,7 +27,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
+  }
 
   let hasResponded: boolean = false;
   if (cache.isCached()) {
