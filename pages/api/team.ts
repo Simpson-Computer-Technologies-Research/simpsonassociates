@@ -14,7 +14,7 @@ const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
+  } catch (_: any) {
     return true;
   }
 };
@@ -53,7 +53,6 @@ export default async function handler(
         }
 
         res.status(200).json({ agents: result });
-      })
-      .catch((_) => res.status(500).json({ message: "Internal server error" }));
+      });
   }).catch((_) => res.status(500).json({ message: "Internal server error" }));
 }

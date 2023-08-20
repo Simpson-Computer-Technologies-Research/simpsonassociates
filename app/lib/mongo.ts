@@ -44,6 +44,7 @@ export const publicAgentSearchConfig = {
   priority: 1,
   team: 1,
 };
+
 export const publicTeamSearchConfig = {
   name: 1,
   email: 1,
@@ -84,11 +85,14 @@ export const verifyAuth = async (
 };
 
 /**
- * Verify that the user making the request is an admin
+ * Verify that the user making the request has the provided permissions
  * @param authorization The authorization header
- * @returns True if the user is an admin, false otherwise
+ * @returns boolean
  */
-export const verifyAdmin = async (authorization: string): Promise<boolean> => {
+export const verifyPermissions = async (
+  authorization: string,
+  permissions: string[],
+): Promise<boolean> => {
   // Get the database and collection
   return await context(async (database): Promise<boolean> => {
     const collection = database.collection("agents");
@@ -105,7 +109,37 @@ export const verifyAdmin = async (authorization: string): Promise<boolean> => {
     // If the user doesn't exist
     if (user.length === 0 || !user[0]) return false;
 
-    // Return whether the user is an admin
-    return user[0].permissions.includes("admin");
+    for (let permission of permissions) {
+      if (!user[0].permissions.includes(permission)) {
+        return false;
+      }
+    }
+    return true;
   }).catch((_) => false);
 };
+
+/**
+ * Verify that the user making the request is an admin
+ * @param authorization The authorization header
+ * @returns True if the user is an admin, false otherwise
+ */
+export const verifyAdmin = async (authorization: string): Promise<boolean> =>
+  await verifyPermissions(authorization, ["admin"]);
+
+/**
+ * Verify that the user making the request has the manage events permission
+ * @param authorization The authorization header
+ * @returns boolean
+ */
+export const verifyManageEvents = async (
+  authorization: string,
+): Promise<boolean> =>
+  await verifyPermissions(authorization, ["manage_events"]);
+
+/**
+ * Verify that the user making the request has the agent permission
+ * @param authorization The authorization header
+ * @returns boolean
+ */
+export const verifyIsAgent = async (authorization: string): Promise<boolean> =>
+  await verifyPermissions(authorization, ["agent"]);

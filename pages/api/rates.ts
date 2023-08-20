@@ -18,7 +18,7 @@ const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
+  } catch (_: any) {
     return true;
   }
 };

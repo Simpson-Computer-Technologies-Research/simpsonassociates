@@ -32,7 +32,7 @@ export default async function handler(
   }
 
   if (await rateLimit(req, res)) {
-    return res.status(429).send(`Too many requests`);
+    return res.status(429).send("Too many requests");
   }
 
   const { authorization } = req.headers;

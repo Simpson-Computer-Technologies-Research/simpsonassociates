@@ -31,7 +31,7 @@ export default async function handler(
   }
 
   if (await rateLimit(req, res)) {
-    return res.status(429).send(`Too many requests`);
+    return res.status(429).send("Too many requests");
   }
 
   // Get the authorization token from the request header

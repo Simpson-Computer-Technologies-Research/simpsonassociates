@@ -2,6 +2,7 @@ import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import nodemailer from "nodemailer";
 import { context } from "@/app/lib/mongo";
 import { NextApiRequest, NextApiResponse } from "next";
+import { sendEmail } from "@/app/lib/email";
 
 /**
  * Middlewares to limit the number of requests
@@ -16,7 +17,7 @@ const middlewares = getMiddlewares({ limit: 2, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
+  } catch (_: any) {
     return true;
   }
 };
@@ -45,9 +46,20 @@ export default async function handler(
   }
 
   // Verify that the email_to is a valid agent email
-  await verifyEmail(email_to).then(
-    async () => await sendEmail(res, email_to, name, email, phone, message),
-  );
+  await verifyEmail(email_to).then(async () => {
+    const data = {
+      from: "Simpson Associates Contact Submission",
+      to: email_to,
+      subject: `Simpson Associates Contact Submission`,
+      text: `Submission Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage:\n${message}`,
+      html: `<h3>Submission Information:</h3><strong>Name:</strong> ${name}<br/><strong>Email:</strong> ${email}<br/><strong>Phone:</strong> ${phone}<br/><strong>Message:</strong><br/>${message}`,
+    };
+
+    const onError = (err: any) =>
+      res.status(500).json({ message: err.message });
+    const onSuccess = (msg: any) => res.status(200).json({ message: msg });
+    await sendEmail(data, onError, onSuccess);
+  });
 }
 
 /**
@@ -66,42 +78,5 @@ const verifyEmail = async (email: string): Promise<void> => {
       .then((result) => {
         if (!result) throw new Error("Email not found");
       });
-  });
-};
-
-/**
- * Function to send the email using nodemailer
- */
-const sendEmail = async (
-  res: any,
-  emailTo: string,
-  name: string,
-  email: string,
-  phone: string,
-  message: string,
-): Promise<void> => {
-  const transporter = nodemailer.createTransport({
-    port: 465,
-    host: "smtp.gmail.com",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    secure: true,
-  });
-
-  const data = {
-    from: "Simpson Associates Contact Submission",
-    to: emailTo,
-    subject: `Simpson Associates Contact Submission`,
-    text: `Submission Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage:\n${message}`,
-    html: `<h3>Submission Information:</h3><strong>Name:</strong> ${name}<br/><strong>Email:</strong> ${email}<br/><strong>Phone:</strong> ${phone}<br/><strong>Message:</strong><br/>${message}`,
-  };
-
-  transporter.sendMail(data, (err: any, msg: any) => {
-    if (err) {
-      return res.status(500).json({ message: err.message });
-    }
-    res.status(200).json({ message: msg });
   });
 };

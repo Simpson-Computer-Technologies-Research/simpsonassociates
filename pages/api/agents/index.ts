@@ -1,6 +1,6 @@
 import { context, publicAgentSearchConfig, verifyAdmin } from "@/app/lib/mongo";
 import { AgentsCache } from "@/app/lib/cache";
-import { generateUserId } from "@/app/lib/auth";
+import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -17,7 +17,7 @@ const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
+  } catch (_: any) {
     return true;
   }
 };
@@ -30,7 +30,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (await rateLimit(req, res)) {
-    return res.status(429).send(`Too many requests`);
+    return res.status(429).send("Too many requests");
   }
 
   // Getting agents
@@ -76,12 +76,7 @@ const getAgents = async (_: any, res: any) => {
       .toArray()
       .then((result) => {
         cache.update(result);
-        if (!hasResponded) {
-          res.status(200).json({ message: "Success", result });
-        }
-      })
-      .catch((error) => {
-        if (!hasResponded) res.status(500).json({ message: error.message });
+        if (!hasResponded) res.status(200).json({ message: "Success", result });
       });
   }).catch((error) => {
     if (!hasResponded) res.status(500).json({ message: error.message });
@@ -104,24 +99,17 @@ const addAgent = async (req: any, res: any) => {
   await context(async (database) => {
     const collection = database.collection("agents");
 
-    // Add the agent to the database
-    const userId: string = await generateUserId();
-    await collection
-      .insertOne({
-        ...req.body,
-        user_id: userId,
-        hidden: false,
-      })
-      .then((result) => {
-        if (!result.acknowledged) {
-          return res
-            .status(409)
-            .json({ message: "Failed to add agent", result: null });
-        }
+    const data: any = await generateInsertionData(req.body);
+    await collection.insertOne(data).then((result) => {
+      if (!result.acknowledged) {
+        return res
+          .status(409)
+          .json({ message: "Failed to add agent", result: null });
+      }
 
-        cache.add_agent({ ...req.body, user_id: userId });
-        res.status(200).json({ message: "Success", result });
-      });
+      cache.add_agent(data);
+      res.status(200).json({ message: "Success", result });
+    });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -180,3 +168,22 @@ const isValidAgentBody = (body: any) =>
   body.region.lon !== undefined &&
   body.permissions &&
   body.permissions.length > 0;
+
+// Generate the insert data from the request body
+const generateInsertionData = async (body: any) => {
+  const userId: string = await generateId();
+  return {
+    name: body.name,
+    email: body.email,
+    license: body.license,
+    title: body.title,
+    photo: body.photo,
+    lang: body.lang,
+    priority: body.priority,
+    team: body.team,
+    region: body.region,
+    permissions: body.permissions,
+    user_id: userId,
+    hidden: false,
+  };
+};

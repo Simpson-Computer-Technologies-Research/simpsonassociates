@@ -30,11 +30,12 @@ export interface User {
 }
 
 export interface Event {
-  id: string;
+  event_id: string;
   title: string;
   description: string;
-  date: string;
-  attending: number;
+  date: number;
+  posted_by: string;
+  note: string;
 }
 
 export interface Rate {

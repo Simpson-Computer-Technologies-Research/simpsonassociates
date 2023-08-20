@@ -138,19 +138,17 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
  */
 const getPermissions = (): string[] => {
   const result: string[] = ["agent"];
-  const perms = document.getElementById("perms") as HTMLInputElement;
 
-  for (let i = 0; i < perms.children.length; i++) {
-    const child = perms.children[i] as HTMLInputElement;
+  const adminChecked: boolean = (
+    document.getElementById("permission_admin") as HTMLInputElement
+  ).checked;
 
-    for (let j = 0; j < child.children.length; j++) {
-      const grandchild = child.children[j] as HTMLInputElement;
+  const manageEventsChecked: boolean = (
+    document.getElementById("permission_manage_events") as HTMLInputElement
+  ).checked;
 
-      if (grandchild.checked) {
-        result.push(grandchild.value);
-      }
-    }
-  }
+  if (adminChecked) result.push("admin");
+  if (manageEventsChecked) result.push("manage_events");
 
   return result;
 };
@@ -160,19 +158,16 @@ const getPermissions = (): string[] => {
  * @return the team
  */
 const getTeam = (): string => {
-  const team = document.getElementById("team") as HTMLInputElement;
+  const teamLeadershipChecked = (
+    document.getElementById("team_leadership") as HTMLInputElement
+  ).checked;
 
-  for (let i = 0; i < team.children.length; i++) {
-    const child = team.children[i] as HTMLInputElement;
+  const teamSupportChecked = (
+    document.getElementById("team_support") as HTMLInputElement
+  ).checked;
 
-    for (let j = 0; j < child.children.length; j++) {
-      const grandchild = child.children[j] as HTMLInputElement;
-
-      if (grandchild.checked) {
-        return grandchild.value;
-      }
-    }
-  }
+  if (teamLeadershipChecked) return "leadership";
+  if (teamSupportChecked) return "support";
 
   return "none";
 };
@@ -181,19 +176,5 @@ const getTeam = (): string => {
  * Get whether the agent is a priority agent
  * @return boolean
  */
-const getPriority = (): boolean => {
-  const priority = document.getElementById("priority") as HTMLInputElement;
-
-  for (let i = 0; i < priority.children.length; i++) {
-    const child = priority.children[i] as HTMLInputElement;
-
-    for (let j = 0; j < child.children.length; j++) {
-      const grandchild = child.children[j] as HTMLInputElement;
-
-      if (grandchild.checked) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
+const getPriority = (): boolean =>
+  (document.getElementById("priority") as HTMLInputElement).checked;
