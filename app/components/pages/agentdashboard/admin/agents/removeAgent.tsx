@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Agent, SetState, User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";

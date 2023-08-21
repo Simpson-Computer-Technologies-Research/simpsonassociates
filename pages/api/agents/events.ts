@@ -4,12 +4,9 @@ import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { generateId } from "@/app/lib/auth";
 import { sendEmail } from "@/app/lib/email";
 import { Event } from "@/app/lib/types";
+import { Collection, Document } from "mongodb";
 
-/**
- * Constant parameters
- */
-const MINS_IN_DAY: number = 1440;
-const DELETE_EVENT_AFTER_MINS: number = 10 * MINS_IN_DAY;
+const ONE_DAY_IN_MILLISECONDS: number = 86400000;
 
 /**
  * Middlewares to limit the number of requests
@@ -68,34 +65,32 @@ export default async function handler(
 
 /**
  * Get all of the events for agents.
- * @param req The incoming http request
+ * @param _ The incoming http request
  * @param res The outgoing http response
  */
-const getEvents = async (req: NextApiRequest, res: NextApiResponse) => {
+const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
   await context(async (database) => {
-    const collection = database.collection("events");
-    await collection
-      .find()
-      .toArray()
-      .then(async (results) => {
-        let finalResults: any[] = [];
+    const collection: Collection<Document> = database.collection("events");
 
-        for (let i = 0; i < results.length; i++) {
-          const event: any = results[i];
-          const currentTime: number = new Date().getMinutes();
+    let results: Document[] = await collection.find({}).toArray();
 
-          if (event.date > currentTime) {
-            finalResults.push(event);
-            continue;
-          }
+    let finalResults: Document[] = [];
 
-          await collection.deleteOne({
-            event_id: event.event_id,
-          });
-        }
+    for (let i = 0; i < results.length; i++) {
+      const event: any = results[i];
+      const currentTime: number = new Date().getTime();
 
-        res.status(200).json({ message: "Success", finalResults });
+      if (event.date + ONE_DAY_IN_MILLISECONDS > currentTime) {
+        finalResults.push(event);
+        continue;
+      }
+
+      await collection.deleteOne({
+        event_id: event.event_id,
       });
+    }
+
+    res.status(200).json({ message: "Success", result: finalResults });
   }).catch((_: any) =>
     res.status(500).json({ message: "Failed to fetch events", result: null }),
   );
@@ -115,12 +110,11 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   const { notify_agents } = req.body;
 
   await context(async (database) => {
-    const collection = database.collection("events");
+    const collection: Collection<Document> = database.collection("events");
 
     const data: any = await generateInsertionData(req.body);
-    await collection.insertOne(data).then(() => {
-      // if (notify_agents) emailAllAgents(data);
-    });
+    const result = await collection.insertOne(data);
+    // if (notify_agents) emailAllAgents(result);
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -137,7 +131,7 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("events");
+    const collection: Collection<Document> = database.collection("events");
 
     await collection.deleteOne({
       event_id,
@@ -178,7 +172,7 @@ const generateInsertionData = async (body: any): Promise<Event> => {
  */
 const emailAllAgents = async (event: any) => {
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
     // Get all of the agent emails
     let agents = await collection

@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Permissions checklist
  * @returns JSX.Element

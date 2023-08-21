@@ -41,9 +41,10 @@ export default async function handler(
     hasResponded = true;
   }
 
-  const apiKey = process.env.DOMINION_RATES_API_KEY;
+  const apiKey: string = process.env.DOMINION_RATES_API_KEY || "'";
   const url: string =
     "https://secure.dominionintranet.ca/rest/rates?apikey=" + apiKey;
+
   await fetch(url)
     .then((resp) => resp.json())
     .then((json) => {

@@ -1,8 +1,8 @@
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import nodemailer from "nodemailer";
 import { context } from "@/app/lib/mongo";
 import { NextApiRequest, NextApiResponse } from "next";
 import { sendEmail } from "@/app/lib/email";
+import { Collection, Document } from "mongodb";
 
 /**
  * Middlewares to limit the number of requests
@@ -57,7 +57,9 @@ export default async function handler(
 
     const onError = (err: any) =>
       res.status(500).json({ message: err.message });
+
     const onSuccess = (msg: any) => res.status(200).json({ message: msg });
+
     await sendEmail(data, onError, onSuccess);
   });
 }
@@ -70,13 +72,12 @@ export default async function handler(
  */
 const verifyEmail = async (email: string): Promise<void> => {
   await context(async (database) => {
-    const collection = database.collection("agents");
-    await collection
-      .findOne({
-        email: email,
-      })
-      .then((result) => {
-        if (!result) throw new Error("Email not found");
-      });
+    const collection: Collection<Document> = database.collection("agents");
+
+    let result: Document | null = await collection.findOne({
+      email: email,
+    });
+
+    if (!result) throw new Error("Email not found");
   });
 };

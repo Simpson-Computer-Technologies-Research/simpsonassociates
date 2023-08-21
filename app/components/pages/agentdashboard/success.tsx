@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { User, Event } from "@/app/lib/types";
@@ -5,7 +7,6 @@ import { User, Event } from "@/app/lib/types";
 import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
 import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 import { generateAuthorization } from "@/app/lib/auth";
-import { LoadingRelative } from "../../loading";
 
 /**
  * Success section
@@ -28,27 +29,17 @@ export default function Success(user: User): JSX.Element {
  */
 const Events = (props: { user: User }): JSX.Element => {
   const [events, setEvents] = React.useState<Event[] | null>(null);
+
   React.useEffect(() => {
-    if (!events && props.user.accessToken && props.user.email) {
-      generateAuthorization(props.user.accessToken, props.user.email).then(
-        (authorization: string) => {
-          fetch("/api/events", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              authorization,
-            },
-          })
-            .then((res) => res.json())
-            .then((json) => {
-              if (json && json.result) setEvents(json.result);
-            });
-        },
-      );
+    const accessToken: string = props.user.accessToken || "";
+    const email: string = props.user.email || "";
+
+    if (!events && accessToken && email) {
+      generateAuthorization(accessToken, email).then((auth: string) => {
+        fetchEvents(auth).then((events: Event[]) => setEvents(events));
+      });
     }
   }, []);
-
-  if (!events) return <LoadingRelative />;
 
   return (
     <section id="events" className="flex h-fit w-full flex-col bg-primary p-7">
@@ -58,9 +49,7 @@ const Events = (props: { user: User }): JSX.Element => {
       </p>
       <PostEventCard user={props.user} />
       <div className="flex flex-wrap gap-4 lg:grid lg:grid-cols-2">
-        {events.map((event: any) => (
-          <EventCard event={event} />
-        ))}
+        {events && events.map((event: any) => <EventCard event={event} />)}
       </div>
     </section>
   );
@@ -85,4 +74,20 @@ const EventCard = (props: { event: Event }): JSX.Element => {
       </button>
     </div>
   );
+};
+
+/**
+ * Fetch events
+ * @returns Promise<Event[]>
+ */
+const fetchEvents = async (authorization: string): Promise<Event[]> => {
+  return fetch("/api/agents/events", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization,
+    },
+  })
+    .then((res) => res.json())
+    .then((json) => json.result);
 };

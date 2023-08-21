@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { context, publicTeamSearchConfig } from "@/app/lib/mongo";
+import { Collection, Document } from "mongodb";
+
 /**
  * Middlewares to limit the number of requests
  */
@@ -40,7 +42,7 @@ export default async function handler(
   const teamSplit: string[] = (team as string).split(",");
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
     await collection
       .find({
         team: { $in: teamSplit },

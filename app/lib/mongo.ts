@@ -1,5 +1,6 @@
 import { Db, MongoClient, ServerApiVersion } from "mongodb";
 import { decodeAuthorization } from "./auth";
+import { User } from "./types";
 
 // The URI of the database to connect to
 const uri: string = process.env.MONGODB_URI || "";
@@ -23,10 +24,17 @@ export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
 
   // Connect to the database, run the function, and then close the connection
   // If an error occurs, reject the promise
-  return await client.connect().then(async () => {
-    const db: Db = client.db("simpsonassociates");
-    return await fn(db).finally(() => client.close());
-  });
+  return await client
+    .connect()
+    .then(async () => {
+      const db: Db = client.db("simpsonassociates");
+      return await fn(db).finally(() => client.close());
+    })
+    .catch((err) => {
+      client.close().then(() => {
+        throw err;
+      });
+    });
 }
 
 // Search configs
@@ -67,21 +75,19 @@ export const verifyAuth = async (
   const decoded = await decodeAuthorization(authorization);
   if (!decoded || !decoded.email || !decoded.accessToken) return false;
 
-  return await collection
+  let users: User[] = await collection
     .find({ access_token: decoded.accessToken })
     .project({ email: 1 })
     .limit(1)
-    .toArray()
-    .then((user: any) => {
-      if (user.length === 0 || !user[0]) return false;
+    .toArray();
 
-      return {
-        result: user[0].email === decoded.email,
-        email: decoded.email,
-        access_token: decoded.accessToken,
-      };
-    })
-    .catch((_: any) => false);
+  if (users.length === 0 || !users[0]) return false;
+
+  return {
+    result: users[0].email === decoded.email,
+    email: decoded.email,
+    access_token: decoded.accessToken,
+  };
 };
 
 /**

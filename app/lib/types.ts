@@ -30,7 +30,8 @@ export interface User {
 }
 
 export interface Event {
-  event_id: string;
+  event_id?: string;
+  notify_agents?: boolean;
   title: string;
   description: string;
   date: number;

@@ -1,8 +1,10 @@
+"use client";
+
 import React from "react";
 
 import { User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
-import { Checkbox } from "./admin/addAgent/checklists";
+import { Event } from "@/app/lib/types";
 
 /**
  * Post event card
@@ -28,7 +30,7 @@ export default function PostEventCard(props: { user: User }): JSX.Element {
       <input
         id="description"
         type="text"
-        placeholder="Event description"
+        placeholder="Event description/location"
         className="mt-4 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-primary"
       />
       <input
@@ -42,12 +44,16 @@ export default function PostEventCard(props: { user: User }): JSX.Element {
         placeholder="Extra Notes"
         className="mt-4 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-primary"
       />
-      <Checkbox
-        id="notify_agents"
-        label="Notify Agents"
-        value="notify_agents"
-        default={false}
-      />
+      <div className="mt-3 flex flex-row gap-2 text-primary">
+        <input
+          id="notify_agents"
+          type="checkbox"
+          value="notify_agents"
+          className="h-6 w-6"
+        />
+        <label htmlFor="notify_agents">Notify Agents</label>
+      </div>
+
       <button
         disabled={disabled}
         className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110"
@@ -88,12 +94,14 @@ const createEvent = async (user: User) => {
  * @param user The user who's posting the event
  * @returns the input map for the api request body
  */
-const getInputValues = (user: User) => {
+const getInputValues = (user: User): Event => {
   const title: string = (document.getElementById("title") as HTMLInputElement)
     .value;
+
   const description: string = (
     document.getElementById("description") as HTMLInputElement
   ).value;
+
   const date: string = (document.getElementById("date") as HTMLInputElement)
     .value;
 
@@ -104,12 +112,14 @@ const getInputValues = (user: User) => {
     document.getElementById("notify_agents") as HTMLInputElement
   ).checked;
 
+  const dateNumber: number = new Date(date).getTime();
+
   return {
     title,
     notify_agents,
     description,
-    date,
+    date: dateNumber,
     note,
-    posted_by: user.email,
+    posted_by: user.email || "",
   };
 };

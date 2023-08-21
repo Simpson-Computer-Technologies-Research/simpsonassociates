@@ -97,7 +97,7 @@ const SupportTeam = (props: {
       ensuring that their needs are met with promptness and care.
     </p>
     <div className="flex flex-wrap items-center justify-center gap-6 px-2 sm:gap-12 md:gap-16 xl:gap-20">
-      {leadershipTeam.map((agent: Agent, i: number) => (
+      {supportTeam.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
           agent={agent}
@@ -152,6 +152,27 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
 );
 
 const leadershipTeam: Agent[] = [
+  {
+    name: "Dan Simpson",
+    email: "dan@dansimpson.ca",
+    photo: "/images/agents/dan_headshot.png",
+    title: "Founder",
+  } as Agent,
+  {
+    name: "Dave Mota",
+    email: "davemota@dansimpson.ca",
+    photo: "/images/agents/dave_headshot.png",
+    title: "Vice President",
+  } as Agent,
+  {
+    name: "Pat Tremblay",
+    email: "patricktremblay@dansimpson.ca",
+    photo: "/images/agents/pat_headshot.png",
+    title: "Vice President",
+  } as Agent,
+];
+
+const supportTeam: Agent[] = [
   {
     name: "Dan Simpson",
     email: "dan@dansimpson.ca",

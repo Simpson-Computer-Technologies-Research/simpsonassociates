@@ -3,6 +3,7 @@ import { AgentsCache } from "@/app/lib/cache";
 import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Collection, DeleteResult, Document } from "mongodb";
 
 /**
  * Middlewares to limit the number of requests
@@ -68,16 +69,15 @@ const getAgents = async (_: any, res: any) => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
-    await collection
+    const result: Document[] = await collection
       .find()
       .project(publicAgentSearchConfig)
-      .toArray()
-      .then((result) => {
-        cache.update(result);
-        if (!hasResponded) res.status(200).json({ message: "Success", result });
-      });
+      .toArray();
+
+    cache.update(result);
+    if (!hasResponded) res.status(200).json({ message: "Success", result });
   }).catch((error) => {
     if (!hasResponded) res.status(500).json({ message: error.message });
   });
@@ -97,7 +97,7 @@ const addAgent = async (req: any, res: any) => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
     const data: any = await generateInsertionData(req.body);
     await collection.insertOne(data).then((result) => {
@@ -128,27 +128,31 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
     // Check if the agent already exists
-    await collection.findOne({ user_id: agent_id }).then(async (agent) => {
-      if (!agent) {
-        res.status(409).json({ message: "Agent does not exist", result: null });
-        return;
-      }
-
-      // Delete the agent from the database
-      await collection.deleteOne({ user_id: agent_id }).then((result) => {
-        if (result.deletedCount === 0) {
-          return res
-            .status(409)
-            .json({ message: "Failed to delete agent", result: null });
-        }
-
-        cache.delete_agent(agent_id);
-        res.status(200).json({ message: "Success", result });
-      });
+    let agent: Document | null = await collection.findOne({
+      user_id: agent_id,
     });
+
+    if (!agent) {
+      res.status(409).json({ message: "Agent does not exist", result: null });
+      return;
+    }
+
+    // Delete the agent from the database
+    let result: DeleteResult = await collection.deleteOne({
+      user_id: agent_id,
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(409)
+        .json({ message: "Failed to delete agent", result: null });
+    }
+
+    cache.delete_agent(agent_id);
+    res.status(200).json({ message: "Success", result });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 

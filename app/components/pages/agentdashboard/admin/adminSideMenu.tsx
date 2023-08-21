@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@/app/lib/types";
 import { signOut } from "next-auth/react";
 
