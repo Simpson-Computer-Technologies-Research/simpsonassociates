@@ -166,7 +166,7 @@ const leadershipTeam: Agent[] = [
   } as Agent,
   {
     name: "Pat Tremblay",
-    email: "patricktremblay@dansimpson.ca",
+    email: "pat@dansimpson.ca",
     photo: "/images/agents/patrick_headshot.png",
     title: "Vice President",
   } as Agent,
@@ -184,5 +184,17 @@ const supportTeam: Agent[] = [
     email: "celeste@dansimpson.ca",
     photo: "/images/agents/celeste_headshot.png",
     title: "Customer Care Coordinator",
+  } as Agent,
+  {
+    name: "Paula Freitas",
+    email: "paula@dansimpson.ca",
+    photo: "/images/agents/paulafreitas_headshot.png",
+    title: "Senior Underwriter",
+  } as Agent,
+  {
+    name: "Debbie Kitchen",
+    email: "debbiekitchen@dansimpson.ca",
+    photo: "/images/agents/debbie_headshot.png",
+    title: "Onboarding Manager",
   } as Agent,
 ];
