@@ -1,5 +1,4 @@
 import { Bucket, File, Storage } from "@google-cloud/storage";
-import { generateId } from "./auth";
 
 // Create a new storage instance with the credentials
 const storage: Storage = new Storage({
@@ -7,7 +6,7 @@ const storage: Storage = new Storage({
 });
 
 // Reference to the bucket
-const bucket: Bucket = storage.bucket(process.env.GCS_BUCKET as string);
+const bucket: Bucket = storage.bucket("simpsonassociates-agents");
 
 /**
  * Upload the photo to the google cloud storage
