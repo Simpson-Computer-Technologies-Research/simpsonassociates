@@ -18,8 +18,8 @@ const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+  } catch (_: any) {
+    return true;
   }
 };
 
@@ -27,7 +27,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  if (await rateLimit(req, res)) {
+    return res.status(429).send(`Too many requests`);
+  }
 
   let hasResponded: boolean = false;
   if (cache.isCached()) {
@@ -35,9 +41,10 @@ export default async function handler(
     hasResponded = true;
   }
 
-  const apiKey = process.env.DOMINION_RATES_API_KEY;
+  const apiKey: string = process.env.DOMINION_RATES_API_KEY || "'";
   const url: string =
     "https://secure.dominionintranet.ca/rest/rates?apikey=" + apiKey;
+
   await fetch(url)
     .then((resp) => resp.json())
     .then((json) => {

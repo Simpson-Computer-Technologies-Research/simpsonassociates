@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@/app/lib/types";
 import { signOut } from "next-auth/react";
 
@@ -30,12 +32,6 @@ export default function SideMenu(props: { user: User }): JSX.Element {
         className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
       >
         Events
-      </a>
-      <a
-        href="/agents/dashboard/#lenders"
-        className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
-      >
-        Lenders
       </a>
       <button
         onClick={() => signOut()}

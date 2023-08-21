@@ -1,8 +1,9 @@
 import { context, publicAgentSearchConfig, verifyAdmin } from "@/app/lib/mongo";
 import { AgentsCache } from "@/app/lib/cache";
-import { generateUserId } from "@/app/lib/auth";
+import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Collection, DeleteResult, Document } from "mongodb";
 
 /**
  * Middlewares to limit the number of requests
@@ -17,8 +18,8 @@ const middlewares = getMiddlewares({ limit: 10, delayMs: 0 }).map(
 const rateLimit = async (req: any, res: any) => {
   try {
     await Promise.all(middlewares.map((mw: any) => mw(req, res)));
-  } catch (_err: any) {
-    return res.status(429).send(`Too many requests`);
+  } catch (_: any) {
+    return true;
   }
 };
 
@@ -29,35 +30,32 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  await rateLimit(req, res);
+  if (await rateLimit(req, res)) {
+    return res.status(429).send("Too many requests");
+  }
+
   // Getting agents
   if (req.method === "GET") {
-    await getAgents(req, res);
-    return;
+    return await getAgents(req, res);
   }
 
   const { authorization } = req.headers;
   if (!authorization) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   const isAdmin = await verifyAdmin(authorization);
   if (!isAdmin) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   switch (req.method) {
     case "POST":
-      await addAgent(req, res);
-      return;
+      return await addAgent(req, res);
     case "DELETE":
-      await deleteAgent(req, res);
-      return;
+      return await deleteAgent(req, res);
     default:
-      res.status(405).json({ message: "Method not allowed" });
-      return;
+      return res.status(405).json({ message: "Method not allowed" });
   }
 }
 
@@ -71,22 +69,17 @@ const getAgents = async (_: any, res: any) => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
-    await collection
+    const result: Document[] = await collection
       .find()
       .project(publicAgentSearchConfig)
-      .toArray()
-      .then((result) => {
-        cache.update(result);
-        if (!hasResponded) {
-          res.status(200).json({ message: "Success", result });
-        }
-      });
+      .toArray();
+
+    cache.update(result);
+    if (!hasResponded) res.status(200).json({ message: "Success", result });
   }).catch((error) => {
-    if (!hasResponded) {
-      res.status(500).json({ message: error.message });
-    }
+    if (!hasResponded) res.status(500).json({ message: error.message });
   });
 };
 
@@ -104,27 +97,19 @@ const addAgent = async (req: any, res: any) => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
-    // Add the agent to the database
-    const userId: string = await generateUserId();
-    await collection
-      .insertOne({
-        ...req.body,
-        user_id: userId,
-        hidden: false,
-      })
-      .then((result) => {
-        if (!result.acknowledged) {
-          res
-            .status(409)
-            .json({ message: "Failed to add agent", result: null });
-          return;
-        }
+    const data: any = await generateInsertionData(req.body);
+    await collection.insertOne(data).then((result) => {
+      if (!result.acknowledged) {
+        return res
+          .status(409)
+          .json({ message: "Failed to add agent", result: null });
+      }
 
-        cache.add_agent({ ...req.body, user_id: userId });
-        res.status(200).json({ message: "Success", result });
-      });
+      cache.add_agent(data);
+      res.status(200).json({ message: "Success", result });
+    });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -143,28 +128,31 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
   }
 
   await context(async (database) => {
-    const collection = database.collection("agents");
+    const collection: Collection<Document> = database.collection("agents");
 
     // Check if the agent already exists
-    await collection.findOne({ user_id: agent_id }).then(async (agent) => {
-      if (!agent) {
-        res.status(409).json({ message: "Agent does not exist", result: null });
-        return;
-      }
-
-      // Delete the agent from the database
-      await collection.deleteOne({ user_id: agent_id }).then((result) => {
-        if (result.deletedCount === 0) {
-          res
-            .status(409)
-            .json({ message: "Failed to delete agent", result: null });
-          return;
-        }
-
-        cache.delete_agent(agent_id);
-        res.status(200).json({ message: "Success", result });
-      });
+    let agent: Document | null = await collection.findOne({
+      user_id: agent_id,
     });
+
+    if (!agent) {
+      res.status(409).json({ message: "Agent does not exist", result: null });
+      return;
+    }
+
+    // Delete the agent from the database
+    let result: DeleteResult = await collection.deleteOne({
+      user_id: agent_id,
+    });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(409)
+        .json({ message: "Failed to delete agent", result: null });
+    }
+
+    cache.delete_agent(agent_id);
+    res.status(200).json({ message: "Success", result });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -184,3 +172,22 @@ const isValidAgentBody = (body: any) =>
   body.region.lon !== undefined &&
   body.permissions &&
   body.permissions.length > 0;
+
+// Generate the insert data from the request body
+const generateInsertionData = async (body: any) => {
+  const userId: string = await generateId();
+  return {
+    name: body.name,
+    email: body.email,
+    license: body.license,
+    title: body.title,
+    photo: body.photo,
+    lang: body.lang,
+    priority: body.priority,
+    team: body.team,
+    region: body.region,
+    permissions: body.permissions,
+    user_id: userId,
+    hidden: false,
+  };
+};

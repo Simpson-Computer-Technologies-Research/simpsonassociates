@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Input Component
  * @param props

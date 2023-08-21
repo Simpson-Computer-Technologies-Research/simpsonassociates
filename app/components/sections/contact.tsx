@@ -11,10 +11,14 @@ import { SetState } from "@/app/lib/types";
 /**
  * Store the contact images which will be randomly selected
  */
-const contactImages: string[] = [
-  "/images/headshots final-21.png",
-  "/images/headshots final-23.png",
-  "/images/headshots final-27.jpg",
+const defaultImages: string[] = [
+  "/images/agents/dave_headshot.png",
+  "/images/agents/marina_headshot.png",
+  "/images/agents/babar_headshot.png",
+  "/images/agents/fil_headshot.png",
+  "/images/agents/celeste_headshot.png",
+  "/images/agents/debby_headshot.png",
+  "/images/agents/marita_headshot.png",
 ];
 
 /**
@@ -40,7 +44,8 @@ export default function Contact(props: ContactProps): JSX.Element {
         <ContactForm emailTo={props.emailTo || "contact@dansimpson.ca"} />
         <Image
           src={
-            /* props.image || */ contactImages[Math.floor(Math.random() * 3)]
+            props.image ||
+            defaultImages[Math.floor(Math.random() * defaultImages.length)]
           }
           alt="..."
           width={750}

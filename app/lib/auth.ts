@@ -1,9 +1,9 @@
 import { sha256, base64encode, base64decode } from "./crypto";
 
 /**
- * Generate a random user id
+ * Generate a random id
  */
-export async function generateUserId() {
+export async function generateId() {
   const currentTime = new Date().getTime().toString();
   const random = crypto.getRandomValues(new Uint8Array(10));
   const hash = await sha256(random + currentTime);

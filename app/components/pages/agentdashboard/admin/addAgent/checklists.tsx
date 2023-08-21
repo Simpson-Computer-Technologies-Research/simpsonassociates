@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Permissions checklist
  * @returns JSX.Element
@@ -6,35 +8,21 @@ export default function PermissionsChecklist(): JSX.Element {
   return (
     <div className="mb-3 flex h-full w-full flex-col gap-2">
       <p className="font-medium text-white">Permissions</p>
-      <div className="flex flex-wrap gap-4" id="perms">
-        <PermissionsCheckbox value="post_events" label="Post Events" />
-        <PermissionsCheckbox value="admin" label="Admin" />
+      <div className="flex flex-wrap gap-4">
+        <PermissionsCheckbox
+          id="permission_manage_events"
+          value="manage_events"
+          label="Manage Events"
+        />
+        <PermissionsCheckbox
+          id="permission_admin"
+          value="admin"
+          label="Admin"
+        />
       </div>
     </div>
   );
 }
-
-export const TeamChecklist = (): JSX.Element => {
-  return (
-    <div className="mb-3 flex h-full w-full flex-col gap-2">
-      <p className="font-medium text-white">Team</p>
-      <div className="flex flex-wrap gap-4" id="team">
-        <Checkbox default={false} value="executive" label="Executive" />
-        <Checkbox default={false} value="sales" label="Support" />
-        <Checkbox default={false} value="marketing" label="Marketing" />
-      </div>
-    </div>
-  );
-};
-
-export const PriorityCheckbox = (): JSX.Element => {
-  return (
-    <div id="priority" className="mb-3 flex h-full w-full flex-col gap-2">
-      <p className="font-medium text-white">Priority</p>
-      <Checkbox default={false} value="priority" label="Priority" />
-    </div>
-  );
-};
 
 /**
  * Permissions checkbox
@@ -42,6 +30,7 @@ export const PriorityCheckbox = (): JSX.Element => {
  * @returns JSX.Element
  */
 interface PermissionsCheckboxProps {
+  id: string;
   value: string;
   label: string;
   permissions?: string[];
@@ -52,6 +41,7 @@ const PermissionsCheckbox = (props: PermissionsCheckboxProps): JSX.Element => {
 
   return (
     <Checkbox
+      id={props.id}
       default={defaultChecked}
       value={props.value}
       label={props.label}
@@ -59,7 +49,44 @@ const PermissionsCheckbox = (props: PermissionsCheckboxProps): JSX.Element => {
   );
 };
 
-const Checkbox = (props: {
+export const TeamChecklist = (): JSX.Element => {
+  return (
+    <div className="mb-3 flex h-full w-full flex-col gap-2">
+      <p className="font-medium text-white">Team</p>
+      <div className="flex flex-wrap gap-4" id="team">
+        <Checkbox
+          id="team_leadership"
+          default={false}
+          value="leadership"
+          label="Leadership"
+        />
+        <Checkbox
+          id="team_support"
+          default={false}
+          value="support"
+          label="Support"
+        />
+      </div>
+    </div>
+  );
+};
+
+export const PriorityCheckbox = (): JSX.Element => {
+  return (
+    <div className="mb-3 flex h-full w-full flex-col gap-2">
+      <p className="font-medium text-white">Priority</p>
+      <Checkbox
+        id="priority"
+        default={false}
+        value="priority"
+        label="Priority"
+      />
+    </div>
+  );
+};
+
+export const Checkbox = (props: {
+  id: string;
   label: string;
   default: boolean;
   value: string;
@@ -67,6 +94,7 @@ const Checkbox = (props: {
   return (
     <div className="flex flex-row gap-2 text-white">
       <input
+        id={props.id}
         defaultChecked={props.default}
         type="checkbox"
         value={props.value}

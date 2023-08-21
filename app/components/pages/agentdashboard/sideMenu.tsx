@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 
@@ -13,7 +15,7 @@ export default function SideMenu(props: { user: User }): JSX.Element {
     <div className="z-[1] flex h-auto w-screen flex-col bg-slate-50 p-4 sm:fixed sm:h-screen sm:w-64">
       <div className="flex flex-row items-center justify-start">
         <img
-          src={props.user.image || "/images/default_agent_headshot.png"}
+          src={props.user.image || "/images/default_agent_headshot_primary.png"}
           alt="..."
           width={50}
           height={50}
@@ -32,12 +34,6 @@ export default function SideMenu(props: { user: User }): JSX.Element {
         className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
       >
         Events
-      </a>
-      <a
-        href="#lenders"
-        className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
-      >
-        Lenders
       </a>
       <Link
         href="/agents/dashboard/admin"

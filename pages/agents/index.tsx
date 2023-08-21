@@ -11,10 +11,21 @@ import Contact from "@/app/components/sections/contact";
 import Bottom from "@/app/components/sections/bottom";
 import "@/app/styles/globals.css";
 
-import { fetchAgents, getLocation, nearbyAgents } from "@/app/lib/location";
-import { Agent, SetState } from "@/app/lib/types";
+import { getLocation, nearbyAgents } from "@/app/lib/location";
+import { Agent } from "@/app/lib/types";
 import Fuse from "fuse.js";
 import { ObjectState } from "@/app/lib/state";
+import Image from "next/image";
+
+/**
+ * Fetch the agents from the api
+ * @returns Agents
+ */
+export const fetchAgents = async () => {
+  return await fetch("/api/agents")
+    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((json) => json.result);
+};
 
 /**
  * Get the agents that match the query
@@ -100,7 +111,7 @@ export default function AgentsPage(): JSX.Element {
         <Contact
           className="bg-slate-50"
           emailTo={emailTo.value}
-          image={image.value}
+          // image={image.value}
         />
         <ScrollIndicator />
         <Bottom />
@@ -264,12 +275,12 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
       }}
       className="group relative mb-8 flex h-auto w-80 scale-100 cursor-pointer flex-col items-center p-6 text-center duration-500 ease-in-out hover:scale-105 hover:bg-slate-50 xs:mx-7 md:h-[34rem]"
     >
-      <img
+      <Image
         src={props.agent.photo}
         alt="..."
         width={600}
         height={600}
-        className="h-32 w-32 rounded-full xs:h-60 xs:w-60 lg:h-60 lg:w-60"
+        className="h-32 w-32 rounded-full object-cover xs:h-60 xs:w-60 lg:h-60 lg:w-60"
       />
       <h3 className="mt-4 text-2xl font-extrabold tracking-wide text-primary xs:text-3xl">
         {props.agent.name}
@@ -284,7 +295,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
         {props.agent.region && props.agent.region.location}
       </p>
       <p className="mt-1 text-base text-primary">{props.agent.lang}</p>
-      <button className="mt-3 w-fit bg-primary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 group-hover:bg-secondary md:absolute md:bottom-4">
+      <button className="mt-5 w-fit rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 md:absolute md:bottom-4">
         Get in touch
       </button>
     </a>

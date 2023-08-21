@@ -128,7 +128,7 @@ const Offices = (): JSX.Element => (
     <Office
       title="Head Office"
       phone="+1 519-885-8852"
-      address="50 Sportsworld Crossing - Unit 230"
+      address="50 Sportsworld Crossing - Unit 230 Kitchener"
       className="text-left"
       href="https://www.google.com/maps/place/50+Sportsworld+Crossing+Road+Unit+230,+Kitchener,+ON+N2P+0A4/@43.4097612,-80.3969364,16.97z/data=!3m1!5s0x882b8a889ababc0f:0x8072572b7fdf209!4m6!3m5!1s0x882b8a43e63fc10f:0xcbcdb2ec22aa2a10!8m2!3d43.4097598!4d-80.3943144!16s%2Fg%2F11pvctt148?entry=ttu"
     />
@@ -156,11 +156,11 @@ const Office = (props: {
       href={props.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="mb-2 text-sm text-para hover:text-secondary md:text-base"
+      className="my-2 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.address}
     </a>
-    <p className="my-2 text-sm text-para hover:text-secondary md:text-base">
+    <p className="mb-2 text-sm text-para hover:text-secondary md:text-base">
       {props.phone}
     </p>
   </div>

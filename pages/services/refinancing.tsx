@@ -63,20 +63,20 @@ const Header = (): JSX.Element => (
 );
 
 const Refinancing = (): JSX.Element => (
-  <div className="flex w-full flex-wrap items-center justify-center gap-12 bg-white p-12">
+  <div className="flex w-full flex-wrap items-center justify-center gap-12 bg-white px-12 pb-12">
     <RefinancingCard
-      title="Mortgage Refinancing"
-      description="Refinancing your mortgage can be a great way to save money by consolidating your high-interest debt, lowering your monthly payments, or accessing your home’s equity."
+      title="Financial Flexibility"
+      description="Are you looking to optimize your mortgage situation and free up funds for other financial needs? Mortgage refinancing could be the solution you've been searching for."
       image="/images/blue_home_banner.png"
     />
     <RefinancingCard
-      title="Home Equity Line of Credit"
-      description="A home equity line of credit (HELOC) is a revolving line of credit secured against your home. It allows you to access up to 65% of the value of your home."
+      title="Better Rates"
+      description="Are you tired of paying high-interest rates on your current mortgage? It's time to seize the opportunity and explore mortgage refinancing to secure more favorable rates. "
       image="/images/blue_home_banner.png"
     />
     <RefinancingCard
-      title="Home Equity Loan"
-      description="A home equity loan is a loan secured against the equity in your home. It allows you to access up to 80% of the value of your home."
+      title="Streamlining Finances"
+      description="Dealing with multiple loans and debts can be overwhelming, making it challenging to manage your finances effectively. Enter mortgage refinancing as a powerful tool for consolidation."
       image="/images/blue_home_banner.png"
     />
   </div>
@@ -88,9 +88,10 @@ const RefinancingCard = (props: {
   description: string;
   image: string;
 }): JSX.Element => (
-  <div
+  <a
+    href="#contact"
     className={cn(
-      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:h-[25.5rem] lg:w-96",
       props.className,
     )}
   >
@@ -99,15 +100,12 @@ const RefinancingCard = (props: {
       alt={props.title}
       className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
     />
-    <div className="mx-10 mt-40 xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
+    <div className="mx-10 mt-40 flex flex-col items-center justify-center xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
-      <a
-        href="#contact"
-        className="rounded-full bg-secondary px-10 py-3.5 text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:text-sm"
-      >
+      <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
         Get Started
-      </a>
+      </button>
     </div>
-  </div>
+  </a>
 );
