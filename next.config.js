@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   generateRobotsTxt: true,
   images: {
-    domains: ["storage.googleapis.com"],
+    domains: ["storage.googleapis.com", "lh3.googleusercontent.com"],
   },
 };
 

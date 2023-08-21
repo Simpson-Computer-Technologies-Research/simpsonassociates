@@ -4,6 +4,7 @@ import React from "react";
 import { cn } from "@/app/lib/utils";
 import { LoadingRelative } from "../loading";
 import { Rate } from "@/app/lib/types";
+import Link from "next/link";
 
 /**
  * Cards Component
@@ -90,14 +91,14 @@ const Card = (props: CardProps): JSX.Element => (
       </h1>
       <span className="mb-4 h-[3px] w-28 rounded-full bg-secondary duration-500 ease-in-out group-hover:w-40"></span>
       <p className="text-sm text-primary sm:text-base">{props.description}</p>
-      <a
+      <Link
         href={props.button.href}
         rel="noopener noreferrer"
         target={props.button.target}
         className="mt-7 rounded-full bg-secondary px-8 py-3 text-base font-medium tracking-wider text-white outline-2 outline-tertiary duration-500 ease-in-out hover:animate-pulse hover:px-10 hover:brightness-[1.05] md:outline-none"
       >
         {props.button.text}
-      </a>
+      </Link>
     </div>
   </section>
 );

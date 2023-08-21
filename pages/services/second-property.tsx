@@ -3,6 +3,8 @@
 
 // Import react for state and effect
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
@@ -83,14 +85,14 @@ const SecondPropertyCard = (props: {
   description: string;
   image: string;
 }): JSX.Element => (
-  <a
+  <Link
     href="#contact"
     className={cn(
       "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:h-[28rem] lg:w-[28rem]",
       props.className,
     )}
   >
-    <img
+    <Image
       src={props.image}
       alt={props.title}
       className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
@@ -102,5 +104,5 @@ const SecondPropertyCard = (props: {
         Get Started
       </button>
     </div>
-  </a>
+  </Link>
 );

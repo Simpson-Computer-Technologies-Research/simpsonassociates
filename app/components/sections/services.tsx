@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * Services Component
@@ -105,7 +106,7 @@ interface CardProps {
   href: string;
 }
 const Card = (props: CardProps): JSX.Element => (
-  <a
+  <Link
     href={props.href}
     rel="noopener noreferrer"
     target="_blank"
@@ -128,5 +129,5 @@ const Card = (props: CardProps): JSX.Element => (
     <button className="absolute bottom-3 rounded-full bg-secondary px-6 py-2 text-[0.45rem] font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-8 xs:px-7 xs:py-2.5 xs:text-xs sm:bottom-4 md:bottom-5 md:outline-none lg:text-sm lg:group-hover:px-9">
       Learn More
     </button>
-  </a>
+  </Link>
 );

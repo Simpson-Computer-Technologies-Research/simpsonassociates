@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { schema } from "../../../schema.module.js";
+import Link from "next/link";
 
 /**
  * Landing Component
@@ -86,7 +87,7 @@ const GetStartedButton = (): JSX.Element => {
 
   // Return the main component
   return (
-    <a
+    <Link
       href="#agents"
       className="group mt-8 w-60 rounded-full bg-white px-8 py-5 shadow-lg duration-500 ease-in-out hover:w-64"
     >
@@ -96,6 +97,6 @@ const GetStartedButton = (): JSX.Element => {
         </h2>
         <ArrowSvg />
       </div>
-    </a>
+    </Link>
   );
 };

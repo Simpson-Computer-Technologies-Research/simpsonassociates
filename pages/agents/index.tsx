@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
+import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
@@ -267,7 +268,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
   if (props.agent.hidden) return <></>;
 
   return (
-    <a
+    <Link
       href="#contact"
       onClick={() => {
         props.emailTo.set(props.agent.email);
@@ -298,6 +299,6 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
       <button className="mt-5 w-fit rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 md:absolute md:bottom-4">
         Get in touch
       </button>
-    </a>
+    </Link>
   );
 };

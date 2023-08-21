@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/app/lib/utils";
 
 /**
@@ -51,13 +52,13 @@ const NavigationLinks = (): JSX.Element => {
    * @param props
    * @returns JSX.Element
    */
-  const Link = (props: { text: string; href: string }): JSX.Element => (
-    <a
+  const NavLink = (props: { text: string; href: string }): JSX.Element => (
+    <Link
       href={props.href}
       className="my-1 text-base text-para hover:text-secondary"
     >
       {props.text}
-    </a>
+    </Link>
   );
 
   // Return JSX
@@ -66,11 +67,11 @@ const NavigationLinks = (): JSX.Element => {
       <h2 className="mb-1 text-lg font-bold tracking-wider text-white md:text-xl">
         Navigation
       </h2>
-      <Link href="#home" text="Home" />
-      <Link href="#services" text="Services" />
-      <Link href="#agents" text="Agents" />
-      <Link href="#about" text="About" />
-      <Link href="#contact" text="Contact" />
+      <NavLink href="/#home" text="Home" />
+      <NavLink href="/#services" text="Services" />
+      <NavLink href="/#agents" text="Agents" />
+      <NavLink href="/#about" text="About" />
+      <NavLink href="/#contact" text="Contact" />
     </div>
   );
 };
@@ -86,14 +87,14 @@ const Services = (): JSX.Element => {
    * @returns JSX.Element
    */
   const Button = (props: { text: string; href: string }): JSX.Element => (
-    <a
+    <Link
       href={props.href}
       rel="noreferrer"
       target="_blank"
       className="my-1 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.text}
-    </a>
+    </Link>
   );
 
   // Return JSX
@@ -152,14 +153,14 @@ const Office = (props: {
     <h2 className="text-base font-bold tracking-wider text-white md:text-xl">
       {props.title}
     </h2>
-    <a
+    <Link
       href={props.href}
       target="_blank"
       rel="noopener noreferrer"
       className="my-2 text-sm text-para hover:text-secondary md:text-base"
     >
       {props.address}
-    </a>
+    </Link>
     <p className="mb-2 text-sm text-para hover:text-secondary md:text-base">
       {props.phone}
     </p>
