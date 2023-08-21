@@ -2,7 +2,12 @@ import { Bucket, File, Storage } from "@google-cloud/storage";
 
 // Create a new storage instance with the credentials
 const storage: Storage = new Storage({
-  keyFilename: "dansimpson-b01718476b94.json",
+  projectId: process.env.GCP_PROJECT_ID,
+  credentials: {
+    client_email: process.env.GCP_CLIENT_EMAIL,
+    private_key: process.env.GCP_PRIVATE_KEY,
+    client_id: process.env.GCP_CLIENT_ID,
+  },
 });
 
 // Reference to the bucket
