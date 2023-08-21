@@ -52,11 +52,12 @@ const clearFields = () => {
 };
 
 const clearPermissions = () => {
-  const perms = document.getElementById("perms") as HTMLInputElement;
-  for (let i = 0; i < perms.children.length; i++) {
-    const child = perms.children[i] as HTMLInputElement;
-    child.checked = false;
-  }
+  const manage_events = document.getElementById(
+    "permission_manage_events",
+  ) as HTMLInputElement;
+  const admin = document.getElementById("permission_admin") as HTMLInputElement;
+  manage_events.checked = false;
+  admin.checked = false;
 };
 
 const clearPhoto = () => {

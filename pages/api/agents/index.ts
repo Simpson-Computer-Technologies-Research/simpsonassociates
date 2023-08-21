@@ -4,6 +4,7 @@ import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, DeleteResult, Document } from "mongodb";
+import { uploadPhotoGCP } from "@/app/lib/gcp";
 
 /**
  * Middlewares to limit the number of requests
@@ -99,7 +100,19 @@ const addAgent = async (req: any, res: any) => {
   await context(async (database) => {
     const collection: Collection<Document> = database.collection("agents");
 
+    const { photo } = req.body;
+    if (!photo) {
+      return res
+        .status(400)
+        .json({ message: "Missing required fields", result: null });
+    }
+
+    // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
+    const photoName: string =
+      data.name.toLowerCase().replace(" ", "") + "_headshot.png";
+    data.photo = await uploadPhotoGCP(photo, photoName);
+
     await collection.insertOne(data).then((result) => {
       if (!result.acknowledged) {
         return res
@@ -156,16 +169,6 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
-/**
- * Upload the photo to the google cloud storage
- */
-const uploadPhoto = (req: NextApiRequest, res: NextApiResponse) => {};
-
-/**
- * Delete a photo from the google cloud storage
- */
-const deletePhoto = (req: NextApiRequest, res: NextApiResponse) => {};
-
 // Check if the body of the request is valid
 const isValidAgentBody = (body: any) =>
   body.name &&
@@ -191,7 +194,6 @@ const generateInsertionData = async (body: any) => {
     email: body.email,
     license: body.license,
     title: body.title,
-    photo: body.photo,
     lang: body.lang,
     priority: body.priority,
     team: body.team,
