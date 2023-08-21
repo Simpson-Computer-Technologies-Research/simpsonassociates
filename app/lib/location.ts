@@ -3,16 +3,6 @@ import "@/app/styles/globals.css";
 import { Agent, Location } from "./types";
 
 /**
- * Fetch the agents from the api
- * @returns Agents
- */
-export const fetchAgents = async () => {
-  return await fetch("/api/agents")
-    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
-    .then((json) => json.result);
-};
-
-/**
  * Fetch user's location
  *
  * @return {void}

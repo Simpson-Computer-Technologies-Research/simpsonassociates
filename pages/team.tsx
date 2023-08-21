@@ -140,11 +140,11 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
         height={600}
         className="h-72 w-72 rounded-full object-cover duration-500 ease-in-out"
       />
-      <h1 className="mt-3 text-3xl font-bold tracking-wide text-primary">
+      <h1 className="mt-3 text-3xl font-extrabold tracking-wide text-primary">
         {props.agent.name}
       </h1>
-      <p className="mb-4 text-lg text-primary">{props.agent.title}</p>
-      <button className="mt-3 w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+      <p className="mb-4 mt-1 text-lg text-primary">{props.agent.title}</p>
+      <button className="w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
         Get in touch
       </button>
     </div>
@@ -167,28 +167,22 @@ const leadershipTeam: Agent[] = [
   {
     name: "Pat Tremblay",
     email: "patricktremblay@dansimpson.ca",
-    photo: "/images/agents/pat_headshot.png",
+    photo: "/images/agents/patrick_headshot.png",
     title: "Vice President",
   } as Agent,
 ];
 
 const supportTeam: Agent[] = [
   {
-    name: "Dan Simpson",
-    email: "dan@dansimpson.ca",
-    photo: "/images/agents/dan_headshot.png",
-    title: "Founder",
+    name: "Fil Vieira-Lee",
+    email: "fil@dansimpson.ca",
+    photo: "/images/agents/fil_headshot.png",
+    title: "Customer Care Coordinator",
   } as Agent,
   {
-    name: "Dave Mota",
-    email: "davemota@dansimpson.ca",
-    photo: "/images/agents/dave_headshot.png",
-    title: "Vice President",
-  } as Agent,
-  {
-    name: "Pat Tremblay",
-    email: "patricktremblay@dansimpson.ca",
-    photo: "/images/agents/pat_headshot.png",
-    title: "Vice President",
+    name: "Celeste Bernard",
+    email: "celeste@dansimpson.ca",
+    photo: "/images/agents/celeste_headshot.png",
+    title: "Customer Care Coordinator",
   } as Agent,
 ];

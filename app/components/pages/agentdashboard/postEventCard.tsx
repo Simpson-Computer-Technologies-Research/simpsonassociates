@@ -5,13 +5,17 @@ import React from "react";
 import { User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 import { Event } from "@/app/lib/types";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Post event card
  * @param props
  * @returns JSX.Element
  */
-export default function PostEventCard(props: { user: User }): JSX.Element {
+export default function PostEventCard(props: {
+  user: User;
+  events: ObjectState<Event[] | null>;
+}): JSX.Element {
   if (!props.user.permissions.includes("manage_events")) return <></>;
   const [disabled, setDisabled] = React.useState<boolean>(false);
 
@@ -56,10 +60,19 @@ export default function PostEventCard(props: { user: User }): JSX.Element {
 
       <button
         disabled={disabled}
-        className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110"
+        className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50"
         onClick={() => {
           setDisabled(true);
-          createEvent(props.user).then(() => setDisabled(false));
+          createEvent(props.user).then((res) => {
+            setDisabled(false);
+
+            if (!res) return;
+
+            props.events.set([
+              ...(props.events.value || []),
+              getInputValues(props.user),
+            ]);
+          });
         }}
       >
         Post
@@ -72,21 +85,21 @@ export default function PostEventCard(props: { user: User }): JSX.Element {
  * Create a new event and add the event info to the database via the api
  * @param user The user who's making the event post
  */
-const createEvent = async (user: User) => {
+const createEvent = async (user: User): Promise<boolean> => {
   const authorization: string = await generateAuthorization(
     user.accessToken || "",
     user.email || "",
   );
 
   const body = getInputValues(user);
-  await fetch("/api/agents/events", {
+  return await fetch("/api/agents/events", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       authorization,
     },
     body: JSON.stringify(body),
-  });
+  }).then((res) => res.status === 200);
 };
 
 /**

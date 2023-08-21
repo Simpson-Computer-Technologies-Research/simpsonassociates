@@ -26,7 +26,9 @@ interface AddAgentProps {
 export default function AddAgent(props: AddAgentProps): JSX.Element {
   const error = new ObjectState<string>("");
   const region = new ObjectState<Location | null>(null);
-  const photo = new ObjectState<string>("/images/default_agent_headshot.png");
+  const photo = new ObjectState<string>(
+    "/images/default_agent_headshot_primary.png",
+  );
 
   // Eeturn the component jsx
   return (

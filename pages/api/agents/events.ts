@@ -5,6 +5,7 @@ import { generateId } from "@/app/lib/auth";
 import { sendEmail } from "@/app/lib/email";
 import { Event } from "@/app/lib/types";
 import { Collection, Document } from "mongodb";
+import { epochToDate } from "@/app/lib/date";
 
 const ONE_DAY_IN_MILLISECONDS: number = 86400000;
 
@@ -114,7 +115,9 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data: any = await generateInsertionData(req.body);
     const result = await collection.insertOne(data);
-    // if (notify_agents) emailAllAgents(result);
+    // if (notify_agents) emailAllAgents(data);
+
+    res.status(200).json({ message: "Success", result });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -136,6 +139,7 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     await collection.deleteOne({
       event_id,
     });
+    res.status(200).json({ message: "Success" });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
@@ -161,7 +165,7 @@ const generateInsertionData = async (body: any): Promise<Event> => {
     description: body.description,
     date: body.date,
     posted_by: body.posted_by,
-    note: body.note,
+    note: body.note || "None",
   };
 };
 
@@ -188,12 +192,13 @@ const emailAllAgents = async (event: any) => {
 
     // Send an email to all of the agents
     for (let agent of agents) {
+      const date: string = epochToDate(event.date);
       const data = {
         from: "Simpson Associates Event Notification",
         to: agent.email,
         subject: `Simpson Associates Event Notification`,
-        text: `Event Information:\nTitle: ${event.title}\nDescription: ${event.description}\nDate: ${event.date}\nPosted by:\n${event.posted_by}\nNote:\n${event.note}`,
-        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${event.date}<br/><strong>Posted by:</strong><br/>${event.posted_by}<br/>strong>Note:</strong><br/>${event.note}`,
+        text: `Event Information:\nTitle: ${event.title}\nDescription: ${event.description}\nDate: ${date}\nPosted by:\n${event.posted_by}\nNote:\n${event.note}`,
+        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${date}<br/><strong>Posted by:</strong><br/>${event.posted_by}<br/><strong>Note:</strong><br/>${event.note}`,
       };
 
       await sendEmail(

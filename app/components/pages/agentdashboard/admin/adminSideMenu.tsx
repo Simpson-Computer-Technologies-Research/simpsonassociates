@@ -33,12 +33,6 @@ export default function SideMenu(props: { user: User }): JSX.Element {
       >
         Events
       </a>
-      <a
-        href="/agents/dashboard/#lenders"
-        className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
-      >
-        Lenders
-      </a>
       <button
         onClick={() => signOut()}
         className="relative bottom-4 mt-8 rounded-md bg-primary px-10 py-2.5 text-start font-medium text-white hover:brightness-110 sm:absolute"

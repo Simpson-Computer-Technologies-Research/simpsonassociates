@@ -63,20 +63,20 @@ const Header = (): JSX.Element => (
 );
 
 const InvestmentProperty = (): JSX.Element => (
-  <div className="flex w-full flex-wrap items-center justify-center gap-12 bg-white p-12">
+  <div className="flex w-full flex-wrap items-center justify-center gap-12 bg-white px-12 pb-12">
     <InvestmentPropertyCard
-      title="Residential"
-      description="Whether you are looking to purchase your first home or your fifth, we have access to the best products and rates available across Canada."
+      title="Rental Property"
+      description="Prepared to step into landlording? We have the perfect mortgage solution! Be it residential, commercial, industrial, or mixed-use, we're here to assist you in obtaining the optimal mortgage, maximizing your investment's potential."
       image="/images/blue_home_banner.png"
     />
     <InvestmentPropertyCard
-      title="Commercial"
-      description="We have access to the best products and rates available across Canada for commercial properties."
+      title="Future Resale"
+      description="Looking to buy property or land with the aim to resell for profit? Our committed mortgage agents will guide you, making the search for the ideal mortgage straightforward."
       image="/images/blue_home_banner.png"
     />
     <InvestmentPropertyCard
-      title="Multi-Unit"
-      description="We have access to the best products and rates available across Canada for multi-unit properties."
+      title="Commercial Property"
+      description="Contemplating investing in a commercial property for future gains? Our dedicated mortgage agents are here to simplify the process and help you secure the perfect mortgage for your investment goals."
       image="/images/blue_home_banner.png"
     />
   </div>
@@ -88,9 +88,10 @@ const InvestmentPropertyCard = (props: {
   description: string;
   image: string;
 }): JSX.Element => (
-  <div
+  <a
+    href="#contact"
     className={cn(
-      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:h-[27rem] lg:w-96",
       props.className,
     )}
   >
@@ -99,15 +100,12 @@ const InvestmentPropertyCard = (props: {
       alt={props.title}
       className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
     />
-    <div className="mx-10 mt-40 xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
+    <div className="mx-10 mt-40 flex flex-col items-center justify-center xs:mt-52 sm:mt-60 md:mt-64 lg:mt-44">
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
-      <a
-        href="#contact"
-        className="rounded-full bg-secondary px-10 py-3.5 text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:text-sm"
-      >
+      <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
         Get Started
-      </a>
+      </button>
     </div>
-  </div>
+  </a>
 );
