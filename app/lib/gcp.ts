@@ -54,3 +54,11 @@ export const deletePhotoGCP = async (fileName: string): Promise<any> => {
   const file: File = bucket.file(fileName);
   return file.delete();
 };
+
+/**
+ * Get the name of the agent's photo
+ * @param name The agent's name
+ * @returns The name of the agent's photo
+ */
+export const agentPhotoName = (name: string): string =>
+  name.toLowerCase().replace(" ", "") + "_headshot.png";

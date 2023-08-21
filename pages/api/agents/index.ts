@@ -4,7 +4,7 @@ import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, DeleteResult, Document } from "mongodb";
-import { uploadPhotoGCP } from "@/app/lib/gcp";
+import { uploadPhotoGCP, deletePhotoGCP, agentPhotoName } from "@/app/lib/gcp";
 
 /**
  * Middlewares to limit the number of requests
@@ -109,9 +109,20 @@ const addAgent = async (req: any, res: any) => {
 
     // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
-    const photoName: string =
-      data.name.toLowerCase().replace(" ", "") + "_headshot.png";
-    data.photo = await uploadPhotoGCP(photo, photoName);
+    const photoName: string = agentPhotoName(data.name);
+    const GCPPhotoURL: string = await uploadPhotoGCP(photo, photoName).catch(
+      (error) => {
+        console.log(error);
+        return "";
+      },
+    );
+
+    if (!GCPPhotoURL) {
+      return res
+        .status(400)
+        .json({ message: "Failed to upload photo", result: null });
+    }
+    data.photo = GCPPhotoURL;
 
     await collection.insertOne(data).then((result) => {
       if (!result.acknowledged) {
@@ -163,6 +174,10 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
         .status(409)
         .json({ message: "Failed to delete agent", result: null });
     }
+
+    // Delete the agent photo from the google cloud storage
+    const photoName: string = agentPhotoName(agent.name);
+    await deletePhotoGCP(photoName).catch((error) => console.log(error));
 
     cache.delete_agent(agent_id);
     res.status(200).json({ message: "Success", result });
