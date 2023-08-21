@@ -17,7 +17,7 @@ const defaultImages: string[] = [
   "/images/agents/babar_headshot.png",
   "/images/agents/fil_headshot.png",
   "/images/agents/celeste_headshot.png",
-  "/images/agents/debby_headshot.png",
+  "/images/agents/debbie_headshot.png",
   "/images/agents/marita_headshot.png",
 ];
 
