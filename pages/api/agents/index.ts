@@ -110,18 +110,15 @@ const addAgent = async (req: any, res: any) => {
     // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
     const photoName: string = agentPhotoName(data.name);
-    const GCPPhotoURL: string = await uploadPhotoGCP(photo, photoName).catch(
-      (error) => {
-        console.log(error);
-        return "";
-      },
-    );
+    const GCPPhotoURL: string | null = await uploadPhotoGCP(
+      photo,
+      photoName,
+    ).catch((error) => {
+      res.status(500).json({ message: error.message });
+      return null;
+    });
 
-    if (!GCPPhotoURL) {
-      return res
-        .status(400)
-        .json({ message: "Failed to upload photo", result: null });
-    }
+    if (!GCPPhotoURL) return;
     data.photo = GCPPhotoURL;
 
     await collection.insertOne(data).then((result) => {
