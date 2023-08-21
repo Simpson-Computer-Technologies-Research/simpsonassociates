@@ -8,6 +8,9 @@
 # environment
 .env
 
+# google storage
+dansimpson-b01718476b94.json
+
 # testing
 /coverage
 

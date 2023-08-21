@@ -156,6 +156,16 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
   }).catch((error) => res.status(500).json({ message: error.message }));
 };
 
+/**
+ * Upload the photo to the google cloud storage
+ */
+const uploadPhoto = (req: NextApiRequest, res: NextApiResponse) => {};
+
+/**
+ * Delete a photo from the google cloud storage
+ */
+const deletePhoto = (req: NextApiRequest, res: NextApiResponse) => {};
+
 // Check if the body of the request is valid
 const isValidAgentBody = (body: any) =>
   body.name &&
