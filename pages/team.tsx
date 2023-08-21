@@ -160,7 +160,7 @@ const leadershipTeam: Agent[] = [
   } as Agent,
   {
     name: "Dave Mota",
-    email: "davemota@dansimpson.ca",
+    email: "dave@dansimpson.ca",
     photo: "/images/agents/dave_headshot.png",
     title: "Vice President",
   } as Agent,

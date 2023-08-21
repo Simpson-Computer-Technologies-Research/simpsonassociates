@@ -15,7 +15,6 @@ import { getLocation, nearbyAgents } from "@/app/lib/location";
 import { Agent } from "@/app/lib/types";
 import Fuse from "fuse.js";
 import { ObjectState } from "@/app/lib/state";
-import Image from "next/image";
 
 /**
  * Fetch the agents from the api
@@ -275,7 +274,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
       }}
       className="group relative mb-8 flex h-auto w-80 scale-100 cursor-pointer flex-col items-center p-6 text-center duration-500 ease-in-out hover:scale-105 hover:bg-slate-50 xs:mx-7 md:h-[34rem]"
     >
-      <Image
+      <img
         src={props.agent.photo}
         alt="..."
         width={600}
