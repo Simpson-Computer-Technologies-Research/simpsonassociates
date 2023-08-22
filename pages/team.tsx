@@ -144,7 +144,10 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
       <h1 className="mt-3 text-3xl font-extrabold tracking-wide text-primary">
         {props.agent.name}
       </h1>
-      <p className="mb-4 mt-1 text-lg text-primary">{props.agent.title}</p>
+      <p className="mt-1 text-lg italic text-primary">{props.agent.title}</p>
+      <p className="mb-4 mt-1 text-base text-primary">
+        {props.agent.lang || ""}
+      </p>
       <button className="w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
         Get in touch
       </button>
@@ -179,23 +182,27 @@ const supportTeam: Agent[] = [
     email: "fil@dansimpson.ca",
     photo: "/images/agents/fil_headshot.png",
     title: "Customer Care Coordinator",
+    lang: "English, Portuguese",
   } as Agent,
   {
     name: "Celeste Bernard",
     email: "celeste@dansimpson.ca",
     photo: "/images/agents/celeste_headshot.png",
     title: "Customer Care Coordinator",
+    lang: "English",
   } as Agent,
   {
     name: "Paula Freitas",
     email: "paula@dansimpson.ca",
     photo: "/images/agents/paulafreitas_headshot.png",
     title: "Senior Underwriter",
+    lang: "English, Portuguese",
   } as Agent,
   {
     name: "Debbie Kitchen",
     email: "debbiekitchen@dansimpson.ca",
     photo: "/images/agents/debbie_headshot.png",
     title: "Onboarding Manager",
+    lang: "English",
   } as Agent,
 ];

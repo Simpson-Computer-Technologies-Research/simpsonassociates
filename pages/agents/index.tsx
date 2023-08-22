@@ -287,7 +287,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
       <h3 className="mt-4 text-2xl font-extrabold tracking-wide text-primary xs:text-3xl">
         {props.agent.name}
       </h3>
-      <p className="text-sm font-medium text-primary xs:text-base">
+      <p className="text-sm font-medium italic text-primary xs:text-base">
         {props.agent.title}
       </p>
       <p className="mt-1 text-xs text-primary">
