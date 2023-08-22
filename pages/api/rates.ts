@@ -35,7 +35,8 @@ export default async function handler(
 
   if (RatesCache.isCached()) {
     res.status(200).json(RatesCache.get());
-    return fetchRates();
+    await fetchRates();
+    return;
   }
 
   await fetchRates()
@@ -44,9 +45,12 @@ export default async function handler(
 }
 
 const fetchRates = async () => {
-  const apiKey: string = process.env.DOMINION_RATES_API_KEY || "'";
+  const apiKey: string | undefined = process.env.DOMINION_RATES_API_KEY;
+  if (!apiKey) throw new Error("Invalid Dominion Rates API key");
+
   const url: string =
     "https://secure.dominionintranet.ca/rest/rates?apikey=" + apiKey;
+
   return await fetch(url)
     .then((resp) => resp.json())
     .then((json) => {
