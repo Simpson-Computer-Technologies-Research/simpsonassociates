@@ -10,7 +10,7 @@ interface Data {
 
 export const sendEmail = async (
   data: Data,
-  onError: (err: any) => void,
+  onError: (err: Error) => void,
   onSuccess: (msg: any) => void,
 ) => {
   const transporter = nodemailer.createTransport({
@@ -23,7 +23,7 @@ export const sendEmail = async (
     secure: true,
   });
 
-  return transporter.sendMail(data, (err: any, msg: any) => {
+  return transporter.sendMail(data, (err: Error | null, msg: any) => {
     if (err) onError(err);
     else onSuccess(msg);
   });

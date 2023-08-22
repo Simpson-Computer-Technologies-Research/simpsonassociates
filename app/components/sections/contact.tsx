@@ -11,6 +11,7 @@ import {
   DEFAULT_CONTACT_EMAIL,
   DEFAULT_CONTACT_IMAGES,
 } from "@/app/lib/constants";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Contact Component
@@ -81,8 +82,11 @@ interface ContactFields {
   message: string;
 }
 const ContactForm = (props: { emailTo: string }): JSX.Element => {
-  const emptyFields: ContactFields = { name: "", phone: "", message: "" };
-  const [errors, setErrors] = React.useState<ContactFields>(emptyFields);
+  const errors = new ObjectState<ContactFields>({
+    name: "",
+    phone: "",
+    message: "",
+  });
 
   // Google session
   const { data: session } = useSession();
@@ -103,13 +107,13 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
         placeholder="Name"
         onChange={(e) => {
           if (!isValidName(e.target.value)) {
-            setErrors({ ...errors, name: "Name is required" });
-          } else if (errors.name) {
-            setErrors({ ...errors, name: "" });
+            errors.set({ ...errors.value, name: "Name is required" });
+          } else if (errors.value.name) {
+            errors.set({ ...errors.value, name: "" });
           }
         }}
       />
-      <ErrorMessage error={errors.name} />
+      <ErrorMessage error={errors.value.name} />
 
       {/* Phone number input */}
       <input
@@ -117,15 +121,17 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
         className="mt-4 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         placeholder="Phone Number (Not Required)"
         onChange={(e) => {
-          if (!isValidPhone(e.target.value))
-            setErrors({
-              ...errors,
+          if (!isValidPhone(e.target.value)) {
+            errors.set({
+              ...errors.value,
               phone: "Please enter a valid phone number",
             });
-          else if (errors.phone) setErrors({ ...errors, phone: "" });
+          } else if (errors.value.phone) {
+            errors.set({ ...errors.value, phone: "" });
+          }
         }}
       />
-      <ErrorMessage error={errors.phone} />
+      <ErrorMessage error={errors.value.phone} />
 
       {/* Message input */}
       <textarea
@@ -133,12 +139,14 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
         placeholder="Message"
         className="mt-4 h-20 w-60 border-b-[2.5px] border-b-primary p-2 text-xs text-primary focus:outline-none xs:w-96 xs:text-sm xs:focus:border-transparent xs:focus:ring-[2.5px] xs:focus:ring-primary sm:text-base"
         onChange={(e) => {
-          if (!isValidMessage(e.target.value))
-            setErrors({ ...errors, message: "Message is required" });
-          else if (errors.message) setErrors({ ...errors, message: "" });
+          if (!isValidMessage(e.target.value)) {
+            errors.set({ ...errors.value, message: "Message is required" });
+          } else if (errors.value.message) {
+            errors.set({ ...errors.value, message: "" });
+          }
         }}
       ></textarea>
-      <ErrorMessage error={errors.message} />
+      <ErrorMessage error={errors.value.message} />
 
       {/* If the user is not logged in */}
       {!session && <SignInButton />}
@@ -149,7 +157,6 @@ const ContactForm = (props: { emailTo: string }): JSX.Element => {
           emailTo={props.emailTo}
           email={session.user.email}
           errors={errors}
-          setErrors={setErrors}
         />
       )}
       {session && <ChangeEmailButton />}
@@ -207,16 +214,10 @@ const ChangeEmailButton = (): JSX.Element => (
  * Send email button component
  * @returns JSX.Element
  */
-interface EmailErrors {
-  name: string;
-  phone: string;
-  message: string;
-}
 interface SendEmailButtonProps {
   emailTo: string;
   email: string;
-  errors: EmailErrors;
-  setErrors: SetState<EmailErrors>;
+  errors: ObjectState<ContactFields>;
 }
 const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
   const [sending, setSending] = React.useState<boolean>(false);
@@ -228,19 +229,22 @@ const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
     const message = getElementValue("contact-message");
 
     if (!isValidName(name)) {
-      return props.setErrors({ ...props.errors, name: "Name is required" });
+      return props.errors.set({
+        ...props.errors.value,
+        name: "Name is required",
+      });
     }
 
     if (!isValidPhone(phone)) {
-      return props.setErrors({
-        ...props.errors,
+      return props.errors.set({
+        ...props.errors.value,
         phone: "Invalid phone number",
       });
     }
 
     if (!isValidMessage(message)) {
-      return props.setErrors({
-        ...props.errors,
+      return props.errors.set({
+        ...props.errors.value,
         message: "Message is required",
       });
     }
@@ -253,7 +257,7 @@ const SendEmailButton = (props: SendEmailButtonProps): JSX.Element => {
       message,
     );
 
-    props.setErrors({ ...props.errors, message: resp });
+    props.errors.set({ ...props.errors.value, message: resp });
   };
 
   return (

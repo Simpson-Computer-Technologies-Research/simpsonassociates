@@ -13,7 +13,7 @@ import Bottom from "@/app/components/sections/bottom";
 import "@/app/styles/globals.css";
 
 import { getLocation, nearbyAgents } from "@/app/lib/location";
-import { Agent } from "@/app/lib/types";
+import { Agent, AgentLocation } from "@/app/lib/types";
 import Fuse from "fuse.js";
 import { ObjectState } from "@/app/lib/state";
 import Image from "next/image";
@@ -62,12 +62,10 @@ const getUrlQueryParam = () =>
  * @returns JSX.Element
  */
 export default function AgentsPage(): JSX.Element {
-  const initialQuery: ObjectState<string> = new ObjectState("");
-
-  const emptyAgents: Agent[] = [];
-  const agents: ObjectState<Agent[]> = new ObjectState(emptyAgents);
-  const emailTo: ObjectState<string> = new ObjectState("");
-  const image: ObjectState<string> = new ObjectState("");
+  const initialQuery = new ObjectState<string>("");
+  const agents = new ObjectState<Agent[]>([]);
+  const emailTo = new ObjectState<string>("");
+  const image = new ObjectState<string>("");
 
   React.useEffect(() => {
     const query = getUrlQueryParam();
@@ -104,17 +102,13 @@ export default function AgentsPage(): JSX.Element {
         <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
           <Header />
           <Agents
-            initialQuery={initialQuery}
-            agents={agents}
+            initialQuery={initialQuery.value}
+            agents={agents.value}
             emailTo={emailTo}
-            image={image}
+            image={image.value}
           />
         </div>
-        <Contact
-          className="bg-slate-50"
-          emailTo={emailTo.value}
-          // image={image.value}
-        />
+        <Contact className="bg-slate-50" emailTo={emailTo.value} />
         <ScrollIndicator />
         <Bottom />
       </SessionProvider>
@@ -127,18 +121,18 @@ export default function AgentsPage(): JSX.Element {
  * @returns JSX.Element
  */
 const Agents = (props: {
-  initialQuery: ObjectState<string>;
-  agents: ObjectState<Agent[]>;
+  initialQuery: string;
+  image: string;
+  agents: Agent[];
   emailTo: ObjectState<string>;
-  image: ObjectState<string>;
 }): JSX.Element => {
-  const query: ObjectState<string> = new ObjectState("");
-  const error: ObjectState<string> = new ObjectState("");
-  const location: ObjectState<any> = new ObjectState({
-    loading: false,
+  const query = new ObjectState<string>("");
+  const error = new ObjectState<string>("");
+  const loc = new ObjectState<AgentLocation>({
     active: false,
-    lat: 0,
-    lon: 0,
+    loading: false,
+    lat: 0.0,
+    lon: 0.0,
   });
 
   return (
@@ -146,30 +140,32 @@ const Agents = (props: {
       <input
         className="mb-4 w-60 border-b-[2.5px] border-b-primary p-2 text-gray-800 focus:border-transparent focus:outline-none focus:ring-[2.5px] focus:ring-primary xs:w-96"
         type="text"
-        defaultValue={props.initialQuery.value}
+        defaultValue={props.initialQuery}
         placeholder="Enter an agent name, city, or language"
         onChange={(e) => {
           query.set(e.target.value);
           setUrlQueryParam(e.target.value);
-          if (location.value.active)
-            location.set({ ...location, active: false });
+
+          if (loc.value.active) {
+            loc.set({ ...loc.value, active: false });
+          }
         }}
       />
       <button
-        onClick={() => getLocation(location, error)}
+        onClick={() => getLocation(loc, error)}
         className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
       >
-        {location.value.loading
+        {loc.value.loading
           ? "Fetching Location"
-          : location.value.active
+          : loc.value.active
           ? "Location Active"
           : "Use My Location"}
       </button>
       <p className="text-sm font-semibold text-red-500">{error.value}</p>
       <AgentsGrid
-        query={query.value || props.initialQuery.value}
+        query={query.value || props.initialQuery}
         agents={props.agents}
-        location={location}
+        location={loc.value}
         emailTo={props.emailTo}
         image={props.image}
       />
@@ -197,20 +193,20 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const AgentsGrid = (props: {
-  agents: ObjectState<Agent[]>;
   query: string;
-  location: any;
+  image: string;
+  agents: Agent[];
+  location: AgentLocation;
   emailTo: ObjectState<string>;
-  image: ObjectState<string>;
 }): JSX.Element => {
-  let results: any[] = props.agents.value;
+  let results: any[] = props.agents;
 
   if (props.query && !props.location.active) {
-    results = fuzzySearch(props.agents.value, props.query);
+    results = fuzzySearch(props.agents, props.query);
   }
 
   if (props.location.active) {
-    results = nearbyAgents(props.agents.value, {
+    results = nearbyAgents(props.agents, {
       lat: props.location.lat,
       lon: props.location.lon,
     });
@@ -264,7 +260,7 @@ const sortByPriority = (agents: Agent[]) => {
 interface AgentCardProps {
   agent: Agent;
   emailTo: ObjectState<string>;
-  image: ObjectState<string>;
+  image: string;
 }
 const AgentCard = (props: AgentCardProps): JSX.Element => {
   if (props.agent.hidden) return <></>;
@@ -272,10 +268,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => {
   return (
     <Link
       href="#contact"
-      onClick={() => {
-        props.emailTo.set(props.agent.email);
-        props.image.set(props.agent.photo);
-      }}
+      onClick={() => props.emailTo.set(props.agent.email)}
       className="group relative mb-8 flex h-auto w-80 scale-100 cursor-pointer flex-col items-center p-6 text-center duration-500 ease-in-out hover:scale-105 hover:bg-slate-50 xs:mx-7 md:h-[34rem]"
     >
       <Image

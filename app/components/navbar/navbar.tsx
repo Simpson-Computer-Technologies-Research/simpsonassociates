@@ -5,14 +5,14 @@ import NavbarButton from "./button";
 import NavbarMenu from "./menu";
 import Image from "next/image";
 import Link from "next/link";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Navbar Component
  * @returns JSX.Element
  */
 export default function Navbar() {
-  const [underlinedButton, setUnderlinedButton] =
-    React.useState<string>("home");
+  const underlined = new ObjectState<string>("home");
 
   // Set the window listener
   React.useEffect(() => {
@@ -37,11 +37,11 @@ export default function Navbar() {
         const pos: number = window.scrollY;
 
         const atSection: boolean = pos >= top && pos < btm;
-        if (atSection && sectionId !== underlinedButton)
-          setUnderlinedButton(sectionId);
+        if (atSection && sectionId !== underlined.value)
+          underlined.set(sectionId);
       }
     });
-  }, [underlinedButton]);
+  }, [underlined]);
 
   return (
     <nav className="fixed z-50 flex w-screen flex-row justify-between border-b-4 border-secondary bg-nav">
@@ -62,40 +62,35 @@ export default function Navbar() {
           className="hidden lg:flex"
           href="/#home"
           id="home"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
+          underlined={underlined}
         />
         <NavbarButton
           text="Rates"
           className="hidden xl:flex"
           href="/#rates"
           id="rates"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
+          underlined={underlined}
         />
         <NavbarButton
           text="Services"
           className="hidden lg:flex"
           href="/#services"
           id="services"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
+          underlined={underlined}
         />
         <NavbarButton
           text="Agents"
           className="hidden lg:flex"
           href="/#agents"
           id="agents"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
+          underlined={underlined}
         />
         <NavbarButton
           text="Contact"
           className="hidden lg:flex"
           href="/#contact"
           id="contact"
-          underlinedButton={underlinedButton}
-          setUnderlinedButton={setUnderlinedButton}
+          underlined={underlined}
         />
         <Link
           href="/login?redirect=/agents/dashboard"

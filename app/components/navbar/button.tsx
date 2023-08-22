@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/app/lib/utils";
-import { SetState } from "@/app/lib/types";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Navbar Button Component
@@ -14,12 +14,11 @@ interface NavbarButtonProps {
   text: string;
   href: string;
   id: string;
-  underlinedButton: string;
-  setUnderlinedButton: SetState<string>;
+  underlined: ObjectState<string>;
 }
 export default function NavbarButton(props: NavbarButtonProps): JSX.Element {
   const underlineWidth: string =
-    props.underlinedButton === props.id ? "w-12" : "w-0";
+    props.underlined.value === props.id ? "w-12" : "w-0";
 
   return (
     <div
@@ -30,7 +29,7 @@ export default function NavbarButton(props: NavbarButtonProps): JSX.Element {
     >
       <Link
         href={props.href}
-        onClick={() => props.setUnderlinedButton(props.id)}
+        onClick={() => props.underlined.set(props.id)}
         className="py-2 text-base font-medium tracking-widest text-white duration-500 ease-in-out"
       >
         {props.text.toUpperCase()}

@@ -58,3 +58,21 @@ export interface Region {
   lat: number;
   lon: number;
 }
+
+export interface AgentLocation {
+  loading: boolean;
+  active: boolean;
+  lat: number;
+  lon: number;
+}
+
+export interface Lender {
+  logo: string;
+  href: string;
+}
+
+export interface Testimonial {
+  name: string;
+  testimonial: string;
+  href: string;
+}

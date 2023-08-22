@@ -1,21 +1,7 @@
+import { Agent, Rate } from "./types";
+
 export class AgentsCache {
-  cache: {
-    name: string;
-    user_id: string;
-    priority: boolean;
-    team: string;
-    email: string;
-    title: string;
-    photo: string;
-    lang: string;
-    permissions: string[];
-    license: string;
-    region: {
-      location: string;
-      lat: string;
-      lon: string;
-    };
-  }[];
+  cache: Agent[];
 
   constructor() {
     this.cache = [];
@@ -29,39 +15,27 @@ export class AgentsCache {
     return this.cache;
   }
 
-  update(agents: any[]) {
+  update(agents: Agent[]) {
     this.cache = agents;
   }
 
-  update_agent(user_id: any, data: any) {
+  update_agent(user_id: string, data: Agent) {
     const index = this.cache.findIndex((agent) => agent.user_id === user_id);
     this.cache[index] = data;
   }
 
-  add_agent(agent: any) {
+  add_agent(agent: Agent) {
     this.cache.push(agent);
   }
 
-  delete_agent(user_id: any) {
+  delete_agent(user_id: string) {
     const index = this.cache.findIndex((agent) => agent.user_id === user_id);
     this.cache.splice(index, 1);
   }
 }
 
 export class RatesCache {
-  cache: {
-    id: string;
-    BankRate: string;
-    OurRate: string;
-    Terms: string;
-    TermsFr: string;
-    TermsPa: string;
-    BankMonthly: string;
-    OurMonthly: string;
-    Savings: string;
-    updated_at: string;
-    TermsMonth: string;
-  }[];
+  cache: Rate[];
 
   constructor() {
     this.cache = [];
@@ -75,15 +49,15 @@ export class RatesCache {
     return this.cache;
   }
 
-  set(rates: any[]) {
+  set(rates: Rate[]) {
     this.cache = rates;
   }
 
-  update(index: number, data: any) {
+  update(index: number, data: Rate) {
     this.cache[index] = data;
   }
 
-  add(rate: any) {
+  add(rate: Rate) {
     this.cache.push(rate);
   }
 

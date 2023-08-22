@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { LENDERS } from "@/app/lib/constants";
+import { Lender } from "@/app/lib/types";
 
 // Render the component
 export default function Lenders(): JSX.Element {
@@ -22,7 +23,7 @@ export default function Lenders(): JSX.Element {
  * @returns JSX.Element
  */
 const LenderImages = () => {
-  const lenderImages = LENDERS.map((lender: any, i: number) => (
+  const lenderImages = LENDERS.map((lender: Lender, i: number) => (
     <Image
       key={i}
       src={lender.logo}

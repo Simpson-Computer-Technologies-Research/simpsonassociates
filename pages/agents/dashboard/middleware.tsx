@@ -7,6 +7,7 @@ import { SessionProvider } from "@/app/components/providers";
 import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
 import { User } from "@/app/lib/types";
+import { ObjectState } from "@/app/lib/state";
 
 /**
  * Google authentication session middleware
@@ -36,16 +37,14 @@ export default function PermissionMiddleware({
  * @returns JSX.Element
  */
 function _PermissionMiddleware({
-  permissions,
+  requiredPermissions,
   unauthorized,
   success,
 }: any): JSX.Element {
   const { data: session, status } = useSession();
-  const [userPermissions, setUserPermissions] = React.useState<string[]>([]);
-  const [permissionsFetched, setPermissionsFetched] =
-    React.useState<boolean>(false);
-  const [authorizationUpdated, setAuthorizationUpdated] =
-    React.useState<boolean>(false);
+  const permissions = new ObjectState<string[]>([]);
+  const fetchedPermissions = new ObjectState<boolean>(false);
+  const updatedAuth = new ObjectState<boolean>(false);
 
   React.useEffect(() => {
     if (status === "unauthenticated") {
@@ -55,43 +54,38 @@ function _PermissionMiddleware({
   }, [session]);
 
   // Fetch the users permissions
-  if (!permissionsFetched && status === "authenticated") {
-    generateAuthorization(
-      session?.accessToken || "",
-      session?.user?.email || "",
-    ).then((auth) => {
-      fetchPermissions(auth).then((permissions) => {
-        setUserPermissions(permissions);
-        setPermissionsFetched(true);
-      });
-    });
+  if (!fetchedPermissions.value && status === "authenticated") {
+    generateAuthorization(session?.accessToken, session?.user?.email).then(
+      (auth: string) =>
+        fetchPermissions(auth).then((result: string[]) => {
+          permissions.set(result);
+          fetchedPermissions.set(true);
+        }),
+    );
   }
 
   // If the session is loading or not authenticated, return a loading component
   // This should be already handled with the above useEffect, but just in case.
-  if (status !== "authenticated" || !permissionsFetched)
+  if (status !== "authenticated" || !fetchedPermissions.value)
     return <LoadingCenter />;
 
   // Now that we know the user has been authenticated (via google auth),
   // we need to verify that the user is an agent.
   if (
-    !userPermissions ||
-    !userPermissions.length ||
-    !permissions.every((p: any) => userPermissions.includes(p))
+    !permissions.value.length ||
+    !requiredPermissions.every((p: any) => permissions.value.includes(p))
   )
     return unauthorized();
 
   // Update the users authorization token
-  if (!authorizationUpdated) {
+  if (!updatedAuth.value) {
     generateAuthorization(
       session?.accessToken || "",
       session?.user?.email || "",
-    ).then(
-      async (auth) =>
-        await updateAuthorization(auth).then(() =>
-          setAuthorizationUpdated(true),
-        ),
-    );
+    ).then(async (auth) => {
+      await updateAuthorization(auth);
+      updatedAuth.set(true);
+    });
   }
 
   // Return the success component
@@ -100,7 +94,7 @@ function _PermissionMiddleware({
     accessToken: session?.accessToken,
     name: session?.user?.name,
     image: session?.user?.image,
-    permissions: userPermissions,
+    permissions: permissions.value,
   };
   return success(user);
 }

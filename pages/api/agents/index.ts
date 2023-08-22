@@ -5,6 +5,7 @@ import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, DeleteResult, Document } from "mongodb";
 import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/app/lib/gcp";
+import { Agent } from "@/app/lib/types";
 
 const defaultAgentHeadshotPhoto: string =
   "/images/default_agent_headshot_primary.png";
@@ -85,7 +86,7 @@ const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
       .project(publicAgentSearchConfig)
       .toArray();
 
-    cache.update(result);
+    cache.update(result as Agent[]);
     return result;
   });
 

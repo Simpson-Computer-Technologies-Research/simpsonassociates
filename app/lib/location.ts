@@ -1,6 +1,6 @@
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
-import { Agent } from "./types";
+import { Agent, AgentLocation } from "./types";
 import { ObjectState } from "./state";
 
 /**
@@ -10,7 +10,7 @@ import { ObjectState } from "./state";
  * @return void
  */
 export const getLocation = (
-  loc: ObjectState<any>,
+  loc: ObjectState<AgentLocation>,
   error: ObjectState<string>,
 ) => {
   // If the user is already searching by location, return
@@ -19,12 +19,12 @@ export const getLocation = (
   // If the user has already searched by location but
   // the location is not active, set the location to active
   if (loc.value.lat && loc.value.lon) {
-    loc.set({ ...location, active: true, loading: false });
+    loc.set({ ...loc.value, active: true, loading: false });
   }
 
   // Otherwise, get the users location
   if (navigator.geolocation) {
-    loc.set({ ...location, loading: true });
+    loc.set({ ...loc.value, loading: true });
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -91,7 +91,6 @@ export const nearbyAgents = (agents: Agent[], userLocation: Location) => {
           lon: agent.region.lon as number,
         },
       );
-      console.log(distance);
       return { ...agent, distance };
     })
     .sort((a, b) => a.distance - b.distance);

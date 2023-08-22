@@ -108,22 +108,22 @@ const Card = (props: CardProps): JSX.Element => (
  * @returns JSX.Element
  */
 const RatesCard = (): JSX.Element => {
-  // convert React.useState<Rate[]>([]) to an object with get, and set
-  React.useState<Rate[]>([]);
-
   const [rates, setRates] = React.useState<Rate[]>([]);
+
   React.useEffect(() => {
     if (rates.length) return;
 
     fetch("/api/rates")
       .then((res) => res.json())
       .then((json) => {
-        if (!json || json.error) return;
+        if (!json || !json.length) return;
 
         const half = Math.ceil(json.length / 2);
-        const res = [...json].splice(0, half);
-        setRates(res);
-      });
+        const split = json.splice(0, half);
+
+        setRates(split);
+      })
+      .catch((err) => console.error(err));
   }, []);
 
   return (
