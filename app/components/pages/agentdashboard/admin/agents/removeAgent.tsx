@@ -106,7 +106,7 @@ const removeAgent = async (
       authorization,
     },
     body: JSON.stringify({
-      agent_id: user_id,
+      user_id,
     }),
   })
     .then((res) => res.json())
