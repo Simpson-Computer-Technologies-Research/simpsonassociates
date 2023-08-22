@@ -122,7 +122,8 @@ export const fetchPermissions = async (auth: string): Promise<string[]> => {
     },
   })
     .then((res) => res.json())
-    .then((json) => json.permissions);
+    .then((json) => json.permissions)
+    .catch(() => []);
 };
 
 /**

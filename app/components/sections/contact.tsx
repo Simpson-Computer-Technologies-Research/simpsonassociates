@@ -382,10 +382,12 @@ const postEmail = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email_to: emailTo, name, email, phone, message }),
-  }).then((res) => {
-    if (res.status === 200) {
-      clearFormValues();
-      return "";
-    }
-    return "Failed to send email";
-  });
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        clearFormValues();
+        return "ok";
+      }
+      return "Failed to send email";
+    })
+    .catch(() => "Failed to send email");

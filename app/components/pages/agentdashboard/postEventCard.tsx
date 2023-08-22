@@ -99,7 +99,9 @@ const createEvent = async (user: User): Promise<boolean> => {
       authorization,
     },
     body: JSON.stringify(body),
-  }).then((res) => res.status === 200);
+  })
+    .then((res) => res.status === 200)
+    .catch(() => false);
 };
 
 /**

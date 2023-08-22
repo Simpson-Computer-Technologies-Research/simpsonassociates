@@ -85,36 +85,40 @@ interface AddAgentButtonProps {
   photo: ObjectState<string>;
 }
 const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
+  const [disabled, setDisabled] = React.useState<boolean>(false);
+
   const onClick = async () => {
-    {
-      if (!props.user.accessToken || !props.user.email) return;
+    setDisabled(true);
 
-      const authorization: string = await generateAuthorization(
-        props.user.accessToken,
-        props.user.email,
-      );
+    if (!props.user.accessToken || !props.user.email) return;
 
-      const inputValues: any = await getInputValues().catch((e) =>
-        props.error.set(e.message),
-      );
+    const authorization: string = await generateAuthorization(
+      props.user.accessToken,
+      props.user.email,
+    );
 
-      const body: Agent = {
-        ...inputValues,
-        permissions: getPermissions(),
-        team: getTeam(),
-        priority: getPriority(),
-        photo: props.photo.value,
-        region: (props.region && props.region.value) || {},
-      };
+    const inputValues: any = await getInputValues().catch((e) =>
+      props.error.set(e.message),
+    );
 
-      return await fetch("/api/agents", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization,
-        },
-        body: JSON.stringify(body),
-      }).then((res) => {
+    const body: Agent = {
+      ...inputValues,
+      permissions: getPermissions(),
+      team: getTeam(),
+      priority: getPriority(),
+      photo: props.photo.value,
+      region: (props.region && props.region.value) || {},
+    };
+
+    return await fetch("/api/agents", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization,
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
         if (res.status === 200) {
           clearInput();
           props.agents.value = [...props.agents.value, inputValues];
@@ -122,13 +126,15 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
         } else {
           props.error.set("Failed to add agent.");
         }
-      });
-    }
+      })
+      .catch((e) => props.error.set(e.message))
+      .finally(() => setDisabled(false));
   };
 
   return (
     <button
-      className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary hover:bg-slate-200"
+      disabled={disabled}
+      className="w-full rounded-md bg-white px-2 py-2 font-medium text-primary hover:bg-slate-200 disabled:opacity-50"
       onClick={onClick}
     >
       Add

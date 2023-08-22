@@ -93,11 +93,13 @@ const CommercialMortgagesCard = (props: {
   <Link
     href="#contact"
     className={cn(
-      "group relative flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:w-96",
+      "group relative flex h-[25rem] w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 hover:duration-100 lg:w-96",
       props.className,
     )}
   >
     <Image
+      width={500}
+      height={500}
       src={props.image}
       alt={props.title}
       className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
