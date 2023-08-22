@@ -53,7 +53,7 @@ export default async function handler(
       cache.set(json.Rates);
       if (!hasResponded) res.status(200).json(json.Rates);
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       if (!hasResponded) res.status(500).json({ error: err.message });
     });
 }

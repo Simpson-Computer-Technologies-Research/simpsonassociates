@@ -39,7 +39,7 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
       location: input.value,
     });
 
-    let { lat, lon } = result;
+    const { lat, lon } = result;
     if (!lat || !lon) return;
 
     setGeo([]);

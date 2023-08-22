@@ -387,4 +387,4 @@ const postEmail = async (
       }
       return "Failed to send email";
     })
-    .catch(() => "Failed to send email");
+    .catch((_: Error) => "Failed to send email");

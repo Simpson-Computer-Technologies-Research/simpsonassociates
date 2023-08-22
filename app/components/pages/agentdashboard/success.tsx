@@ -99,7 +99,7 @@ const EventCard = (props: {
           if (!events.length) return;
           setDisabled(true);
 
-          let result: boolean = await deleteEvent(props.user, eventId);
+          const result: boolean = await deleteEvent(props.user, eventId);
           setDisabled(false);
 
           if (!result || !props.event.event_id) return;
@@ -135,7 +135,7 @@ const fetchEvents = async (authorization: string): Promise<Event[]> => {
   })
     .then((res) => res.json())
     .then((json) => json.result)
-    .catch(() => []);
+    .catch((_: Error) => []);
 };
 
 /**
@@ -158,5 +158,5 @@ const deleteEvent = async (user: User, event_id: string): Promise<boolean> => {
     body: JSON.stringify({ event_id }),
   })
     .then((res) => res.status === 200)
-    .catch(() => false);
+    .catch((_: Error) => false);
 };

@@ -30,7 +30,7 @@ export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
       const db: Db = client.db("simpsonassociates");
       return await fn(db).finally(() => client.close());
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       client.close().then(() => {
         throw err;
       });
@@ -75,7 +75,7 @@ export const verifyAuth = async (
   const decoded = await decodeAuthorization(authorization);
   if (!decoded || !decoded.email || !decoded.accessToken) return false;
 
-  let users: User[] = await collection
+  const users: User[] = await collection
     .find({ access_token: decoded.accessToken })
     .project({ email: 1 })
     .limit(1)
@@ -115,13 +115,13 @@ export const verifyPermissions = async (
     // If the user doesn't exist
     if (user.length === 0 || !user[0]) return false;
 
-    for (let permission of permissions) {
+    for (const permission of permissions) {
       if (!user[0].permissions.includes(permission)) {
         return false;
       }
     }
     return true;
-  }).catch((_) => false);
+  }).catch((_: Error) => false);
 };
 
 /**

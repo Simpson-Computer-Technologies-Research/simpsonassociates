@@ -6,6 +6,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, DeleteResult, Document } from "mongodb";
 import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/app/lib/gcp";
 
+const defaultAgentHeadshotPhoto: string =
+  "/images/default_agent_headshot_primary.png";
+
 /**
  * Middlewares to limit the number of requests
  */
@@ -79,7 +82,7 @@ const getAgents = async (_: any, res: any) => {
 
     cache.update(result);
     if (!hasResponded) res.status(200).json({ message: "Success", result });
-  }).catch((error) => {
+  }).catch((error: Error) => {
     if (!hasResponded) res.status(500).json({ message: error.message });
   });
 };
@@ -109,17 +112,14 @@ const addAgent = async (req: any, res: any) => {
 
     // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
-    const GCPPhotoURL: string | null = await uploadAgentPhotoGCP(
-      photo,
-      data.name,
-      data.user_id,
-    ).catch((error) => {
-      res.status(500).json({ message: error.message });
-      return null;
-    });
+    if (data.photo !== defaultAgentHeadshotPhoto) {
+      const result = await uploadAgentPhotoGCP(photo, data.name, data.user_id)
+        .then((photo: string) => (data.photo = photo))
+        .catch((error: Error) => error);
 
-    if (!GCPPhotoURL) return;
-    data.photo = GCPPhotoURL;
+      if (result instanceof Error)
+        return res.status(500).json({ message: res.message });
+    }
 
     await collection.insertOne(data).then((result) => {
       if (!result.acknowledged) {
@@ -131,7 +131,7 @@ const addAgent = async (req: any, res: any) => {
       cache.add_agent(data);
       res.status(200).json({ message: "Success", result });
     });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((error: Error) => res.status(500).json({ message: error.message }));
 };
 
 /**
@@ -152,7 +152,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     const collection: Collection<Document> = database.collection("agents");
 
     // Check if the agent already exists
-    let agent: Document | null = await collection.findOne({
+    const agent: Document | null = await collection.findOne({
       user_id,
     });
 
@@ -162,7 +162,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     }
 
     // Delete the agent from the database
-    let result: DeleteResult = await collection.deleteOne({
+    const result: DeleteResult = await collection.deleteOne({
       user_id,
     });
 
@@ -173,13 +173,18 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     }
 
     // Delete the agent photo from the google cloud storage
-    await deleteAgentPhotoGCP(agent.name, agent.user_id).catch((error) =>
-      console.log(error),
-    );
+    if (agent.photo !== defaultAgentHeadshotPhoto) {
+      const deleteResult = await deleteAgentPhotoGCP(agent.photo, agent.user_id)
+        .then(() => {})
+        .catch((error: Error) => error);
+
+      if (deleteResult instanceof Error)
+        return res.status(500).json({ message: res.message });
+    }
 
     cache.delete_agent(user_id);
     res.status(200).json({ message: "Success", result });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((error: Error) => res.status(500).json({ message: error.message }));
 };
 
 // Check if the body of the request is valid
@@ -188,7 +193,6 @@ const isValidAgentBody = (body: any) =>
   body.email &&
   body.license &&
   body.title &&
-  body.photo &&
   body.lang &&
   body.priority !== undefined &&
   body.team &&
@@ -206,6 +210,7 @@ const generateInsertionData = async (body: any) => {
     name: body.name,
     email: body.email,
     license: body.license,
+    photo: body.photo || defaultAgentHeadshotPhoto,
     title: body.title,
     lang: body.lang,
     priority: body.priority,

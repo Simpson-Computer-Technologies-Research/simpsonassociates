@@ -63,7 +63,7 @@ export default function PostEventCard(props: {
         className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50"
         onClick={async () => {
           setDisabled(true);
-          let result = await createEvent(props.user);
+          const result = await createEvent(props.user);
 
           setDisabled(false);
 
@@ -99,7 +99,7 @@ const createEvent = async (user: User): Promise<boolean> => {
     body: JSON.stringify(body),
   })
     .then((res) => res.status === 200)
-    .catch(() => false);
+    .catch((_: Error) => false);
 };
 
 /**

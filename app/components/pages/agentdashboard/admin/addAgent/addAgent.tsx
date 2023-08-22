@@ -97,8 +97,8 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       props.user.email,
     );
 
-    const inputValues: any = await getInputValues().catch((e) =>
-      props.error.set(e.message),
+    const inputValues: any = await getInputValues().catch((err: Error) =>
+      props.error.set(err.message),
     );
 
     const body: Agent = generateRequestBody(
@@ -126,7 +126,7 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
 
         props.error.set("Failed to add agent.");
       })
-      .catch((e) => props.error.set(e.message))
+      .catch((err: Error) => props.error.set(err.message))
       .finally(() => setDisabled(false));
   };
 

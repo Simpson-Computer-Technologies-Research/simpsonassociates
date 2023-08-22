@@ -73,7 +73,7 @@ const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
   await context(async (database) => {
     const collection: Collection<Document> = database.collection("events");
 
-    let results: Document[] = await collection.find({}).toArray();
+    const results: Document[] = await collection.find({}).toArray();
 
     let finalResults: Document[] = [];
 
@@ -118,7 +118,7 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     if (notify_agents) emailAllAgents(data);
 
     res.status(200).json({ message: "Success", result });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((error: Error) => res.status(500).json({ message: error.message }));
 };
 
 /**
@@ -140,7 +140,7 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
       event_id,
     });
     res.status(200).json({ message: "Success" });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((error: Error) => res.status(500).json({ message: error.message }));
 };
 
 // Check if the body of the request is valid
@@ -179,7 +179,7 @@ const emailAllAgents = async (event: any) => {
     const collection: Collection<Document> = database.collection("agents");
 
     // Get all of the agent emails
-    let agents = await collection
+    const agents = await collection
       .find()
       .project({
         email: 1,
@@ -191,7 +191,7 @@ const emailAllAgents = async (event: any) => {
     }
 
     // Send an email to all of the agents
-    for (let agent of agents) {
+    for (const agent of agents) {
       const date: string = epochToDate(event.date);
       const data = {
         from: "Simpson Associates Event Notification",
