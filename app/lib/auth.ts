@@ -11,15 +11,6 @@ export async function generateId() {
 }
 
 /**
- * Generate a new bearer token
- */
-export const generateBearer = async (email: string): Promise<string> => {
-  const bearerSecret: string = process.env.BEARER_SECRET || "*secret!";
-  const token: string = await sha256(email + bearerSecret);
-  return token;
-};
-
-/**
  * Generate a new authorization token
  */
 export const generateAuthorization = async (

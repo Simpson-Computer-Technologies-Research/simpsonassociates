@@ -118,7 +118,7 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     if (notify_agents) emailAllAgents(data);
 
     res.status(200).json({ message: "Success", result });
-  }).catch((error: Error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 /**
@@ -139,8 +139,9 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     await collection.deleteOne({
       event_id,
     });
+
     res.status(200).json({ message: "Success" });
-  }).catch((error: Error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 // Check if the body of the request is valid

@@ -38,7 +38,6 @@ export default async function handler(
     return res.status(429).send("Too many requests");
   }
 
-  // Getting agents
   if (req.method === "GET") {
     return await getAgents(req, res);
   }
@@ -65,13 +64,19 @@ export default async function handler(
 
 // Get the agents from the database and return them as JSON
 const getAgents = async (_: any, res: any) => {
-  let hasResponded: boolean = false;
-
   if (cache.isCached()) {
     res.status(200).json({ message: "Success", result: cache.get() });
-    hasResponded = true;
+    return fetchAgentsFromDatabase();
   }
 
+  await fetchAgentsFromDatabase()
+    .then((result: Document[]) =>
+      res.status(200).json({ message: "Success", result }),
+    )
+    .catch((err: Error) => res.status(500).json({ message: err.message }));
+};
+
+const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
   await context(async (database) => {
     const collection: Collection<Document> = database.collection("agents");
 
@@ -81,11 +86,8 @@ const getAgents = async (_: any, res: any) => {
       .toArray();
 
     cache.update(result);
-    if (!hasResponded) res.status(200).json({ message: "Success", result });
-  }).catch((error: Error) => {
-    if (!hasResponded) res.status(500).json({ message: error.message });
+    return result;
   });
-};
 
 /**
  * Add an agent
@@ -112,10 +114,11 @@ const addAgent = async (req: any, res: any) => {
 
     // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
+
     if (data.photo !== defaultAgentHeadshotPhoto) {
       const result = await uploadAgentPhotoGCP(photo, data.name, data.user_id)
         .then((photo: string) => (data.photo = photo))
-        .catch((error: Error) => error);
+        .catch((err: Error) => err);
 
       if (result instanceof Error)
         return res.status(500).json({ message: res.message });
@@ -131,7 +134,7 @@ const addAgent = async (req: any, res: any) => {
       cache.add_agent(data);
       res.status(200).json({ message: "Success", result });
     });
-  }).catch((error: Error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 /**
@@ -155,17 +158,16 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     const agent: Document | null = await collection.findOne({
       user_id,
     });
-
     if (!agent) {
-      res.status(409).json({ message: "Agent does not exist", result: null });
-      return;
+      return res
+        .status(409)
+        .json({ message: "Agent does not exist", result: null });
     }
 
     // Delete the agent from the database
     const result: DeleteResult = await collection.deleteOne({
       user_id,
     });
-
     if (!result.acknowledged) {
       return res
         .status(409)
@@ -176,7 +178,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     if (agent.photo !== defaultAgentHeadshotPhoto) {
       const deleteResult = await deleteAgentPhotoGCP(agent.photo, agent.user_id)
         .then(() => {})
-        .catch((error: Error) => error);
+        .catch((err: Error) => err);
 
       if (deleteResult instanceof Error)
         return res.status(500).json({ message: res.message });
@@ -184,7 +186,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 
     cache.delete_agent(user_id);
     res.status(200).json({ message: "Success", result });
-  }).catch((error: Error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 // Check if the body of the request is valid

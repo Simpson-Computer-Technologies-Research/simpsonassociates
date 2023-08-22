@@ -17,6 +17,7 @@ export default NextAuth({
       }
       return token;
     },
+
     async session({ session, token }) {
       const bearerSecret: string = process.env.BEARER_SECRET ?? "";
       const email: string = session?.user?.email as string;

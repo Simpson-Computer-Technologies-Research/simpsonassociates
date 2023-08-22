@@ -72,23 +72,27 @@ const AccessEquity = (): JSX.Element => (
     <AccessEquityCard
       title="Second Mortgage"
       description="Unlock the equity you've accrued in your home and redirect funds with a second mortgage. It's also a smart move for consolidating debt. Allow us to assess if a second mortgage suits your needs!"
-      image="/images/blue_home_banner.png"
+      image="/images/services/home_blue_banner.png"
+      buttonText="Unlock equity"
     />
     <AccessEquityCard
       title="HELOC"
       description="Like a second mortgage, a Home Equity Line of Credit (HELOC) grants access to your home's accrued equity. Unlike a lump sum from a second mortgage, a HELOC offers a flexible line of credit for spending and repaying as required."
-      image="/images/blue_home_banner.png"
+      image="/images/services/woodenhome_blue_banner.png"
+      buttonText="Get started"
     />
     <AccessEquityCard
       title="Reverse Mortgage"
       description="Seeking added funds during retirement? Reverse mortgages provide viable options for those aged 55 and above, especially if property holds substantial net worth. Access your hard-earned home equity and unlock the years of effort you've invested."
-      image="/images/blue_home_banner.png"
+      image="/images/services/handshake_blue_banner.png"
+      buttonText="Contact us"
     />
   </div>
 );
 
 const AccessEquityCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -111,7 +115,7 @@ const AccessEquityCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>

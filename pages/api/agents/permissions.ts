@@ -62,5 +62,5 @@ export default async function handler(
     }
 
     res.status(200).json({ message: "ok", permissions: agent.permissions });
-  }).catch((error: Error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 }

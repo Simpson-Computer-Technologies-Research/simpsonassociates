@@ -169,7 +169,7 @@ const leadershipTeam: Agent[] = [
     name: "Patrick Tremblay",
     email: "patrick.tremblay@dominionlending.ca",
     photo: "/images/agents/patrick_headshot.png",
-    title: "Vice President",
+    title: "Vice President Residential Lending",
   } as Agent,
 ];
 

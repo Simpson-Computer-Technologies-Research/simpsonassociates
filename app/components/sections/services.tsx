@@ -37,37 +37,37 @@ export const ServicesCardGrid = (): JSX.Element => (
       href="/services/residential-mortgages"
       title="Residential Mortgages"
       para="Getting started with residential mortgages: affordable paths to homeownership."
-      icon="/icons/services/house_heart_yellow_fixed.png"
+      icon="/icons/services/house_heart_600.png"
     />
     <Card
       href="/services/commercial-mortgages"
       title="Commercial Mortgages"
       para="Embarking on commercial mortgages: propelling business growth strategically."
-      icon="/icons/services/skyscraper_yellow_fixed.png"
+      icon="/icons/services/skyscraper_600.png"
     />
     <Card
       href="/services/refinancing"
       title="Refinancing"
       para="Exploring refinancing: optimizing finances for better prospects."
-      icon="/icons/services/house_percent_yellow_fixed.png"
+      icon="/icons/services/house_percent_600.png"
     />
     <Card
       href="/services/access-equity"
       title="Access Equity"
       para="Accessing equity: unlocking value for future aspirations. Get access to your hard earn equity."
-      icon="/icons/services/house_moneybag_yellow_fixed.png"
+      icon="/icons/services/house_moneybag_600.png"
     />
     <Card
       href="/services/second-property"
       title="Second Property"
       para="Purchasing a second property: expanding horizons with ownership."
-      icon="/icons/services/house_normal_yellow_fixed.png"
+      icon="/icons/services/house_normal_600.png"
     />
     <Card
       href="/services/investment-property"
       title="Investment Property"
       para="Investment properties: building wealth through strategic real estate."
-      icon="/icons/services/house_dollar_yellow_fixed.png"
+      icon="/icons/services/house_dollar_600.png"
     />
   </div>
 );
@@ -115,8 +115,8 @@ const Card = (props: CardProps): JSX.Element => (
     <Image
       src={props.icon}
       alt="..."
-      width={100}
-      height={100}
+      width={500}
+      height={500}
       loading="lazy"
       className="mt-1 w-[50px] bg-cover lg:w-[100px]"
     />
