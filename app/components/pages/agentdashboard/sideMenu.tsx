@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { User } from "@/app/lib/types";
+import { User } from "@/lib/types";
 import { signOut } from "next-auth/react";
 
 /**

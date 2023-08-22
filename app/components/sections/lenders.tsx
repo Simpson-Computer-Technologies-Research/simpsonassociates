@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
-import { LENDERS } from "@/app/lib/constants";
-import { Lender } from "@/app/lib/types";
+import { LENDERS } from "@/lib/constants";
+import { Lender } from "@/lib/types";
 
 // Render the component
 export default function Lenders(): JSX.Element {

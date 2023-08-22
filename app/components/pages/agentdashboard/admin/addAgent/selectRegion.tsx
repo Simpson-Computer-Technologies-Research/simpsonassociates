@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Agent, Region } from "@/app/lib/types";
-import { ObjectState } from "@/app/lib/state";
+import { Agent, Region } from "@/lib/types";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Select Region Component

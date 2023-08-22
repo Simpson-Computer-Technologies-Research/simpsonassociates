@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import { context, publicTeamSearchConfig } from "@/app/lib/mongo";
-import { Collection, Document } from "mongodb";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
+import { publicTeamSearchConfig, Database } from "@/lib/mongo";
+import { Collection, Db, Document } from "mongodb";
 
 /**
  * Middlewares to limit the number of requests
@@ -41,7 +41,7 @@ export default async function handler(
   }
   const teamSplit: string[] = (team as string).split(",");
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
     await collection
       .find({
@@ -56,5 +56,7 @@ export default async function handler(
 
         res.status(200).json({ agents: result });
       });
-  }).catch((_) => res.status(500).json({ message: "Internal server error" }));
+  }).catch((_: Error) =>
+    res.status(500).json({ message: "Internal server error" }),
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ObjectState } from "@/app/lib/state";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Navbar Menu Component

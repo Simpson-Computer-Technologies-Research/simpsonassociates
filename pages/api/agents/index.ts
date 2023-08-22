@@ -1,11 +1,11 @@
-import { context, publicAgentSearchConfig, verifyAdmin } from "@/app/lib/mongo";
-import { AgentsCache } from "@/app/lib/cache";
-import { generateId } from "@/app/lib/auth";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+import { Database, publicAgentSearchConfig, verifyAdmin } from "@/lib/mongo";
+import { AgentsCache } from "@/lib/cache";
+import { generateId } from "@/lib/auth";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Collection, DeleteResult, Document } from "mongodb";
-import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/app/lib/gcp";
-import { Agent } from "@/app/lib/types";
+import { Collection, Db, DeleteResult, Document } from "mongodb";
+import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/lib/gcp";
+import { Agent } from "@/lib/types";
 
 const defaultAgentHeadshotPhoto: string =
   "/images/default_agent_headshot_primary.png";
@@ -78,7 +78,7 @@ const getAgents = async (_: any, res: any) => {
 };
 
 const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     const result: Document[] = await collection
@@ -103,7 +103,7 @@ const addAgent = async (req: any, res: any) => {
       .json({ message: "Missing required fields", result: null });
   }
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     const { photo } = req.body;
@@ -152,7 +152,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
       .json({ message: "Missing required fields", result: null });
   }
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     // Check if the agent already exists

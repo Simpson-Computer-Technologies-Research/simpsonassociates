@@ -1,8 +1,8 @@
-import { decodeAuthorization } from "@/app/lib/auth";
-import { context } from "@/app/lib/mongo";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+import { decodeAuthorization } from "@/lib/auth";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Collection, Document } from "mongodb";
+import { Collection, Db, Document } from "mongodb";
+import { Database } from "@/lib/mongo";
 
 /**
  * Middlewares to limit the number of requests
@@ -46,7 +46,7 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized", permissions: [] });
   }
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
     const result: Document[] = await collection
       .find({

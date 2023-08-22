@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/app/lib/types";
+import { User } from "@/lib/types";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 

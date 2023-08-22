@@ -15,7 +15,7 @@ import Bottom from "@/app/components/sections/bottom";
 
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 /**
  * Agents Page

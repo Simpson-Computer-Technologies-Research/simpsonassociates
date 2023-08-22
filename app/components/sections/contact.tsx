@@ -4,13 +4,10 @@ import Link from "next/link";
 import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
-import { cn } from "@/app/lib/utils";
-import {
-  DEFAULT_CONTACT_EMAIL,
-  DEFAULT_CONTACT_IMAGES,
-} from "@/app/lib/constants";
-import { ObjectState } from "@/app/lib/state";
-import { isSuccess } from "@/app/lib/http";
+import { cn } from "@/lib/utils";
+import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_IMAGES } from "@/lib/constants";
+import { ObjectState } from "@/lib/state";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Contact Component

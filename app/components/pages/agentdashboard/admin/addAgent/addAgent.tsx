@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { generateAuthorization } from "@/app/lib/auth";
-import { User, Agent, Region } from "@/app/lib/types";
-import { ObjectState } from "@/app/lib/state";
+import { generateAuthorization } from "@/lib/auth";
+import { User, Agent, Region } from "@/lib/types";
+import { ObjectState } from "@/lib/state";
 
 import Input, { ClearInputButton, clearInput, getInputValues } from "./input";
 import SelectRegion from "./selectRegion";
@@ -11,7 +11,7 @@ import PermissionsChecklist, {
   PriorityCheckbox,
   TeamChecklist,
 } from "./checklists";
-import { isSuccess } from "@/app/lib/http";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Add Agent Component

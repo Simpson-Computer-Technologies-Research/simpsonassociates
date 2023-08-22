@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { sha256 } from "@/app/lib/crypto";
+import { sha256 } from "@/lib/crypto";
 
 export default NextAuth({
   providers: [

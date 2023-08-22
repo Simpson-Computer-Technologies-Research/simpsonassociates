@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { context, verifyManageEvents, verifyIsAgent } from "@/app/lib/mongo";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import { generateId } from "@/app/lib/auth";
-import { sendEmail } from "@/app/lib/email";
-import { Event } from "@/app/lib/types";
-import { Collection, Document } from "mongodb";
-import { epochToDate } from "@/app/lib/date";
-import { ONE_DAY_IN_MILLISECONDS } from "@/app/lib/constants";
+import { verifyManageEvents, verifyIsAgent, Database } from "@/lib/mongo";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
+import { generateId } from "@/lib/auth";
+import { sendEmail } from "@/lib/email";
+import { Event } from "@/lib/types";
+import { Collection, Db, Document } from "mongodb";
+import { epochToDate } from "@/lib/date";
+import { ONE_DAY_IN_MILLISECONDS } from "@/lib/constants";
 
 /**
  * Middlewares to limit the number of requests
@@ -69,7 +69,7 @@ export default async function handler(
  * @param res The outgoing http response
  */
 const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("events");
 
     const results: Document[] = await collection.find({}).toArray();
@@ -109,7 +109,7 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { notify_agents } = req.body;
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("events");
 
     const data: any = await generateInsertionData(req.body);
@@ -132,7 +132,7 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: "Invalid request body" });
   }
 
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("events");
 
     await collection.deleteOne({
@@ -175,7 +175,7 @@ const generateInsertionData = async (body: any): Promise<Event> => {
  * @return void
  */
 const emailAllAgents = async (event: any) => {
-  await context(async (database) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     // Get all of the agent emails

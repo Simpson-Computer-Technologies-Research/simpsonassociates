@@ -1,15 +1,82 @@
 import { Db, MongoClient, ServerApiVersion } from "mongodb";
-import { decodeAuthorization } from "./auth";
-import { User } from "./types";
+import { User } from "@/lib/types";
+import { decodeAuthorization } from "@/lib/auth";
 
-// The URI of the database to connect to
-const uri: string = process.env.MONGODB_URI || "";
+export class Database {
+  /**
+   * Globalize the database
+   * @returns void
+   * @static @readonly @async
+   */
+  public static readonly globalize = async (): Promise<void> => {
+    const global: any = globalThis as any;
+    if (!global.database) {
+      global.database = new Database();
+    }
+  };
 
-/**
- * Run a function in the context of the database
- * @param fn The function to run in the context of the database
- * @returns The result of the function
- */
+  /**
+   * Shortcut to run a function in the context of the database
+   * @param fn the function to execute
+   * @returns the result of the function
+   * @readonly @async @static
+   */
+  public static readonly context = async (
+    fn: (db: Db) => Promise<any>,
+  ): Promise<any> => {
+    const global: any = globalThis as any;
+    return await global.database.context(fn);
+  };
+
+  /**
+   * The database uri and client
+   * @private @readonly
+   */
+  private readonly uri: string = process.env.MONGODB_URI || "";
+  private readonly client: MongoClient;
+
+  constructor() {
+    this.client = new MongoClient(this.uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+      },
+      minPoolSize: 2,
+      maxIdleTimeMS: 10000,
+      maxStalenessSeconds: 10000,
+      connectTimeoutMS: 10000,
+    });
+
+    this.client
+      .connect()
+      .catch((_: Error) => {
+        console.error("Database connection failed");
+        this.client.close();
+      })
+      .then(() => {
+        console.log("Database connected");
+      });
+  }
+
+  /**
+   * Run a function in the context of the database
+   * @param fn the function to execute
+   * @returns the result of the function
+   * @public @async @readonly
+   * @throws Error
+   */
+  public readonly context = async (
+    fn: (db: Db) => Promise<any>,
+  ): Promise<any> => {
+    const db: Db = this.client.db("simpsonassociates");
+    return await fn(db);
+  };
+}
+
+// Globalize the database
+Database.globalize();
+
+/*
 export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
   const client: MongoClient = new MongoClient(uri, {
     serverApi: {
@@ -35,7 +102,7 @@ export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
         throw err;
       });
     });
-}
+}*/
 
 // Search configs
 export const publicAgentSearchConfig = {
@@ -98,9 +165,8 @@ export const verifyAuth = async (
 export const verifyPermissions = async (
   authorization: string,
   permissions: string[],
-): Promise<boolean> => {
-  // Get the database and collection
-  return await context(async (database): Promise<boolean> => {
+): Promise<boolean> =>
+  await Database.context(async (database: Db) => {
     const collection = database.collection("agents");
 
     const authenticated = await verifyAuth(collection, authorization);
@@ -122,7 +188,6 @@ export const verifyPermissions = async (
     }
     return true;
   }).catch((_: Error) => false);
-};
 
 /**
  * Verify that the user making the request is an admin

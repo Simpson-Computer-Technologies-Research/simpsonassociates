@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { generateAuthorization } from "@/app/lib/auth";
+import { generateAuthorization } from "@/lib/auth";
 import { useSession } from "next-auth/react";
 import { SessionProvider } from "@/app/components/providers";
 
 import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
-import { User } from "@/app/lib/types";
-import { ObjectState } from "@/app/lib/state";
+import { User } from "@/lib/types";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Google authentication session middleware
@@ -23,7 +23,7 @@ export default function PermissionMiddleware({
   return (
     <SessionProvider>
       <_PermissionMiddleware
-        permissions={permissions}
+        requiredPermissions={permissions}
         unauthorized={unauthorized}
         success={success}
       />

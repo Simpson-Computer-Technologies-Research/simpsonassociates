@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Agent, SetState, User } from "@/app/lib/types";
-import { generateAuthorization } from "@/app/lib/auth";
-import { ObjectState } from "@/app/lib/state";
+import { Agent, SetState, User } from "@/lib/types";
+import { generateAuthorization } from "@/lib/auth";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Remove Agent Button
