@@ -12,7 +12,7 @@ export const DEFAULT_CONTACT_IMAGES: string[] = [
   "/images/agents/marita_headshot.png",
 ];
 
-export const NAVBAR_BUTTON_NAMES: string[] = [
+export const NAVBAR_BUTTON_SECTION_IDS: string[] = [
   "home",
   "rates",
   "services",

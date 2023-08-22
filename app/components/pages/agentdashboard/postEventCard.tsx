@@ -1,10 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import { User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 import { Event } from "@/app/lib/types";
 import { ObjectState } from "@/app/lib/state";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Post event card
@@ -97,7 +97,7 @@ const createEvent = async (user: User): Promise<boolean> => {
     },
     body: JSON.stringify(body),
   })
-    .then((res) => res.status === 200)
+    .then((res) => isSuccess(res.status))
     .catch((_: Error) => false);
 };
 

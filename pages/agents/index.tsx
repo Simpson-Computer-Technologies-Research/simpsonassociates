@@ -16,6 +16,7 @@ import { Agent, AgentLocation } from "@/app/lib/types";
 import Fuse from "fuse.js";
 import { ObjectState } from "@/app/lib/state";
 import Image from "next/image";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Fetch the agents from the api
@@ -23,7 +24,7 @@ import Image from "next/image";
  */
 export const fetchAgents = async () => {
   return await fetch("/api/agents")
-    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((res) => (isSuccess(res.status) ? res.json() : { result: [] }))
     .then((json) => json.result)
     .catch(() => []);
 };
@@ -96,7 +97,10 @@ export default function AgentsPage(): JSX.Element {
       </Head>
       <SessionProvider>
         <Navbar />
-        <div className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20">
+        <div
+          id="agents"
+          className="fade-in relative flex w-full flex-col px-12 pb-16 pt-20"
+        >
           <Header />
           <Agents
             initialQuery={initialQuery.value}

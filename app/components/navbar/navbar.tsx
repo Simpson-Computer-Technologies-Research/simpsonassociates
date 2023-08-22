@@ -6,7 +6,7 @@ import NavbarMenu from "./menu";
 import Image from "next/image";
 import Link from "next/link";
 import { ObjectState } from "@/app/lib/state";
-import { NAVBAR_BUTTON_NAMES } from "@/app/lib/constants";
+import { NAVBAR_BUTTON_SECTION_IDS } from "@/app/lib/constants";
 
 /**
  * Navbar Component
@@ -20,7 +20,7 @@ export default function Navbar() {
     window.addEventListener("scroll", () => {
       if (window.innerWidth < 768) return;
 
-      for (const sectionId of NAVBAR_BUTTON_NAMES) {
+      for (const sectionId of NAVBAR_BUTTON_SECTION_IDS) {
         const section: HTMLElement | null = document.getElementById(sectionId);
         if (!section) continue;
 
