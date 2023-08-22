@@ -12,7 +12,7 @@ export default function NavbarMenu(): JSX.Element {
   return (
     <div className="block overflow-y-scroll lg:hidden">
       {MenuButton(menuClicked)}
-      {menuClicked ? DropdownMenuVisible(menuClicked) : <></>}
+      {menuClicked.value ? DropdownMenuVisible(menuClicked) : <></>}
     </div>
   );
 }
@@ -22,7 +22,7 @@ export default function NavbarMenu(): JSX.Element {
  * @returns JSX.Element
  */
 const MenuButton = (menuClicked: ObjectState<boolean>): JSX.Element =>
-  menuClicked ? CloseButton(menuClicked) : OpenButton(menuClicked);
+  menuClicked.value ? CloseButton(menuClicked) : OpenButton(menuClicked);
 
 // Close button
 const CloseButton = (menuClicked: ObjectState<boolean>): JSX.Element => (
