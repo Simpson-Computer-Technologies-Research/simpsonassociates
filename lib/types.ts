@@ -23,9 +23,9 @@ export interface Agent {
 
 export interface User {
   email: string | null | undefined;
-  accessToken: string | null | undefined;
   name: string | null | undefined;
   image: string | null | undefined;
+  accessToken: string;
   permissions: string[];
 }
 

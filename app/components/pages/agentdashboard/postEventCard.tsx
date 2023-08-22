@@ -84,8 +84,8 @@ export default function PostEventCard(props: {
  */
 const createEvent = async (user: User): Promise<boolean> => {
   const authorization: string = await generateAuthorization(
-    user.accessToken || "",
-    user.email || "",
+    user.accessToken,
+    user.email,
   );
 
   const body = getInputValues(user);
