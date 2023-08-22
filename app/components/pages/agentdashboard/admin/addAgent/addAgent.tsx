@@ -96,9 +96,12 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       props.user.email,
     );
 
-    const inputValues: any = await getInputValues().catch((err: Error) =>
-      props.error.set(err.message),
-    );
+    const inputValues: any = getInputValues();
+    if (Object.keys(inputValues).length === 0) {
+      props.error.set("Invalid inputs.");
+      setDisabled(false);
+      return;
+    }
 
     const body: Agent = generateRequestBody(
       props.region.value,

@@ -25,7 +25,12 @@ export default function Agents(props: AgentsProps): JSX.Element {
       </p>
       <div className="flex flex-col gap-4">
         {props.agents.value.map((agent: Agent, i: number) => (
-          <AgentCard agent={agent} user={props.user} agents={props.agents} />
+          <AgentCard
+            key={i}
+            agent={agent}
+            user={props.user}
+            agents={props.agents}
+          />
         ))}
       </div>
     </section>
