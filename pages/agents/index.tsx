@@ -1,8 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-import React from "react";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import { useEffect } from "react";
 
 // Import components
 import Navbar from "@/app/components/navbar/navbar";
@@ -63,22 +62,20 @@ const getUrlQueryParam = () =>
  */
 export default function AgentsPage(): JSX.Element {
   const initialQuery = new ObjectState<string>("");
-  const agents = new ObjectState<Agent[]>([]);
+  const agents = new ObjectState<Agent[] | null>(null);
   const emailTo = new ObjectState<string>("");
   const image = new ObjectState<string>("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     const query = getUrlQueryParam();
     if (query && !initialQuery.value) initialQuery.set(query);
 
-    if (!agents.value.length) {
-      fetchAgents().then((res) => {
-        if (res.length) agents.set(randomized(res));
-      });
+    if (!agents.value) {
+      fetchAgents().then((res) => agents.set(randomized(res)));
     }
-  }, []);
+  }, [initialQuery, agents]);
 
-  if (!agents.value.length) {
+  if (!agents.value) {
     return (
       <>
         <Head>

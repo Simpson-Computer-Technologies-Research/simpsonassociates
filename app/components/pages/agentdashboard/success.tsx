@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-
+import { useEffect, useState } from "react";
 import { User, Event } from "@/app/lib/types";
 
 import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
@@ -32,20 +31,19 @@ export default function Success(user: User): JSX.Element {
 const Events = (props: { user: User }): JSX.Element => {
   const events = new ObjectState<Event[] | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const accessToken: string = props.user.accessToken || "";
     const email: string = props.user.email || "";
 
     if (!events.value && accessToken && email) {
-      generateAuthorization(accessToken, email).then((auth: string) => {
-        fetchEvents(auth).then((result: Event[]) => {
-          if (result && result.length) {
-            events.set(result.sort((a, b) => b.date - a.date));
-          }
-        });
+      generateAuthorization(accessToken, email).then(async (auth: string) => {
+        const result: Event[] = await fetchEvents(auth);
+        if (result && result.length) {
+          events.set(result.sort((a, b) => b.date - a.date));
+        }
       });
     }
-  }, []);
+  }, [props.user]);
 
   return (
     <section id="events" className="flex h-fit w-full flex-col bg-primary p-7">
@@ -72,7 +70,7 @@ const EventCard = (props: {
   event: Event;
   events: ObjectState<Event[] | null>;
 }): JSX.Element => {
-  const [disabled, setDisabled] = React.useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   return (
     <div className="mb-4 mt-6 flex h-auto w-full flex-col rounded-md bg-white p-4">

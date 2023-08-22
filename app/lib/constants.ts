@@ -12,6 +12,14 @@ export const DEFAULT_CONTACT_IMAGES: string[] = [
   "/images/agents/marita_headshot.png",
 ];
 
+export const NAVBAR_BUTTON_NAMES: string[] = [
+  "home",
+  "rates",
+  "services",
+  "agents",
+  "contact",
+];
+
 export const LENDERS: Lender[] = [
   {
     logo: "/images/lenders/td.png",

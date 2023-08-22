@@ -1,6 +1,6 @@
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 
-export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
+export type SetState<T> = Dispatch<SetStateAction<T>>;
 
 export interface Agent {
   name: string;

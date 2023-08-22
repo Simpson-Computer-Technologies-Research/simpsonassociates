@@ -1,7 +1,4 @@
 "use client";
-
-import React from "react";
-
 import "@/app/styles/globals.css";
 
 import { User, Agent } from "@/app/lib/types";

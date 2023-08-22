@@ -1,7 +1,4 @@
 "use client";
-
-import React from "react";
-
 import { User, Agent } from "@/app/lib/types";
 
 import RemoveAgentButton from "./removeAgent";

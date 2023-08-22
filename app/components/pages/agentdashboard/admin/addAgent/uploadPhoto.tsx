@@ -1,7 +1,5 @@
 "use client";
-
 import { ObjectState } from "@/app/lib/state";
-import React from "react";
 
 /**
  * Upload Photo Button

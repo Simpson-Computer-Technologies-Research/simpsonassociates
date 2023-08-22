@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-
+import { useState } from "react";
 import { generateAuthorization } from "@/app/lib/auth";
 import { User, Agent, Region } from "@/app/lib/types";
 import { ObjectState } from "@/app/lib/state";
@@ -85,7 +84,7 @@ interface AddAgentButtonProps {
   photo: ObjectState<string>;
 }
 const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
-  const [disabled, setDisabled] = React.useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const onClick = async () => {
     setDisabled(true);
