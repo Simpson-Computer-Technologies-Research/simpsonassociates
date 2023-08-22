@@ -132,6 +132,6 @@ const getInputValues = (user: User): Event => {
     description,
     date: dateNumber,
     note,
-    posted_by: user.email || "",
+    posted_by: user.email,
   };
 };

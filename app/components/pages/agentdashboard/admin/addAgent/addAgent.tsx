@@ -89,8 +89,6 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
   const onClick = async () => {
     setDisabled(true);
 
-    if (!props.user.accessToken || !props.user.email) return;
-
     const authorization: string = await generateAuthorization(
       props.user.accessToken,
       props.user.email,

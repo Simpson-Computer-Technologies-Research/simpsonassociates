@@ -55,8 +55,8 @@ const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
             props.setConfirmation(false);
 
             const result = await removeAgent(
-              props.user.accessToken || "",
-              props.user.email || "",
+              props.user.accessToken,
+              props.user.email,
               props.agent.user_id,
             );
 
