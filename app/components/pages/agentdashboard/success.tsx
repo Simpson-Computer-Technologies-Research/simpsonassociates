@@ -91,22 +91,19 @@ const EventCard = (props: {
         disabled={disabled}
         hidden={!props.user.permissions.includes("manage_events")}
         className="mt-4 rounded-md bg-primary px-10 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50"
-        onClick={() => {
+        onClick={async () => {
           const eventId: string = props.event.event_id || "";
           if (!eventId) return;
 
           const events: Event[] = props.events.value || [];
           if (!events.length) return;
-
           setDisabled(true);
 
-          deleteEvent(props.user, eventId).then((res) => {
-            setDisabled(false);
+          let result: boolean = await deleteEvent(props.user, eventId);
+          setDisabled(false);
 
-            if (!res || !props.event.event_id) return;
-
-            props.events.set(filterEvents(events, eventId));
-          });
+          if (!result || !props.event.event_id) return;
+          props.events.set(filterEvents(events, eventId));
         }}
       >
         Delete
@@ -137,7 +134,8 @@ const fetchEvents = async (authorization: string): Promise<Event[]> => {
     },
   })
     .then((res) => res.json())
-    .then((json) => json.result);
+    .then((json) => json.result)
+    .catch(() => []);
 };
 
 /**

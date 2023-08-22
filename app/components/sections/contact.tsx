@@ -22,12 +22,9 @@ const defaultImages: string[] = [
 ];
 
 /**
- * Default email depending on the environment
- * Production: contact@dansimpson.ca
- * Development: heytristaann@gmail.com
- * Defined in vercel environment variables
+ * Default email
  */
-const defaultEmail: string = process.env.EMAIL || "contact@dansimpson.ca";
+const defaultEmail: string = "contact@dansimpson.ca";
 
 /**
  * Contact Component

@@ -101,14 +101,10 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       props.error.set(e.message),
     );
 
-    const body: Agent = {
-      ...inputValues,
-      permissions: getPermissions(),
-      team: getTeam(),
-      priority: getPriority(),
-      photo: props.photo.value,
-      region: (props.region && props.region.value) || {},
-    };
+    const body: Agent = generateRequestBody(
+      props.region.value,
+      props.photo.value,
+    );
 
     return await fetch("/api/agents", {
       method: "POST",
@@ -121,11 +117,14 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       .then((res) => {
         if (res.status === 200) {
           clearInput();
+
           props.agents.value = [...props.agents.value, inputValues];
           props.error.set("");
-        } else {
-          props.error.set("Failed to add agent.");
+
+          return;
         }
+
+        props.error.set("Failed to add agent.");
       })
       .catch((e) => props.error.set(e.message))
       .finally(() => setDisabled(false));
@@ -140,6 +139,26 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       Add
     </button>
   );
+};
+
+/**
+ * Generate the request body for the api request
+ * @returns the request body
+ */
+const generateRequestBody = (region: any, photo: string): Agent => {
+  const input: any = getInputValues();
+  const permissions: string[] = getPermissions();
+  const team: string = getTeam();
+  const priority: boolean = getPriority();
+
+  return {
+    ...input,
+    permissions,
+    team,
+    priority,
+    photo,
+    region,
+  };
 };
 
 /**
