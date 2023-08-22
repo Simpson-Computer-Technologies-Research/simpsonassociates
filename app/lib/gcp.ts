@@ -15,30 +15,37 @@ const bucket: Bucket = storage.bucket("simpsonassociates-agents");
 
 /**
  * Upload the photo to the google cloud storage
- * @param img The base64 encoded image to upload
+ * @param image The image to upload (base64)
+ * @param agentName The name of the agent
+ * @param agentId The id of the agent
  * @returns A promise that resolves when the image is uploaded
  */
-export const uploadPhotoGCP = async (
-  img: string,
-  imgName: string,
+export const uploadAgentPhotoGCP = async (
+  image: string,
+  agentName: string,
+  agentId: string,
 ): Promise<string> => {
-  const ref: File = bucket.file(imgName);
+  const imageType: string = image.split("data:")[1].split(";")[0];
+  const imageName: string =
+    agentName.toLowerCase().replace(" ", "") + "_headshot-" + agentId;
+
+  const ref: File = bucket.file(imageName);
   const buf: Buffer = Buffer.from(
-    img.split("data:image/png;base64,")[1],
+    image.split("data:image/png;base64,")[1],
     "base64",
   );
   ref.save(buf);
 
   const stream = ref.createWriteStream({
     gzip: true,
-    contentType: "image/png",
+    contentType: imageType,
   });
 
   return new Promise((resolve, reject) => {
     stream.on("error", (err) => reject(err));
     stream.on("finish", () =>
       resolve(
-        `https://storage.googleapis.com/simpsonassociates-agents/${imgName}`,
+        `https://storage.googleapis.com/simpsonassociates-agents/${imageName}`,
       ),
     );
     stream.end(buf);
@@ -47,18 +54,17 @@ export const uploadPhotoGCP = async (
 
 /**
  * Delete a photo from the google cloud storage
- * @param fileName The name of the file to delete
+ * @param agentName The name of the agent
+ * @param agentId The id of the agent
  * @returns A promise that resolves when the file is deleted
  */
-export const deletePhotoGCP = async (fileName: string): Promise<any> => {
-  const file: File = bucket.file(fileName);
+export const deleteAgentPhotoGCP = async (
+  agentName: string,
+  agentId: string,
+): Promise<any> => {
+  const imageName: string =
+    agentName.toLowerCase().replace(" ", "") + "_headshot-" + agentId;
+
+  const file: File = bucket.file(imageName);
   return file.delete();
 };
-
-/**
- * Get the name of the agent's photo
- * @param name The agent's name
- * @returns The name of the agent's photo
- */
-export const agentPhotoName = (name: string): string =>
-  name.toLowerCase().replace(" ", "") + "_headshot.png";

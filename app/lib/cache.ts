@@ -33,8 +33,8 @@ export class AgentsCache {
     this.cache = agents;
   }
 
-  update_agent(agent_id: any, data: any) {
-    const index = this.cache.findIndex((agent) => agent.user_id === agent_id);
+  update_agent(user_id: any, data: any) {
+    const index = this.cache.findIndex((agent) => agent.user_id === user_id);
     this.cache[index] = data;
   }
 
@@ -42,8 +42,8 @@ export class AgentsCache {
     this.cache.push(agent);
   }
 
-  delete_agent(agent_id: any) {
-    const index = this.cache.findIndex((agent) => agent.user_id === agent_id);
+  delete_agent(user_id: any) {
+    const index = this.cache.findIndex((agent) => agent.user_id === user_id);
     this.cache.splice(index, 1);
   }
 }
