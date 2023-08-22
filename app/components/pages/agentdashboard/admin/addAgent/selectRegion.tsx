@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { Agent, Location } from "@/app/lib/types";
+import { Agent, Region } from "@/app/lib/types";
 import { ObjectState } from "@/app/lib/state";
 
 /**
@@ -11,7 +11,7 @@ import { ObjectState } from "@/app/lib/state";
  */
 interface SelectRegionProps {
   agent: Agent | null;
-  region: ObjectState<Location | null>;
+  region: ObjectState<Region | null>;
 }
 export default function SelectRegion(props: SelectRegionProps): JSX.Element {
   const [geo, setGeo] = React.useState<any[]>([]);

@@ -53,7 +53,7 @@ export interface Rate {
   TermsMonth: string;
 }
 
-export interface Location {
+export interface Region {
   location: string;
   lat: number;
   lon: number;
