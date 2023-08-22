@@ -6,8 +6,7 @@ import { sendEmail } from "@/app/lib/email";
 import { Event } from "@/app/lib/types";
 import { Collection, Document } from "mongodb";
 import { epochToDate } from "@/app/lib/date";
-
-const ONE_DAY_IN_MILLISECONDS: number = 86400000;
+import { ONE_DAY_IN_MILLISECONDS } from "@/app/lib/constants";
 
 /**
  * Middlewares to limit the number of requests

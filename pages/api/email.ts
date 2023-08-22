@@ -41,27 +41,33 @@ export default async function handler(
   }
 
   const { email_to, name, email, phone, message } = req.body;
-  if (!email_to || !email || !message || !name || !phone) {
+  if (!email_to || !email || !message || !name) {
     return res.status(400).json({ message: "Missing fields from body" });
   }
 
   // Verify that the email_to is a valid agent email
-  await verifyEmail(email_to).then(async () => {
-    const data = {
-      from: "Simpson Associates Contact Submission",
-      to: email_to,
-      subject: `Simpson Associates Contact Submission`,
-      text: `Submission Information:\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage:\n${message}`,
-      html: `<h3>Submission Information:</h3><strong>Name:</strong> ${name}<br/><strong>Email:</strong> ${email}<br/><strong>Phone:</strong> ${phone}<br/><strong>Message:</strong><br/>${message}`,
-    };
+  const isValidEmail: boolean = await verifyEmail(email_to);
+  if (!isValidEmail) {
+    return res.status(400).json({ message: "Invalid email" });
+  }
 
-    const onError = (err: any) =>
-      res.status(500).json({ message: err.message });
+  const data = {
+    from: "Simpson Associates Contact Submission",
+    to: email_to,
+    subject: `Simpson Associates Contact Submission`,
+    text: `Submission Information:\nName: ${name}\nEmail: ${email}\nPhone: ${
+      phone || "None Provided"
+    }\nMessage:\n${message}`,
+    html: `<h3>Submission Information:</h3><strong>Name:</strong> ${name}<br/><strong>Email:</strong> ${email}<br/><strong>Phone:</strong> ${
+      phone || "None Provided"
+    }<br/><strong>Message:</strong><br/>${message}`,
+  };
 
-    const onSuccess = (msg: any) => res.status(200).json({ message: msg });
+  const onError = (err: any) => res.status(500).json({ message: err.message });
 
-    await sendEmail(data, onError, onSuccess);
-  });
+  const onSuccess = (msg: any) => res.status(200).json({ message: msg });
+
+  await sendEmail(data, onError, onSuccess);
 }
 
 /**
@@ -70,14 +76,16 @@ export default async function handler(
  * @returns Promise
  * @throws Error
  */
-const verifyEmail = async (email: string): Promise<void> => {
-  await context(async (database) => {
+const verifyEmail = async (email: string): Promise<boolean> => {
+  if (email === "contact@dansimpson.ca") return true;
+
+  return await context(async (database) => {
     const collection: Collection<Document> = database.collection("agents");
 
     const result: Document | null = await collection.findOne({
       email: email,
     });
 
-    if (!result) throw new Error("Email not found");
+    return result;
   });
 };
