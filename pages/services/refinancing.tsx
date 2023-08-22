@@ -55,11 +55,12 @@ const Header = (): JSX.Element => (
       Refinancing
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
-      Whether you are a first-time buyer or an experienced buyer with excellent
-      credit, Simpson & Associates has access to the{" "}
-      <strong className="tracking-wide">best products and rates</strong>{" "}
-      available across Canada. See below a snapshot of what we have to offer!
+    <p className="mb-7 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
+      Refinancing emerges as a strategic financial maneuver that offers property
+      owners the opportunity to optimize their existing mortgage terms and
+      potentially secure more favorable terms. This process involves replacing
+      an existing mortgage with a new one, often with the goal of obtaining a
+      lower interest rate, adjusting the loan term, or accessing equity.
     </p>
   </div>
 );

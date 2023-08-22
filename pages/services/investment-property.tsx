@@ -55,11 +55,12 @@ const Header = (): JSX.Element => (
       Investment Property
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
-    <p className="mb-4 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
-      Whether you are a first-time buyer or an experienced buyer with excellent
-      credit, Simpson & Associates has access to the{" "}
-      <strong className="tracking-wide">best products and rates</strong>{" "}
-      available across Canada. See below a snapshot of what we have to offer!
+    <p className="mb-7 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
+      Investment properties represent a strategic avenue for individuals to
+      diversify their financial portfolios and generate passive income. These
+      properties, such as rental homes, commercial buildings, or multifamily
+      units, are acquired with the primary goal of generating returns through
+      rental income and potential property appreciation.{" "}
     </p>
   </div>
 );
