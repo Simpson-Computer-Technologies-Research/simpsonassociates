@@ -53,8 +53,26 @@ export interface Rate {
   TermsMonth: string;
 }
 
-export interface Location {
+export interface Region {
   location: string;
   lat: number;
   lon: number;
+}
+
+export interface AgentLocation {
+  loading: boolean;
+  active: boolean;
+  lat: number;
+  lon: number;
+}
+
+export interface Lender {
+  logo: string;
+  href: string;
+}
+
+export interface Testimonial {
+  name: string;
+  testimonial: string;
+  href: string;
 }

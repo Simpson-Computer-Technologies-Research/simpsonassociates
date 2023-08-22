@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { TESTIMONIALS } from "@/app/lib/constants";
+import { Testimonial } from "@/app/lib/types";
 
 /**
  * Testimonials (Google Reviews)
@@ -52,7 +53,7 @@ const Header = (): JSX.Element => (
  * @returns JSX.Element
  */
 const TestimonialCards = (): JSX.Element => {
-  const cards = TESTIMONIALS.map((t: any, i: number) => (
+  const cards = TESTIMONIALS.map((t: Testimonial, i: number) => (
     <TestimonialCard key={i} testimonial={t} />
   ));
 

@@ -4,10 +4,9 @@ import { sha256, base64encode, base64decode } from "./crypto";
  * Generate a random id
  */
 export async function generateId() {
-  const currentTime = new Date().getTime().toString();
-  const random = crypto.getRandomValues(new Uint8Array(10));
-  const hash = await sha256(random + currentTime);
-  return hash;
+  const currentTime: string = new Date().getTime().toString();
+  const random: Uint8Array = crypto.getRandomValues(new Uint8Array(10));
+  return await sha256(random + currentTime);
 }
 
 /**
@@ -15,9 +14,11 @@ export async function generateId() {
  */
 export const generateAuthorization = async (
   accessToken: string,
-  email: string,
+  email: string | undefined | null,
 ): Promise<string> =>
-  base64encode(JSON.stringify({ access_token: accessToken, email }));
+  base64encode(
+    JSON.stringify({ access_token: accessToken, email: email || "" }),
+  );
 
 /**
  * Decode an authorization token
@@ -25,8 +26,8 @@ export const generateAuthorization = async (
 export const decodeAuthorization = async (
   authorization: string,
 ): Promise<{ accessToken: string; email: string }> => {
-  const decoded = base64decode(authorization);
-  const parsed = JSON.parse(decoded);
+  const decoded: string = base64decode(authorization);
+  const parsed: any = JSON.parse(decoded);
   return {
     accessToken: parsed.access_token,
     email: parsed.email,

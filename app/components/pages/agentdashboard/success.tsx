@@ -30,9 +30,7 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 const Events = (props: { user: User }): JSX.Element => {
-  const events: ObjectState<Event[] | null> = new ObjectState<Event[] | null>(
-    null,
-  );
+  const events = new ObjectState<Event[] | null>(null);
 
   React.useEffect(() => {
     const accessToken: string = props.user.accessToken || "";

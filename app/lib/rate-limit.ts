@@ -1,5 +1,6 @@
 import rateLimit from "express-rate-limit";
 import slowDown from "express-slow-down";
+import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * Get the IP address
@@ -13,12 +14,13 @@ const getIP = (req: any) =>
 /**
  * Apply a middleware
  */
-export const applyMiddleware = (mw: any) => (req: any, res: any) =>
-  new Promise((resolve, reject) => {
-    mw(req, res, (result: any) =>
-      result instanceof Error ? reject(result) : resolve(result)
-    );
-  });
+export const applyMiddleware =
+  (mw: any) => (req: NextApiRequest, res: NextApiResponse) =>
+    new Promise((resolve, reject) => {
+      mw(req, res, (result: any) =>
+        result instanceof Error ? reject(result) : resolve(result),
+      );
+    });
 
 /**
  * Get the middlewares to limit the number of requests
@@ -39,7 +41,7 @@ export const getMiddlewares = (
     windowMs: 60 * 1000,
     delayAfter: 10,
     delayMs: 100,
-  }
+  },
 ) => [
   slowDown({
     keyGenerator: getIP,

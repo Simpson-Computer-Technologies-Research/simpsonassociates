@@ -1,5 +1,6 @@
-export const ONE_DAY_IN_MILLISECONDS: number = 86400000;
+import { Lender, Testimonial } from "./types";
 
+export const ONE_DAY_IN_MILLISECONDS: number = 86400000;
 export const DEFAULT_CONTACT_EMAIL: string = "contact@dansimpson.ca";
 export const DEFAULT_CONTACT_IMAGES: string[] = [
   "/images/agents/dave_headshot.png",
@@ -11,10 +12,6 @@ export const DEFAULT_CONTACT_IMAGES: string[] = [
   "/images/agents/marita_headshot.png",
 ];
 
-interface Lender {
-  logo: string;
-  href: string;
-}
 export const LENDERS: Lender[] = [
   {
     logo: "/images/lenders/td.png",
@@ -78,11 +75,6 @@ export const LENDERS: Lender[] = [
   },
 ];
 
-interface Testimonial {
-  name: string;
-  testimonial: string;
-  href: string;
-}
 export const TESTIMONIALS: Testimonial[] = [
   {
     name: "Louise Macdonald",
