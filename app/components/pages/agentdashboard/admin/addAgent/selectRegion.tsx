@@ -32,15 +32,18 @@ export default function SelectRegion(props: SelectRegionProps): JSX.Element {
   const onRegionSelect = (result: any) => {
     const input = document.getElementById("region") as HTMLInputElement;
     if (!input.value) return;
+
     props.region.set({
       lat: (props.region.value && props.region.value.lat) || 0.0,
       lon: (props.region.value && props.region.value.lon) || 0.0,
       location: input.value,
     });
 
-    let { lat, lon } = result;
+    const { lat, lon } = result;
     if (!lat || !lon) return;
+
     setGeo([]);
+
     props.region.set({
       location: input.value,
       lat: parseFloat(lat),

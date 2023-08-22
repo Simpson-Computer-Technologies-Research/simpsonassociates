@@ -74,7 +74,7 @@ const verifyEmail = async (email: string): Promise<void> => {
   await context(async (database) => {
     const collection: Collection<Document> = database.collection("agents");
 
-    let result: Document | null = await collection.findOne({
+    const result: Document | null = await collection.findOne({
       email: email,
     });
 

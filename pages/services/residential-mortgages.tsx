@@ -70,23 +70,27 @@ const ResidentialMortgages = (): JSX.Element => (
     <ResidentialMortgagesCard
       title="Purchasing a home"
       description="Are you currently looking for your next residence? Regardless of whether you're a novice in the real estate market or a seasoned property owner, the ideal mortgage solution is within your reach."
-      image="/images/blue_home_banner.png"
+      image="/images/services/couple_blue_banner.png"
+      buttonText="Purchase a home"
     />
     <ResidentialMortgagesCard
       title="Mortgage Renewal"
       description="When it's time to renew your mortgage, it's also the perfect time to explore your options. Many homeowners mistakenly renew their mortgage with their bank without consulting an agent to explore the available rates and terms."
-      image="/images/blue_home_banner.png"
+      image="/images/services/home_blue_banner.png"
+      buttonText="Renew your mortgage"
     />
     <ResidentialMortgagesCard
       title="Refinancing"
       description="Think you missed out on a better mortgage? Likely true! Rates are now historically low, making it prime time to refinance. Contact us for an agent to review your mortgage and secure your best deal."
-      image="/images/blue_home_banner.png"
+      image="/images/services/movein_blue_banner.png"
+      buttonText="Contact us"
     />
   </div>
 );
 
 const ResidentialMortgagesCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -109,7 +113,7 @@ const ResidentialMortgagesCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>

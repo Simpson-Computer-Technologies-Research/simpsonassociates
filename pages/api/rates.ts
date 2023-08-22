@@ -1,6 +1,7 @@
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { RatesCache } from "@/app/lib/cache";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Rate } from "@/app/lib/types";
 
 // Create a new cache instance
 const cache = new RatesCache();
@@ -35,25 +36,25 @@ export default async function handler(
     return res.status(429).send(`Too many requests`);
   }
 
-  let hasResponded: boolean = false;
   if (cache.isCached()) {
     res.status(200).json(cache.get());
-    hasResponded = true;
+    return fetchRates();
   }
 
+  await fetchRates()
+    .then((rates: Rate[]) => res.status(200).json(rates))
+    .catch((err: Error) => res.status(500).json({ message: err.message }));
+}
+
+const fetchRates = async () => {
   const apiKey: string = process.env.DOMINION_RATES_API_KEY || "'";
   const url: string =
     "https://secure.dominionintranet.ca/rest/rates?apikey=" + apiKey;
-
-  await fetch(url)
+  return await fetch(url)
     .then((resp) => resp.json())
     .then((json) => {
       if (!json.Rates) throw new Error("No rates found");
-
       cache.set(json.Rates);
-      if (!hasResponded) res.status(200).json(json.Rates);
-    })
-    .catch((err) => {
-      if (!hasResponded) res.status(500).json({ error: err.message });
+      return json.Rates;
     });
-}
+};

@@ -70,23 +70,27 @@ const Refinancing = (): JSX.Element => (
     <RefinancingCard
       title="Financial Flexibility"
       description="Are you looking to optimize your mortgage situation and free up funds for other financial needs? Mortgage refinancing could be the solution you've been searching for."
-      image="/images/blue_home_banner.png"
-    />
-    <RefinancingCard
-      title="Better Rates"
-      description="Are you tired of paying high-interest rates on your current mortgage? It's time to seize the opportunity and explore mortgage refinancing to secure more favorable rates. "
-      image="/images/blue_home_banner.png"
+      image="/images/services/couple_blue_banner.png"
+      buttonText="Optimize your mortgage"
     />
     <RefinancingCard
       title="Streamlining Finances"
       description="Dealing with multiple loans and debts can be overwhelming, making it challenging to manage your finances effectively. Enter mortgage refinancing as a powerful tool for consolidation."
-      image="/images/blue_home_banner.png"
+      image="/images/services/home_blue_banner.png"
+      buttonText="Get started"
+    />
+    <RefinancingCard
+      title="Better Rates"
+      description="Are you tired of paying high-interest rates on your current mortgage? It's time to seize the opportunity and explore mortgage refinancing to secure more favorable rates. "
+      image="/images/services/woodenhome_blue_banner.png"
+      buttonText="Improve your rates"
     />
   </div>
 );
 
 const RefinancingCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -109,7 +113,7 @@ const RefinancingCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>

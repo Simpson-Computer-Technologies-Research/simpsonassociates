@@ -73,23 +73,27 @@ const CommercialMortgages = (): JSX.Element => (
     <CommercialMortgagesCard
       title="Unlock Business Potential"
       description="Are you ready to take your business to the next level? A commercial mortgage might be the key you need to unlock new opportunities. Expand your business, invest in new equipment, or purchase a new property."
-      image="/images/blue_home_banner.png"
+      image="/images/services/home_blue_banner.png"
+      buttonText="Unlock potential"
     />
     <CommercialMortgagesCard
       title="Investment"
       description="Dive into the world of real estate investment and turn your property dreams into reality with a commercial mortgage. Whether you're a seasoned investor or just starting out, commercial mortgages provide the means to acquire income-generating properties."
-      image="/images/blue_home_banner.png"
+      image="/images/services/forsale_blue_banner.png"
+      buttonText="Start investing"
     />
     <CommercialMortgagesCard
       title="Business Expansion"
       description="Is your business outgrowing its current space? Don't let limited real estate hold you back. Empower your business expansion by harnessing the potential of commercial mortgages. Our options provide the means to secure the perfect space for your needs."
-      image="/images/blue_home_banner.png"
+      image="/images/services/skyscraper_blue_banner.png"
+      buttonText="Expand your business"
     />
   </div>
 );
 
 const CommercialMortgagesCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -112,7 +116,7 @@ const CommercialMortgagesCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>

@@ -48,7 +48,7 @@ export default async function handler(
 
   await context(async (database) => {
     const collection: Collection<Document> = database.collection("agents");
-    let result: Document[] = await collection
+    const result: Document[] = await collection
       .find({
         access_token: decoded.accessToken,
       })
@@ -56,11 +56,11 @@ export default async function handler(
       .limit(1)
       .toArray();
 
-    let agent: any = result[0];
+    const agent: any = result[0];
     if (!agent) {
       return res.status(401).json({ message: "Unauthorized", permissions: [] });
     }
 
     res.status(200).json({ message: "ok", permissions: agent.permissions });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 }

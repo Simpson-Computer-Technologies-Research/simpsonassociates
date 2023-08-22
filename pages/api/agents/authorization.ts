@@ -58,7 +58,7 @@ export default async function handler(
         .json({ message: "Authorization token already set" });
     }
 
-    let result: UpdateResult<Document> = await collection.updateOne(
+    const result: UpdateResult<Document> = await collection.updateOne(
       { email: decoded.email },
       { $set: { access_token: decoded.accessToken } },
       { upsert: true },
@@ -71,5 +71,5 @@ export default async function handler(
     }
 
     res.status(200).json({ message: "Authorization token set", result });
-  }).catch((error) => res.status(500).json({ message: error.message }));
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 }

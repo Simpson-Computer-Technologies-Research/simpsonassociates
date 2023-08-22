@@ -12,9 +12,9 @@ export default function ScrollIndicator(): JSX.Element {
   // Set the window listener
   React.useEffect(() => {
     window.addEventListener("scroll", () => {
-      let winScroll: number =
+      const winScroll: number =
         document.body.scrollTop || document.documentElement.scrollTop;
-      let height: number =
+      const height: number =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
       setScrollPercent((winScroll / height) * 100);

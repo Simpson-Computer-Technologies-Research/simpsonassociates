@@ -53,18 +53,19 @@ const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
         <button
           onClick={async () => {
             props.setConfirmation(false);
-            await removeAgent(
+
+            const result = await removeAgent(
               props.user.accessToken || "",
               props.user.email || "",
               props.agent.user_id,
-            ).then((success) => {
-              if (success) {
-                const filteredAgents = props.agents.value.filter((agent) => {
-                  if (agent !== props.agent) return agent;
-                });
-                props.agents.set(filteredAgents);
-              }
-            });
+            );
+
+            if (result) {
+              const filteredAgents = props.agents.value.filter((agent) => {
+                if (agent !== props.agent) return agent;
+              });
+              props.agents.set(filteredAgents);
+            }
           }}
           className="mx-2 rounded-md bg-white px-10 py-2 font-medium text-primary"
         >
@@ -105,9 +106,10 @@ const removeAgent = async (
       authorization,
     },
     body: JSON.stringify({
-      agent_id: user_id,
+      user_id,
     }),
   })
     .then((res) => res.json())
-    .then((json) => json && json.result && json.result.deletedCount === 1);
+    .then((json) => json && json.result && json.result.acknowledged)
+    .catch((_: Error) => false);
 };

@@ -70,23 +70,27 @@ const InvestmentProperty = (): JSX.Element => (
     <InvestmentPropertyCard
       title="Rental Property"
       description="Prepared to step into landlording? We have the perfect mortgage solution! Be it residential, commercial, industrial, or mixed-use, we're here to assist you in obtaining the optimal mortgage, maximizing your investment's potential."
-      image="/images/blue_home_banner.png"
+      image="/images/services/movein_blue_banner.png"
+      buttonText="Become a landlord"
     />
     <InvestmentPropertyCard
       title="Future Resale"
       description="Looking to buy property or land with the aim to resell for profit? Our committed mortgage agents will guide you, making the search for the ideal mortgage straightforward."
-      image="/images/blue_home_banner.png"
+      image="/images/services/forsale_blue_banner.png"
+      buttonText="Get started"
     />
     <InvestmentPropertyCard
       title="Commercial Property"
       description="Contemplating investing in a commercial property for future gains? Our dedicated mortgage agents are here to simplify the process and help you secure the perfect mortgage for your investment goals."
-      image="/images/blue_home_banner.png"
+      image="/images/services/home_blue_banner.png"
+      buttonText="Start investing"
     />
   </div>
 );
 
 const InvestmentPropertyCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -109,7 +113,7 @@ const InvestmentPropertyCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>

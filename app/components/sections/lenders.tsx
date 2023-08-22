@@ -33,7 +33,7 @@ const LenderImages = () => {
   ));
   return (
     <div className="relative mt-4 flex h-auto w-[98%] flex-row overflow-hidden md:w-3/4">
-      <div className="flex animate-marquee-current flex-row whitespace-nowrap">
+      <div className="relative flex animate-marquee-current flex-row">
         {lenderImages}
       </div>
     </div>
@@ -63,103 +63,63 @@ const Header = (): JSX.Element => (
  */
 const lenders: { logo: string; href: string }[] = [
   {
-    logo: "https://dominionlending.ca/wp-content/uploads/2021/05/amba-1.svg",
-    href: "https://amba.ca/",
+    logo: "/images/lenders/td.png",
+    href: "https://www.td.com/",
   },
   {
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/b2b-01.svg",
+    logo: "/images/lenders/scotiabank.png",
+    href: "https://www.scotiabank.com/",
+  },
+  {
+    logo: "/images/lenders/hsbc.png",
+    href: "https://www.hsbc.com/",
+  },
+  {
+    logo: "/images/lenders/mcap.png",
+    href: "https://www.mcap.com/",
+  },
+  {
+    logo: "/images/lenders/yncu.png",
+    href: "https://www.yncu.com/",
+  },
+  {
+    logo: "/images/lenders/meridian.png",
+    href: "https://www.meridiancu.ca/",
+  },
+  {
+    logo: "/images/lenders/wfcu.png",
+    href: "https://www.wfcu.ca/",
+  },
+  {
+    logo: "/images/lenders/westboro.png",
+    href: "https://westboromic.com/",
+  },
+  {
+    logo: "/images/lenders/firstnational.png",
+    href: "https://www.firstnational.ca/",
+  },
+  {
+    logo: "/images/lenders/wealthone.png",
+    href: "https://www.wealthonebankofcanada.com/",
+  },
+  {
+    logo: "/images/lenders/b2b.png",
     href: "https://b2bbank.com/",
   },
   {
-    logo: "https://dominionlending.ca/wp-content/uploads/2022/03/bridge-water-logo.svg",
-    href: "https://bridgewaterbank.ca/",
-  },
-  {
-    logo: "https://dominionlending.ca/wp-content/uploads/2021/05/cmba.svg",
-    href: "https://www.cmbabc.ca/",
-  },
-  {
-    logo: "https://dominionlending.ca/wp-content/uploads/2021/05/cmls.svg",
-    href: "https://www.cmls.ca/",
-  },
-  {
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/10/dlc-logo.svg",
-    href: "https://dominionlending.ca/",
-  },
-  {
-    href: "https://www.equitablebank.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/equitable-01.svg",
-  },
-  {
-    href: "https://fct.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/FCT-01.svg",
-  },
-  {
-    href: "https://www.firstnational.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/First-National-01.svg",
-  },
-  {
-    href: "https://fisgard.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/Fisgard-01.svg",
-  },
-  {
     href: "https://www.homeequitybank.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/Home-Equity-01.svg",
-  },
-  {
-    href: "https://www.hometrust.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/Home-Trust-01.svg",
-  },
-  {
-    href: "https://www.merixfinancial.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2021/05/lendwise.svg",
-  },
-  {
-    href: "https://www.icicibank.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/icici-01.svg",
-  },
-  {
-    href: "https://insureline.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/insureline-logo.svg",
-  },
-  {
-    href: "https://www.manulifebank.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/Manulife-01.svg",
-  },
-  {
-    href: "https://www.marathonmortgage.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2022/03/marathon-mortgage-logo.svg",
-  },
-  {
-    href: "https://www.mcap.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/mcap-logo.svg",
-  },
-  {
-    href: "https://www.wealthonebankofcanada.com/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2023/07/wealthone.svg",
-  },
-  {
-    href: "https://www.td.com/ca/en/personal-banking/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/td-logo.svg",
-  },
-  {
-    href: "https://www.scotiabank.com/ca/en/personal.html",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/Scotiabank-logo.svg",
+    logo: "/images/lenders/homeequity.png",
   },
   {
     href: "https://www.rmgmortgages.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/rmg-logo.svg",
+    logo: "/images/lenders/rmg.png",
   },
   {
-    href: "https://www.rfa.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/rfa-logo.svg",
+    href: "https://www.desjardins.com/",
+    logo: "/images/lenders/desjardins.png",
   },
   {
-    href: "https://www.reca.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2021/05/reca.svg",
-  },
-  {
-    href: "https://mortgageproscan.ca/",
-    logo: "https://dominionlending.ca/wp-content/uploads/2020/09/mpc-logo-1.svg",
+    href: "https://www.icsavings.ca/",
+    logo: "/images/lenders/icsavings.png",
   },
 ];

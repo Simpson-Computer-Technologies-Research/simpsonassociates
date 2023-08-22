@@ -71,18 +71,21 @@ const SecondProperty = (): JSX.Element => (
     <SecondPropertyCard
       title="Vacation Home & Second Property"
       description="Acquiring a vacation home or second property ought to be smooth and hassle-free – that's where we step in! We'll expertly guide you through each phase, guaranteeing the finest mortgage for your new home away from home."
-      image="/images/blue_home_banner.png"
+      image="/images/services/vacation_blue_banner.png"
+      buttonText="Purchase a property"
     />
     <SecondPropertyCard
       title="Non-resident Lending"
       description="Eager to join Canada's real estate scene but hindered by non-citizenship? Count on us! We'll guide you through the additional measures needed for a Canadian home purchase, decoding the intricate documentation demands."
-      image="/images/blue_home_banner.png"
+      image="/images/services/movein_blue_banner.png"
+      buttonText="Get started"
     />
   </div>
 );
 
 const SecondPropertyCard = (props: {
   className?: string;
+  buttonText: string;
   title: string;
   description: string;
   image: string;
@@ -105,7 +108,7 @@ const SecondPropertyCard = (props: {
       <h3 className="text-2xl font-bold text-primary">{props.title}</h3>
       <p className="mb-9 mt-2 text-sm text-primary">{props.description}</p>
       <button className="rounded-full bg-secondary px-10 py-3.5 text-center text-xs font-medium tracking-wider text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-[1.05] group-hover:px-12 xs:px-10 xs:py-4 xs:text-sm sm:text-base md:outline-none lg:absolute lg:bottom-4 lg:text-sm">
-        Get Started
+        {props.buttonText}
       </button>
     </div>
   </Link>
