@@ -1,67 +1,94 @@
 import { Agent, Rate } from "./types";
 
 export class AgentsCache {
-  cache: Agent[];
+  cache: Agent[] = [];
 
   constructor() {
-    this.cache = [];
+    console.log("Intialized agents cache");
   }
 
-  isCached() {
-    return this.cache.length > 0;
-  }
+  public static readonly globalize = () => {
+    const global: any = globalThis as any;
+    if (!global.agents) global.agents = new AgentsCache();
+  };
 
-  get() {
-    return this.cache;
-  }
+  public static readonly isCached = () => {
+    const global: any = globalThis as any;
+    return global.agents.cache.length > 0;
+  };
 
-  update(agents: Agent[]) {
-    this.cache = agents;
-  }
+  public static readonly get = () => {
+    const global: any = globalThis as any;
+    return global.agents.cache;
+  };
 
-  update_agent(user_id: string, data: Agent) {
-    const index = this.cache.findIndex((agent) => agent.user_id === user_id);
-    this.cache[index] = data;
-  }
+  public static readonly set = (agents: Agent[]) => {
+    const global: any = globalThis as any;
+    global.agents.cache = agents;
+  };
 
-  add_agent(agent: Agent) {
-    this.cache.push(agent);
-  }
+  public static readonly update = (agent: Agent) => {
+    const global: any = globalThis as any;
+    const index = global.agents.cache.findIndex(
+      (a: Agent) => a.user_id === agent.user_id,
+    );
+    if (index === -1) return;
+    global.agents.cache[index] = agent;
+  };
 
-  delete_agent(user_id: string) {
-    const index = this.cache.findIndex((agent) => agent.user_id === user_id);
-    this.cache.splice(index, 1);
-  }
+  public static readonly add = (agent: Agent) => {
+    const global: any = globalThis as any;
+    global.agents.cache.push(agent);
+  };
+
+  public static readonly delete = (index: number) => {
+    const global: any = globalThis as any;
+    global.agents.cache.splice(index, 1);
+  };
 }
 
 export class RatesCache {
-  cache: Rate[];
+  cache: Rate[] = [];
 
   constructor() {
-    this.cache = [];
+    console.log("Intialized rates cache");
   }
 
-  isCached() {
-    return this.cache.length > 0;
-  }
+  public static readonly globalize = () => {
+    const global: any = globalThis as any;
+    if (!global.rates) global.rates = new RatesCache();
+  };
 
-  get() {
-    return this.cache;
-  }
+  public static readonly isCached = () => {
+    const global: any = globalThis as any;
+    return global.rates.cache.length > 0;
+  };
 
-  set(rates: Rate[]) {
-    this.cache = rates;
-  }
+  public static readonly get = () => {
+    const global: any = globalThis as any;
+    return global.rates.cache;
+  };
 
-  update(index: number, data: Rate) {
-    this.cache[index] = data;
-  }
+  public static readonly set = (rates: Rate[]) => {
+    const global: any = globalThis as any;
+    global.rates.cache = rates;
+  };
 
-  add(rate: Rate) {
-    this.cache.push(rate);
-  }
+  public static readonly update = (index: number, data: Rate) => {
+    const global: any = globalThis as any;
+    global.rates.cache[index] = data;
+  };
 
-  delete(index: number) {
-    this.cache.splice(index, 1);
-  }
+  public static readonly add = (rate: Rate) => {
+    const global: any = globalThis as any;
+    global.rates.cache.push(rate);
+  };
+
+  public static readonly delete = (index: number) => {
+    const global: any = globalThis as any;
+    global.rates.cache.splice(index, 1);
+  };
 }
+
+RatesCache.globalize();
+AgentsCache.globalize();

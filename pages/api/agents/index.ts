@@ -1,11 +1,11 @@
 import { Database, publicAgentSearchConfig, verifyAdmin } from "@/lib/mongo";
-import { AgentsCache } from "@/lib/cache";
 import { generateId } from "@/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, Db, DeleteResult, Document } from "mongodb";
 import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/lib/gcp";
 import { Agent } from "@/lib/types";
+import { AgentsCache } from "@/lib/cache";
 
 const defaultAgentHeadshotPhoto: string =
   "/images/default_agent_headshot_primary.png";
@@ -27,9 +27,6 @@ const rateLimit = async (req: any, res: any) => {
     return true;
   }
 };
-
-// Create a new agents cache
-const cache = new AgentsCache();
 
 export default async function handler(
   req: NextApiRequest,
@@ -65,8 +62,8 @@ export default async function handler(
 
 // Get the agents from the database and return them as JSON
 const getAgents = async (_: any, res: any) => {
-  if (cache.isCached()) {
-    res.status(200).json({ message: "Success", result: cache.get() });
+  if (AgentsCache.isCached()) {
+    res.status(200).json({ message: "Success", result: AgentsCache.get() });
     return fetchAgentsFromDatabase();
   }
 
@@ -86,7 +83,7 @@ const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
       .project(publicAgentSearchConfig)
       .toArray();
 
-    cache.update(result as Agent[]);
+    AgentsCache.set(result as Agent[]);
     return result;
   });
 
@@ -132,7 +129,7 @@ const addAgent = async (req: any, res: any) => {
           .json({ message: "Failed to add agent", result: null });
       }
 
-      cache.add_agent(data);
+      AgentsCache.add(data);
       res.status(200).json({ message: "Success", result });
     });
   }).catch((err: Error) => res.status(500).json({ message: err.message }));
@@ -185,7 +182,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
         return res.status(500).json({ message: res.message });
     }
 
-    cache.delete_agent(user_id);
+    AgentsCache.delete(user_id);
     res.status(200).json({ message: "Success", result });
   }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
