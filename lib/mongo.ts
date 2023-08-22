@@ -35,16 +35,27 @@ export class Database {
   private readonly uri: string = process.env.MONGODB_URI || "";
   private readonly client: MongoClient;
 
+  /**
+   * Mongoclient options
+   * @private @readonly
+   */
+  private static readonly MAX_POOL_SIZE: number = 100;
+  private static readonly MIN_POOL_SIZE: number = 2;
+  private static readonly MAX_IDLE_TIME_MS: number = 10000;
+  private static readonly MAX_STALENESS_SECONDS: number = 10000;
+  private static readonly CONNECT_TIMEOUT_MS: number = 10000;
+
   constructor() {
     this.client = new MongoClient(this.uri, {
       serverApi: {
         version: ServerApiVersion.v1,
         strict: true,
       },
-      minPoolSize: 2,
-      maxIdleTimeMS: 10000,
-      maxStalenessSeconds: 10000,
-      connectTimeoutMS: 10000,
+      maxPoolSize: Database.MAX_POOL_SIZE,
+      minPoolSize: Database.MIN_POOL_SIZE,
+      maxIdleTimeMS: Database.MAX_IDLE_TIME_MS,
+      maxStalenessSeconds: Database.MAX_STALENESS_SECONDS,
+      connectTimeoutMS: Database.CONNECT_TIMEOUT_MS,
     });
 
     this.client
