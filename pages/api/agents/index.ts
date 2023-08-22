@@ -1,4 +1,4 @@
-import { GLOBAL, publicAgentSearchConfig, verifyAdmin } from "@/lib/mongo";
+import { Database, publicAgentSearchConfig, verifyAdmin } from "@/lib/mongo";
 import { AgentsCache } from "@/lib/cache";
 import { generateId } from "@/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
@@ -78,7 +78,7 @@ const getAgents = async (_: any, res: any) => {
 };
 
 const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
-  await GLOBAL.database.context(async (database: Db) => {
+  await Database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     const result: Document[] = await collection
@@ -103,41 +103,39 @@ const addAgent = async (req: any, res: any) => {
       .json({ message: "Missing required fields", result: null });
   }
 
-  await GLOBAL.database
-    .context(async (database: Db) => {
-      const collection: Collection<Document> = database.collection("agents");
+  await Database.context(async (database: Db) => {
+    const collection: Collection<Document> = database.collection("agents");
 
-      const { photo } = req.body;
-      if (!photo) {
+    const { photo } = req.body;
+    if (!photo) {
+      return res
+        .status(400)
+        .json({ message: "Missing required fields", result: null });
+    }
+
+    // Upload the photo to the google cloud storage
+    const data: any = await generateInsertionData(req.body);
+
+    if (data.photo !== defaultAgentHeadshotPhoto) {
+      const result = await uploadAgentPhotoGCP(photo, data.name, data.user_id)
+        .then((photo: string) => (data.photo = photo))
+        .catch((err: Error) => err);
+
+      if (result instanceof Error)
+        return res.status(500).json({ message: res.message });
+    }
+
+    await collection.insertOne(data).then((result) => {
+      if (!result.acknowledged) {
         return res
-          .status(400)
-          .json({ message: "Missing required fields", result: null });
+          .status(409)
+          .json({ message: "Failed to add agent", result: null });
       }
 
-      // Upload the photo to the google cloud storage
-      const data: any = await generateInsertionData(req.body);
-
-      if (data.photo !== defaultAgentHeadshotPhoto) {
-        const result = await uploadAgentPhotoGCP(photo, data.name, data.user_id)
-          .then((photo: string) => (data.photo = photo))
-          .catch((err: Error) => err);
-
-        if (result instanceof Error)
-          return res.status(500).json({ message: res.message });
-      }
-
-      await collection.insertOne(data).then((result) => {
-        if (!result.acknowledged) {
-          return res
-            .status(409)
-            .json({ message: "Failed to add agent", result: null });
-        }
-
-        cache.add_agent(data);
-        res.status(200).json({ message: "Success", result });
-      });
-    })
-    .catch((err: Error) => res.status(500).json({ message: err.message }));
+      cache.add_agent(data);
+      res.status(200).json({ message: "Success", result });
+    });
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 /**
@@ -154,47 +152,42 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
       .json({ message: "Missing required fields", result: null });
   }
 
-  await GLOBAL.database
-    .context(async (database: Db) => {
-      const collection: Collection<Document> = database.collection("agents");
+  await Database.context(async (database: Db) => {
+    const collection: Collection<Document> = database.collection("agents");
 
-      // Check if the agent already exists
-      const agent: Document | null = await collection.findOne({
-        user_id,
-      });
-      if (!agent) {
-        return res
-          .status(409)
-          .json({ message: "Agent does not exist", result: null });
-      }
+    // Check if the agent already exists
+    const agent: Document | null = await collection.findOne({
+      user_id,
+    });
+    if (!agent) {
+      return res
+        .status(409)
+        .json({ message: "Agent does not exist", result: null });
+    }
 
-      // Delete the agent from the database
-      const result: DeleteResult = await collection.deleteOne({
-        user_id,
-      });
-      if (!result.acknowledged) {
-        return res
-          .status(409)
-          .json({ message: "Failed to delete agent", result: null });
-      }
+    // Delete the agent from the database
+    const result: DeleteResult = await collection.deleteOne({
+      user_id,
+    });
+    if (!result.acknowledged) {
+      return res
+        .status(409)
+        .json({ message: "Failed to delete agent", result: null });
+    }
 
-      // Delete the agent photo from the google cloud storage
-      if (agent.photo !== defaultAgentHeadshotPhoto) {
-        const deleteResult = await deleteAgentPhotoGCP(
-          agent.photo,
-          agent.user_id,
-        )
-          .then(() => {})
-          .catch((err: Error) => err);
+    // Delete the agent photo from the google cloud storage
+    if (agent.photo !== defaultAgentHeadshotPhoto) {
+      const deleteResult = await deleteAgentPhotoGCP(agent.photo, agent.user_id)
+        .then(() => {})
+        .catch((err: Error) => err);
 
-        if (deleteResult instanceof Error)
-          return res.status(500).json({ message: res.message });
-      }
+      if (deleteResult instanceof Error)
+        return res.status(500).json({ message: res.message });
+    }
 
-      cache.delete_agent(user_id);
-      res.status(200).json({ message: "Success", result });
-    })
-    .catch((err: Error) => res.status(500).json({ message: err.message }));
+    cache.delete_agent(user_id);
+    res.status(200).json({ message: "Success", result });
+  }).catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 // Check if the body of the request is valid

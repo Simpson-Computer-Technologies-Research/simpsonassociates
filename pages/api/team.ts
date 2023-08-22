@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
-import { publicTeamSearchConfig, GLOBAL } from "@/lib/mongo";
+import { publicTeamSearchConfig, Database } from "@/lib/mongo";
 import { Collection, Db, Document } from "mongodb";
 
 /**
@@ -41,24 +41,22 @@ export default async function handler(
   }
   const teamSplit: string[] = (team as string).split(",");
 
-  await GLOBAL.database
-    .context(async (database: Db) => {
-      const collection: Collection<Document> = database.collection("agents");
-      await collection
-        .find({
-          team: { $in: teamSplit },
-        })
-        .project(publicTeamSearchConfig)
-        .toArray()
-        .then((result) => {
-          if (!result) {
-            return res.status(404).json({ message: "No agents found" });
-          }
+  await Database.context(async (database: Db) => {
+    const collection: Collection<Document> = database.collection("agents");
+    await collection
+      .find({
+        team: { $in: teamSplit },
+      })
+      .project(publicTeamSearchConfig)
+      .toArray()
+      .then((result) => {
+        if (!result) {
+          return res.status(404).json({ message: "No agents found" });
+        }
 
-          res.status(200).json({ agents: result });
-        });
-    })
-    .catch((_: Error) =>
-      res.status(500).json({ message: "Internal server error" }),
-    );
+        res.status(200).json({ agents: result });
+      });
+  }).catch((_: Error) =>
+    res.status(500).json({ message: "Internal server error" }),
+  );
 }

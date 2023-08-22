@@ -2,9 +2,38 @@ import { Db, MongoClient, ServerApiVersion } from "mongodb";
 import { User } from "@/lib/types";
 import { decodeAuthorization } from "@/lib/auth";
 
-class Database {
-  private uri: string = process.env.MONGODB_URI || "";
-  private client: MongoClient;
+export class Database {
+  /**
+   * Globalize the database
+   * @returns void
+   * @static @readonly @async
+   */
+  public static readonly globalize = async (): Promise<void> => {
+    const global: any = globalThis as any;
+    if (!global.database) {
+      global.database = new Database();
+    }
+  };
+
+  /**
+   * Shortcut to run a function in the context of the database
+   * @param fn the function to execute
+   * @returns the result of the function
+   * @readonly @async @static
+   */
+  public static readonly context = async (
+    fn: (db: Db) => Promise<any>,
+  ): Promise<any> => {
+    const global: any = globalThis as any;
+    return await global.database.context(fn);
+  };
+
+  /**
+   * The database uri and client
+   * @private @readonly
+   */
+  private readonly uri: string = process.env.MONGODB_URI || "";
+  private readonly client: MongoClient;
 
   constructor() {
     this.client = new MongoClient(this.uri, {
@@ -20,8 +49,7 @@ class Database {
 
     this.client
       .connect()
-      .catch((err: Error) => {
-        console.error(err);
+      .catch((_: Error) => {
         console.error("Database connection failed");
         this.client.close();
       })
@@ -30,16 +58,23 @@ class Database {
       });
   }
 
-  public context = async (fn: (db: Db) => Promise<any>): Promise<any> => {
+  /**
+   * Run a function in the context of the database
+   * @param fn the function to execute
+   * @returns the result of the function
+   * @public @async @readonly
+   * @throws Error
+   */
+  public readonly context = async (
+    fn: (db: Db) => Promise<any>,
+  ): Promise<any> => {
     const db: Db = this.client.db("simpsonassociates");
     return await fn(db);
   };
 }
 
-export const GLOBAL = globalThis as any;
-if (!GLOBAL.database) {
-  GLOBAL.database = new Database();
-}
+// Globalize the database
+Database.globalize();
 
 /*
 export async function context(fn: (db: Db) => Promise<any>): Promise<any> {
@@ -131,30 +166,28 @@ export const verifyPermissions = async (
   authorization: string,
   permissions: string[],
 ): Promise<boolean> =>
-  await GLOBAL.database
-    .context(async (database: Db) => {
-      const collection = database.collection("agents");
+  await Database.context(async (database: Db) => {
+    const collection = database.collection("agents");
 
-      const authenticated = await verifyAuth(collection, authorization);
-      if (!authenticated.result) return false;
+    const authenticated = await verifyAuth(collection, authorization);
+    if (!authenticated.result) return false;
 
-      const user = await collection
-        .find({ access_token: authenticated.access_token })
-        .project({ permissions: 1 })
-        .limit(1)
-        .toArray();
+    const user = await collection
+      .find({ access_token: authenticated.access_token })
+      .project({ permissions: 1 })
+      .limit(1)
+      .toArray();
 
-      // If the user doesn't exist
-      if (user.length === 0 || !user[0]) return false;
+    // If the user doesn't exist
+    if (user.length === 0 || !user[0]) return false;
 
-      for (const permission of permissions) {
-        if (!user[0].permissions.includes(permission)) {
-          return false;
-        }
+    for (const permission of permissions) {
+      if (!user[0].permissions.includes(permission)) {
+        return false;
       }
-      return true;
-    })
-    .catch((_: Error) => false);
+    }
+    return true;
+  }).catch((_: Error) => false);
 
 /**
  * Verify that the user making the request is an admin
