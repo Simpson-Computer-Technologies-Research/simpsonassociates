@@ -54,7 +54,7 @@ const Header = (): JSX.Element => (
       Residential Mortgages
     </h2>
     <span className="mx-10 mb-6 mt-5 block h-1 w-2/5 rounded-full bg-secondary xs:w-1/4 sm:mt-7 lg:w-72"></span>
-    <p className="mb-7 w-3/4 text-sm text-primary sm:w-3/4 sm:text-base lg:w-1/2">
+    <p className="mb-6 w-3/4 text-sm text-primary xs:text-base sm:text-lg">
       A residential mortgage stands as a pivotal gateway to homeownership,
       enabling individuals and families to turn their aspirations of owning a
       home into a tangible reality. This type of mortgage is tailored to the

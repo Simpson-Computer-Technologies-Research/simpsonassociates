@@ -3,9 +3,6 @@ import { RatesCache } from "@/lib/cache";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Rate } from "@/lib/types";
 
-// Create a new cache instance
-const cache = new RatesCache();
-
 /**
  * Middlewares to limit the number of requests
  */
@@ -36,8 +33,8 @@ export default async function handler(
     return res.status(429).send(`Too many requests`);
   }
 
-  if (cache.isCached()) {
-    res.status(200).json(cache.get());
+  if (RatesCache.isCached()) {
+    res.status(200).json(RatesCache.get());
     return fetchRates();
   }
 
@@ -54,7 +51,7 @@ const fetchRates = async () => {
     .then((resp) => resp.json())
     .then((json) => {
       if (!json.Rates) throw new Error("No rates found");
-      cache.set(json.Rates);
+      RatesCache.set(json.Rates);
       return json.Rates;
     });
 };
