@@ -4,7 +4,7 @@ import { generateId } from "@/app/lib/auth";
 import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Collection, DeleteResult, Document } from "mongodb";
-import { uploadPhotoGCP, deletePhotoGCP, agentPhotoName } from "@/app/lib/gcp";
+import { uploadAgentPhotoGCP, deleteAgentPhotoGCP } from "@/app/lib/gcp";
 
 /**
  * Middlewares to limit the number of requests
@@ -109,19 +109,16 @@ const addAgent = async (req: any, res: any) => {
 
     // Upload the photo to the google cloud storage
     const data: any = await generateInsertionData(req.body);
-    const photoName: string = agentPhotoName(data.name);
-    const GCPPhotoURL: string = await uploadPhotoGCP(photo, photoName).catch(
-      (error) => {
-        console.log(error);
-        return "";
-      },
-    );
+    const GCPPhotoURL: string | null = await uploadAgentPhotoGCP(
+      photo,
+      data.name,
+      data.user_id,
+    ).catch((error) => {
+      res.status(500).json({ message: error.message });
+      return null;
+    });
 
-    if (!GCPPhotoURL) {
-      return res
-        .status(400)
-        .json({ message: "Failed to upload photo", result: null });
-    }
+    if (!GCPPhotoURL) return;
     data.photo = GCPPhotoURL;
 
     await collection.insertOne(data).then((result) => {
@@ -144,8 +141,8 @@ const addAgent = async (req: any, res: any) => {
  * @returns void
  */
 const deleteAgent = async (req: any, res: any): Promise<void> => {
-  const { agent_id } = req.body;
-  if (!agent_id) {
+  const { user_id } = req.body;
+  if (!user_id) {
     return res
       .status(400)
       .json({ message: "Missing required fields", result: null });
@@ -156,7 +153,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 
     // Check if the agent already exists
     let agent: Document | null = await collection.findOne({
-      user_id: agent_id,
+      user_id,
     });
 
     if (!agent) {
@@ -166,7 +163,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 
     // Delete the agent from the database
     let result: DeleteResult = await collection.deleteOne({
-      user_id: agent_id,
+      user_id,
     });
 
     if (result.deletedCount === 0) {
@@ -176,10 +173,11 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     }
 
     // Delete the agent photo from the google cloud storage
-    const photoName: string = agentPhotoName(agent.name);
-    await deletePhotoGCP(photoName).catch((error) => console.log(error));
+    await deleteAgentPhotoGCP(agent.name, agent.user_id).catch((error) =>
+      console.log(error),
+    );
 
-    cache.delete_agent(agent_id);
+    cache.delete_agent(user_id);
     res.status(200).json({ message: "Success", result });
   }).catch((error) => res.status(500).json({ message: error.message }));
 };

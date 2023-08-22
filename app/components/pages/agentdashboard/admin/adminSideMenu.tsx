@@ -2,6 +2,9 @@
 
 import { User } from "@/app/lib/types";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
+
+import Link from "next/link";
 
 /**
  * Side menu for the admin agent dashboard
@@ -12,7 +15,7 @@ export default function SideMenu(props: { user: User }): JSX.Element {
   return (
     <div className="z-[1] flex h-auto w-screen flex-col bg-slate-50 p-4 sm:fixed sm:h-screen sm:w-64">
       <div className="flex flex-row items-center justify-start">
-        <img
+        <Image
           src={props.user.image || "/images/default_agent_headshot.png"}
           alt="..."
           width={50}
@@ -27,12 +30,12 @@ export default function SideMenu(props: { user: User }): JSX.Element {
       <p className="mb-2 text-xs font-medium text-primary/50">
         {props.user.email}
       </p>
-      <a
+      <Link
         href="/agents/dashboard/#events"
         className="mt-4 rounded-md bg-primary px-10 py-2.5 font-medium text-white hover:brightness-110"
       >
         Events
-      </a>
+      </Link>
       <button
         onClick={() => signOut()}
         className="relative bottom-4 mt-8 rounded-md bg-primary px-10 py-2.5 text-start font-medium text-white hover:brightness-110 sm:absolute"

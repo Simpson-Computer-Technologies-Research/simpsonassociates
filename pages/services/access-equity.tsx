@@ -4,6 +4,8 @@
 // Import react for state and effect
 import React from "react";
 import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
 
 // Import components
@@ -88,14 +90,14 @@ const AccessEquityCard = (props: {
   description: string;
   image: string;
 }): JSX.Element => (
-  <a
+  <Link
     href="#contact"
     className={cn(
       "group flex w-[48rem] scale-100 flex-col bg-slate-50 pb-10 text-center duration-500 ease-in-out hover:scale-105 lg:h-[27rem] lg:w-96",
       props.className,
     )}
   >
-    <img
+    <Image
       src={props.image}
       alt={props.title}
       className="absolute h-36 w-full group-hover:brightness-110 xs:h-48 sm:h-52 md:h-60 lg:h-auto"
@@ -107,5 +109,5 @@ const AccessEquityCard = (props: {
         Get Started
       </button>
     </div>
-  </a>
+  </Link>
 );

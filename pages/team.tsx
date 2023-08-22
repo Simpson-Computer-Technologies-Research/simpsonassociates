@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/app/components/navbar/navbar";
 import Bottom from "@/app/components/sections/bottom";
@@ -121,7 +122,7 @@ interface AgentCardProps {
   className?: string;
 }
 const AgentCard = (props: AgentCardProps): JSX.Element => (
-  <a
+  <Link
     href="#contact"
     onClick={() => {
       props.emailTo.set(props.agent.email);
@@ -148,7 +149,7 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
         Get in touch
       </button>
     </div>
-  </a>
+  </Link>
 );
 
 const leadershipTeam: Agent[] = [
