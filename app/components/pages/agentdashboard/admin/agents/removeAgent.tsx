@@ -110,6 +110,6 @@ const removeAgent = async (
     }),
   })
     .then((res) => res.json())
-    .then((json) => json && json.result && json.result.deletedCount === 1)
+    .then((json) => json && json.result && json.result.acknowledged)
     .catch((_: Error) => false);
 };

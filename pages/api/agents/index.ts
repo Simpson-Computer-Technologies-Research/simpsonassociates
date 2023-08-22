@@ -166,7 +166,7 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
       user_id,
     });
 
-    if (result.deletedCount === 0) {
+    if (!result.acknowledged) {
       return res
         .status(409)
         .json({ message: "Failed to delete agent", result: null });
