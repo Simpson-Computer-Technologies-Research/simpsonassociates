@@ -28,7 +28,7 @@ export default function TeamPage(): JSX.Element {
         <Navbar />
         <div
           id="team"
-          className="fade-in flex w-full flex-col items-center justify-center pb-32"
+          className="fade-in flex w-full flex-col items-center justify-center pb-14"
         >
           <LeadershipTeam emailTo={emailTo} contactPhoto={contactPhoto} />
           <SupportTeam emailTo={emailTo} contactPhoto={contactPhoto} />
@@ -53,7 +53,7 @@ const LeadershipTeam = (props: {
   emailTo: ObjectState<string>;
   contactPhoto: ObjectState<string>;
 }): JSX.Element => (
-  <section className="flex flex-col items-center justify-center bg-slate-50 pb-10 pt-52 text-center">
+  <section className="flex flex-col items-center justify-center bg-slate-50 pb-14 pt-44 text-center lg:pt-52">
     <h3 className="text-4xl font-extrabold text-primary lg:text-5xl">
       Leadership Team
     </h3>
@@ -64,7 +64,7 @@ const LeadershipTeam = (props: {
       understand that our clients are the heartbeat of our success and work
       tirelessly to exceed their expectations.
     </p>
-    <div className="flex flex-wrap items-center justify-center gap-6 px-2 sm:gap-12 md:gap-16 xl:gap-20">
+    <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
       {leadershipTeam.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
@@ -97,14 +97,14 @@ const SupportTeam = (props: {
       group of individuals, they are the frontline advocates for our clients,
       ensuring that their needs are met with promptness and care.
     </p>
-    <div className="flex flex-wrap items-center justify-center gap-6 px-2 sm:gap-12 md:gap-16 xl:gap-20">
+    <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
       {supportTeam.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
           agent={agent}
           emailTo={props.emailTo}
           contactPhoto={props.contactPhoto}
-          className="hover:bg-slate-100"
+          className="hover:bg-slate-50"
         />
       ))}
     </div>

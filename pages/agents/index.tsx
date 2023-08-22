@@ -132,9 +132,9 @@ const Agents = (props: {
   emailTo: ObjectState<string>;
   image: ObjectState<string>;
 }): JSX.Element => {
-  const [query, setQuery] = React.useState("");
-  const [error, setError] = React.useState("");
-  const [location, setLocation] = React.useState({
+  const query: ObjectState<string> = new ObjectState("");
+  const error: ObjectState<string> = new ObjectState("");
+  const location: ObjectState<any> = new ObjectState({
     loading: false,
     active: false,
     lat: 0,
@@ -149,24 +149,25 @@ const Agents = (props: {
         defaultValue={props.initialQuery.value}
         placeholder="Enter an agent name, city, or language"
         onChange={(e) => {
-          setQuery(e.target.value);
+          query.set(e.target.value);
           setUrlQueryParam(e.target.value);
-          if (location.active) setLocation({ ...location, active: false });
+          if (location.value.active)
+            location.set({ ...location, active: false });
         }}
       />
       <button
-        onClick={() => getLocation(location, setLocation, setError)}
+        onClick={() => getLocation(location, error)}
         className="mb-4 w-60 bg-primary p-2 text-base text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 xs:w-96"
       >
-        {location.loading
+        {location.value.loading
           ? "Fetching Location"
-          : location.active
+          : location.value.active
           ? "Location Active"
           : "Use My Location"}
       </button>
-      <p className="text-sm font-semibold text-red-500">{error}</p>
+      <p className="text-sm font-semibold text-red-500">{error.value}</p>
       <AgentsGrid
-        query={query || props.initialQuery.value}
+        query={query.value || props.initialQuery.value}
         agents={props.agents}
         location={location}
         emailTo={props.emailTo}

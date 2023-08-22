@@ -1,41 +1,46 @@
 // Import tailwind and global styles
 import "@/app/styles/globals.css";
-import { Agent, Location } from "./types";
+import { Agent } from "./types";
+import { ObjectState } from "./state";
 
 /**
  * Fetch user's location
- *
- * @return {void}
+ * @param loc - The location object
+ * @param error - The error object
+ * @return void
  */
-export const getLocation = (loc: any, setLoc: any, setErr: any): void => {
+export const getLocation = (
+  loc: ObjectState<any>,
+  error: ObjectState<string>,
+) => {
   // If the user is already searching by location, return
-  if (loc.active) return;
+  if (loc.value.active) return;
 
   // If the user has already searched by location but
   // the location is not active, set the location to active
-  if (loc.lat && loc.lon) {
-    setLoc({ ...location, active: true, loading: false });
+  if (loc.value.lat && loc.value.lon) {
+    loc.set({ ...location, active: true, loading: false });
   }
 
   // Otherwise, get the users location
   if (navigator.geolocation) {
-    setLoc({ ...location, loading: true });
+    loc.set({ ...location, loading: true });
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        setLoc({
+        loc.set({
           loading: false,
           active: true,
           lat: lat,
           lon: lon,
         });
       },
-      (error) => setErr(error.message),
+      (err) => error.set(err.message),
     );
   } else {
-    setErr("Geolocation not supported");
+    error.set("Geolocation not supported");
   }
 };
 
@@ -69,13 +74,11 @@ const getDistance = (
  * @param userLocation The user's location
  * @returns The agents sorted by distance
  */
-export const nearbyAgents = (
-  agents: Agent[],
-  userLocation: {
-    lat: number;
-    lon: number;
-  },
-) => {
+interface Location {
+  lat: number;
+  lon: number;
+}
+export const nearbyAgents = (agents: Agent[], userLocation: Location) => {
   return agents
     .map((agent) => {
       const distance = getDistance(

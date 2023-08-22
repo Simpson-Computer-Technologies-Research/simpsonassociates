@@ -7,24 +7,10 @@ import React from "react";
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/app/lib/utils";
 import { SetState } from "@/app/lib/types";
-
-/**
- * Store the contact images which will be randomly selected
- */
-const defaultImages: string[] = [
-  "/images/agents/dave_headshot.png",
-  "/images/agents/marina_headshot.png",
-  "/images/agents/babar_headshot.png",
-  "/images/agents/fil_headshot.png",
-  "/images/agents/celeste_headshot.png",
-  "/images/agents/debbie_headshot.png",
-  "/images/agents/marita_headshot.png",
-];
-
-/**
- * Default email
- */
-const defaultEmail: string = "contact@dansimpson.ca";
+import {
+  DEFAULT_CONTACT_EMAIL,
+  DEFAULT_CONTACT_IMAGES,
+} from "@/app/lib/constants";
 
 /**
  * Contact Component
@@ -46,11 +32,13 @@ export default function Contact(props: ContactProps): JSX.Element {
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center px-4">
-        <ContactForm emailTo={props.emailTo || defaultEmail} />
+        <ContactForm emailTo={props.emailTo || DEFAULT_CONTACT_EMAIL} />
         <Image
           src={
             props.image ||
-            defaultImages[Math.floor(Math.random() * defaultImages.length)]
+            DEFAULT_CONTACT_IMAGES[
+              Math.floor(Math.random() * DEFAULT_CONTACT_IMAGES.length)
+            ]
           }
           alt="..."
           width={750}

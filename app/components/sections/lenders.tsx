@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { LENDERS } from "@/app/lib/constants";
 
 // Render the component
 export default function Lenders(): JSX.Element {
@@ -21,7 +22,7 @@ export default function Lenders(): JSX.Element {
  * @returns JSX.Element
  */
 const LenderImages = () => {
-  const lenderImages = lenders.map((lender: any, i: number) => (
+  const lenderImages = LENDERS.map((lender: any, i: number) => (
     <Image
       key={i}
       src={lender.logo}
@@ -57,69 +58,3 @@ const Header = (): JSX.Element => (
     </p>
   </header>
 );
-
-/**
- * Get the lenders
- */
-const lenders: { logo: string; href: string }[] = [
-  {
-    logo: "/images/lenders/td.png",
-    href: "https://www.td.com/",
-  },
-  {
-    logo: "/images/lenders/scotiabank.png",
-    href: "https://www.scotiabank.com/",
-  },
-  {
-    logo: "/images/lenders/hsbc.png",
-    href: "https://www.hsbc.com/",
-  },
-  {
-    logo: "/images/lenders/mcap.png",
-    href: "https://www.mcap.com/",
-  },
-  {
-    logo: "/images/lenders/yncu.png",
-    href: "https://www.yncu.com/",
-  },
-  {
-    logo: "/images/lenders/meridian.png",
-    href: "https://www.meridiancu.ca/",
-  },
-  {
-    logo: "/images/lenders/wfcu.png",
-    href: "https://www.wfcu.ca/",
-  },
-  {
-    logo: "/images/lenders/westboro.png",
-    href: "https://westboromic.com/",
-  },
-  {
-    logo: "/images/lenders/firstnational.png",
-    href: "https://www.firstnational.ca/",
-  },
-  {
-    logo: "/images/lenders/wealthone.png",
-    href: "https://www.wealthonebankofcanada.com/",
-  },
-  {
-    logo: "/images/lenders/b2b.png",
-    href: "https://b2bbank.com/",
-  },
-  {
-    href: "https://www.homeequitybank.ca/",
-    logo: "/images/lenders/homeequity.png",
-  },
-  {
-    href: "https://www.rmgmortgages.ca/",
-    logo: "/images/lenders/rmg.png",
-  },
-  {
-    href: "https://www.desjardins.com/",
-    logo: "/images/lenders/desjardins.png",
-  },
-  {
-    href: "https://www.icsavings.ca/",
-    logo: "/images/lenders/icsavings.png",
-  },
-];
