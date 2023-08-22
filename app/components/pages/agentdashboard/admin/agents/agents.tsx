@@ -1,8 +1,8 @@
 "use client";
-import { User, Agent } from "@/app/lib/types";
+import { User, Agent } from "@/lib/types";
 
 import RemoveAgentButton from "./removeAgent";
-import { ObjectState } from "@/app/lib/state";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Current Agents

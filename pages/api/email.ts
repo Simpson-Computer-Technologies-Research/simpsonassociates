@@ -1,8 +1,8 @@
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import { context } from "@/app/lib/mongo";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
-import { sendEmail } from "@/app/lib/email";
-import { Collection, Document } from "mongodb";
+import { sendEmail } from "@/lib/email";
+import { Collection, Db, Document } from "mongodb";
+import { GLOBAL } from "@/lib/mongo";
 
 /**
  * Middlewares to limit the number of requests
@@ -79,7 +79,7 @@ export default async function handler(
 const verifyEmail = async (email: string): Promise<boolean> => {
   if (email === "contact@dansimpson.ca") return true;
 
-  return await context(async (database) => {
+  return await GLOBAL.database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     const result: Document | null = await collection.findOne({

@@ -5,8 +5,8 @@ import NavbarButton from "./button";
 import NavbarMenu from "./menu";
 import Image from "next/image";
 import Link from "next/link";
-import { ObjectState } from "@/app/lib/state";
-import { NAVBAR_BUTTON_SECTION_IDS } from "@/app/lib/constants";
+import { ObjectState } from "@/lib/state";
+import { NAVBAR_BUTTON_SECTION_IDS } from "@/lib/constants";
 
 /**
  * Navbar Component

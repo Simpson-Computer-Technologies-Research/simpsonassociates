@@ -1,13 +1,13 @@
 "use client";
 import "@/app/styles/globals.css";
 
-import { User, Agent } from "@/app/lib/types";
+import { User, Agent } from "@/lib/types";
 
 import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import UpdateAgent from "./addAgent/addAgent";
-import { ObjectState } from "@/app/lib/state";
-import { isSuccess } from "@/app/lib/http";
+import { ObjectState } from "@/lib/state";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Fetch the agents

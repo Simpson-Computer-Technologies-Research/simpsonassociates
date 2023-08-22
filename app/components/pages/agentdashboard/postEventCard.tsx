@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { User } from "@/app/lib/types";
-import { generateAuthorization } from "@/app/lib/auth";
-import { Event } from "@/app/lib/types";
-import { ObjectState } from "@/app/lib/state";
-import { isSuccess } from "@/app/lib/http";
+import { User } from "@/lib/types";
+import { generateAuthorization } from "@/lib/auth";
+import { Event } from "@/lib/types";
+import { ObjectState } from "@/lib/state";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Post event card

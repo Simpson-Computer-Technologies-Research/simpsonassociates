@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 import { LoadingRelative } from "../loading";
-import { Rate } from "@/app/lib/types";
+import { Rate } from "@/lib/types";
 import Link from "next/link";
 
 /**

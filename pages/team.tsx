@@ -8,11 +8,11 @@ import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 import { SessionProvider } from "@/app/components/providers";
 import Head from "next/head";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 
 import "@/app/styles/globals.css";
-import { Agent } from "@/app/lib/types";
-import { ObjectState } from "@/app/lib/state";
+import { Agent } from "@/lib/types";
+import { ObjectState } from "@/lib/state";
 
 export default function TeamPage(): JSX.Element {
   const emailTo = new ObjectState<string>("");

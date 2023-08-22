@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { User, Event } from "@/app/lib/types";
+import { User, Event } from "@/lib/types";
 
 import SideMenu from "@/app/components/pages/agentdashboard/sideMenu";
 import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
-import { generateAuthorization } from "@/app/lib/auth";
-import { ObjectState } from "@/app/lib/state";
-import { epochToDate } from "@/app/lib/date";
-import { isSuccess } from "@/app/lib/http";
+import { generateAuthorization } from "@/lib/auth";
+import { ObjectState } from "@/lib/state";
+import { epochToDate } from "@/lib/date";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Success section

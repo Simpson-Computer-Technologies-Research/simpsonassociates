@@ -1,8 +1,8 @@
-import { decodeAuthorization } from "@/app/lib/auth";
-import { context } from "@/app/lib/mongo";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
+import { decodeAuthorization } from "@/lib/auth";
+import { GLOBAL } from "@/lib/mongo";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Collection, Document, UpdateResult } from "mongodb";
+import { Collection, Db, Document, UpdateResult } from "mongodb";
 
 /**
  * Middlewares to limit the number of requests
@@ -46,30 +46,32 @@ export default async function handler(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  await context(async (database) => {
-    const collection: Collection<Document> = database.collection("agents");
-    const user = await collection.findOne({
-      access_token: decoded.accessToken,
-    });
+  await GLOBAL.database
+    .context(async (database: Db) => {
+      const collection: Collection<Document> = database.collection("agents");
+      const user = await collection.findOne({
+        access_token: decoded.accessToken,
+      });
 
-    if (user && user.access_token) {
-      return res
-        .status(400)
-        .json({ message: "Authorization token already set" });
-    }
+      if (user && user.access_token) {
+        return res
+          .status(400)
+          .json({ message: "Authorization token already set" });
+      }
 
-    const result: UpdateResult<Document> = await collection.updateOne(
-      { email: decoded.email },
-      { $set: { access_token: decoded.accessToken } },
-      { upsert: true },
-    );
+      const result: UpdateResult<Document> = await collection.updateOne(
+        { email: decoded.email },
+        { $set: { access_token: decoded.accessToken } },
+        { upsert: true },
+      );
 
-    if (result.modifiedCount !== 1) {
-      return res
-        .status(400)
-        .json({ message: "Failed to update authorization token" });
-    }
+      if (result.modifiedCount !== 1) {
+        return res
+          .status(400)
+          .json({ message: "Failed to update authorization token" });
+      }
 
-    res.status(200).json({ message: "Authorization token set", result });
-  }).catch((err: Error) => res.status(500).json({ message: err.message }));
+      res.status(200).json({ message: "Authorization token set", result });
+    })
+    .catch((err: Error) => res.status(500).json({ message: err.message }));
 }

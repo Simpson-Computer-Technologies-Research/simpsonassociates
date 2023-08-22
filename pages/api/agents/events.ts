@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { context, verifyManageEvents, verifyIsAgent } from "@/app/lib/mongo";
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import { generateId } from "@/app/lib/auth";
-import { sendEmail } from "@/app/lib/email";
-import { Event } from "@/app/lib/types";
-import { Collection, Document } from "mongodb";
-import { epochToDate } from "@/app/lib/date";
-import { ONE_DAY_IN_MILLISECONDS } from "@/app/lib/constants";
+import { verifyManageEvents, verifyIsAgent, GLOBAL } from "@/lib/mongo";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
+import { generateId } from "@/lib/auth";
+import { sendEmail } from "@/lib/email";
+import { Event } from "@/lib/types";
+import { Collection, Db, Document } from "mongodb";
+import { epochToDate } from "@/lib/date";
+import { ONE_DAY_IN_MILLISECONDS } from "@/lib/constants";
 
 /**
  * Middlewares to limit the number of requests
@@ -69,31 +69,33 @@ export default async function handler(
  * @param res The outgoing http response
  */
 const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
-  await context(async (database) => {
-    const collection: Collection<Document> = database.collection("events");
+  await GLOBAL.database
+    .context(async (database: Db) => {
+      const collection: Collection<Document> = database.collection("events");
 
-    const results: Document[] = await collection.find({}).toArray();
+      const results: Document[] = await collection.find({}).toArray();
 
-    let finalResults: Document[] = [];
+      let finalResults: Document[] = [];
 
-    for (let i = 0; i < results.length; i++) {
-      const event: any = results[i];
-      const currentTime: number = new Date().getTime();
+      for (let i = 0; i < results.length; i++) {
+        const event: any = results[i];
+        const currentTime: number = new Date().getTime();
 
-      if (event.date + ONE_DAY_IN_MILLISECONDS > currentTime) {
-        finalResults.push(event);
-        continue;
+        if (event.date + ONE_DAY_IN_MILLISECONDS > currentTime) {
+          finalResults.push(event);
+          continue;
+        }
+
+        await collection.deleteOne({
+          event_id: event.event_id,
+        });
       }
 
-      await collection.deleteOne({
-        event_id: event.event_id,
-      });
-    }
-
-    res.status(200).json({ message: "Success", result: finalResults });
-  }).catch((_: any) =>
-    res.status(500).json({ message: "Failed to fetch events", result: null }),
-  );
+      res.status(200).json({ message: "Success", result: finalResults });
+    })
+    .catch((_: any) =>
+      res.status(500).json({ message: "Failed to fetch events", result: null }),
+    );
 };
 
 /**
@@ -109,15 +111,17 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { notify_agents } = req.body;
 
-  await context(async (database) => {
-    const collection: Collection<Document> = database.collection("events");
+  await GLOBAL.database
+    .context(async (database: Db) => {
+      const collection: Collection<Document> = database.collection("events");
 
-    const data: any = await generateInsertionData(req.body);
-    const result = await collection.insertOne(data);
-    if (notify_agents) emailAllAgents(data);
+      const data: any = await generateInsertionData(req.body);
+      const result = await collection.insertOne(data);
+      if (notify_agents) emailAllAgents(data);
 
-    res.status(200).json({ message: "Success", result });
-  }).catch((err: Error) => res.status(500).json({ message: err.message }));
+      res.status(200).json({ message: "Success", result });
+    })
+    .catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 /**
@@ -132,15 +136,17 @@ const deleteEvent = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: "Invalid request body" });
   }
 
-  await context(async (database) => {
-    const collection: Collection<Document> = database.collection("events");
+  await GLOBAL.database
+    .context(async (database: Db) => {
+      const collection: Collection<Document> = database.collection("events");
 
-    await collection.deleteOne({
-      event_id,
-    });
+      await collection.deleteOne({
+        event_id,
+      });
 
-    res.status(200).json({ message: "Success" });
-  }).catch((err: Error) => res.status(500).json({ message: err.message }));
+      res.status(200).json({ message: "Success" });
+    })
+    .catch((err: Error) => res.status(500).json({ message: err.message }));
 };
 
 // Check if the body of the request is valid
@@ -175,7 +181,7 @@ const generateInsertionData = async (body: any): Promise<Event> => {
  * @return void
  */
 const emailAllAgents = async (event: any) => {
-  await context(async (database) => {
+  await GLOBAL.database.context(async (database: Db) => {
     const collection: Collection<Document> = database.collection("agents");
 
     // Get all of the agent emails

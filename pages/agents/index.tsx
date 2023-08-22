@@ -11,12 +11,12 @@ import Contact from "@/app/components/sections/contact";
 import Bottom from "@/app/components/sections/bottom";
 import "@/app/styles/globals.css";
 
-import { getLocation, nearbyAgents } from "@/app/lib/location";
-import { Agent, AgentLocation } from "@/app/lib/types";
+import { getLocation, nearbyAgents } from "@/lib/location";
+import { Agent, AgentLocation } from "@/lib/types";
 import Fuse from "fuse.js";
-import { ObjectState } from "@/app/lib/state";
+import { ObjectState } from "@/lib/state";
 import Image from "next/image";
-import { isSuccess } from "@/app/lib/http";
+import { isSuccess } from "@/lib/http";
 
 /**
  * Fetch the agents from the api

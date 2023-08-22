@@ -1,5 +1,5 @@
 "use client";
-import { ObjectState } from "@/app/lib/state";
+import { ObjectState } from "@/lib/state";
 
 /**
  * Upload Photo Button

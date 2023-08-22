@@ -1,7 +1,7 @@
-import { applyMiddleware, getMiddlewares } from "@/app/lib/rate-limit";
-import { RatesCache } from "@/app/lib/cache";
+import { applyMiddleware, getMiddlewares } from "@/lib/rate-limit";
+import { RatesCache } from "@/lib/cache";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Rate } from "@/app/lib/types";
+import { Rate } from "@/lib/types";
 
 // Create a new cache instance
 const cache = new RatesCache();

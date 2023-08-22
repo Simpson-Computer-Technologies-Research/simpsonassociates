@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { TESTIMONIALS } from "@/app/lib/constants";
-import { Testimonial } from "@/app/lib/types";
+import { TESTIMONIALS } from "@/lib/constants";
+import { Testimonial } from "@/lib/types";
 
 /**
  * Testimonials (Google Reviews)
