@@ -69,28 +69,24 @@ const clearPhoto = () => {
  * Get the inputs from the add agent section
  * @return the inputs from the add agent section
  */
-export const getInputValues = (): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    const name = document.getElementById("name") as HTMLInputElement;
-    const email = document.getElementById("email") as HTMLInputElement;
-    const title = document.getElementById("title") as HTMLInputElement;
-    const lang = document.getElementById("lang") as HTMLInputElement;
-    const license = document.getElementById("license") as HTMLInputElement;
-    const team = document.getElementById("team") as HTMLInputElement;
+export const getInputValues = (): any => {
+  const name = document.getElementById("name") as HTMLInputElement;
+  const email = document.getElementById("email") as HTMLInputElement;
+  const title = document.getElementById("title") as HTMLInputElement;
+  const lang = document.getElementById("lang") as HTMLInputElement;
+  const license = document.getElementById("license") as HTMLInputElement;
+  const team = document.getElementById("team") as HTMLInputElement;
 
-    if (!name.value || !email.value || !title.value) {
-      reject({ error: "Missing required fields" });
-    }
+  if (!name.value || !email.value || !title.value) {
+    return {};
+  }
 
-    const result = {
-      name: name.value,
-      email: email.value,
-      title: title.value,
-      lang: lang.value,
-      license: license.value,
-      team: team.value,
-    };
-
-    resolve(result);
-  });
+  return {
+    name: name.value,
+    email: email.value,
+    title: title.value,
+    lang: lang.value,
+    license: license.value,
+    team: team.value,
+  };
 };

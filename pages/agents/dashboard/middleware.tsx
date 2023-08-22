@@ -77,21 +77,20 @@ function _PermissionMiddleware({
 
   // Update the users authorization token
   if (!updatedAuth.value) {
-    generateAuthorization(
-      session?.accessToken || "",
-      session?.user?.email || "",
-    ).then(async (auth) => {
-      await updateAuthorization(auth);
-      updatedAuth.set(true);
-    });
+    generateAuthorization(session?.accessToken, session?.user?.email).then(
+      async (auth) => {
+        await updateAuthorization(auth);
+        updatedAuth.set(true);
+      },
+    );
   }
 
   // Return the success component
   const user: User = {
-    email: session?.user?.email,
+    email: session?.user?.email || "",
     accessToken: session?.accessToken,
-    name: session?.user?.name,
-    image: session?.user?.image,
+    name: session?.user?.name || "",
+    image: session?.user?.image || "",
     permissions: permissions.value,
   };
   return success(user);

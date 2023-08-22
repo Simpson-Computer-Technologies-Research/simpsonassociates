@@ -32,17 +32,16 @@ const Events = (props: { user: User }): JSX.Element => {
   const events = new ObjectState<Event[] | null>(null);
 
   useEffect(() => {
-    const accessToken: string = props.user.accessToken || "";
-    const email: string = props.user.email || "";
+    if (events.value) return;
 
-    if (!events.value && accessToken && email) {
-      generateAuthorization(accessToken, email).then(async (auth: string) => {
+    generateAuthorization(props.user.accessToken, props.user.email).then(
+      async (auth: string) => {
         const result: Event[] = await fetchEvents(auth);
         if (result && result.length) {
           events.set(result.sort((a, b) => b.date - a.date));
         }
-      });
-    }
+      },
+    );
   }, [props.user]);
 
   return (
@@ -141,8 +140,8 @@ const fetchEvents = async (authorization: string): Promise<Event[]> => {
  */
 const deleteEvent = async (user: User, event_id: string): Promise<boolean> => {
   const authorization: string = await generateAuthorization(
-    user.accessToken || "",
-    user.email || "",
+    user.accessToken,
+    user.email,
   );
 
   return await fetch("/api/agents/events", {
