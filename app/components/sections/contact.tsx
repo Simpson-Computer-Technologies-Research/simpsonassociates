@@ -22,6 +22,14 @@ const defaultImages: string[] = [
 ];
 
 /**
+ * Default email depending on the environment
+ * Production: contact@dansimpson.ca
+ * Development: heytristaann@gmail.com
+ * Defined in vercel environment variables
+ */
+const defaultEmail: string = process.env.EMAIL || "contact@dansimpson.ca";
+
+/**
  * Contact Component
  * @returns JSX.Element
  */
@@ -41,7 +49,7 @@ export default function Contact(props: ContactProps): JSX.Element {
     >
       <Header />
       <div className="flex h-full w-full flex-row items-center justify-center px-4">
-        <ContactForm emailTo={props.emailTo || "contact@dansimpson.ca"} />
+        <ContactForm emailTo={props.emailTo || defaultEmail} />
         <Image
           src={
             props.image ||
