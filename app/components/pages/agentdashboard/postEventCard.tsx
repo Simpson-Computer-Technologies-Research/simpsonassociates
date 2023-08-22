@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-
+import { useState } from "react";
 import { User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 import { Event } from "@/app/lib/types";
@@ -17,7 +16,7 @@ export default function PostEventCard(props: {
   events: ObjectState<Event[] | null>;
 }): JSX.Element {
   if (!props.user.permissions.includes("manage_events")) return <></>;
-  const [disabled, setDisabled] = React.useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   return (
     <div className="mb-4 mt-6 flex h-auto w-auto flex-col rounded-md bg-white p-4">

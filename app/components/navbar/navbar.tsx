@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
 import NavbarButton from "./button";
 import NavbarMenu from "./menu";
 import Image from "next/image";
 import Link from "next/link";
 import { ObjectState } from "@/app/lib/state";
+import { NAVBAR_BUTTON_NAMES } from "@/app/lib/constants";
 
 /**
  * Navbar Component
@@ -15,19 +16,11 @@ export default function Navbar() {
   const underlined = new ObjectState<string>("home");
 
   // Set the window listener
-  React.useEffect(() => {
-    const buttons: string[] = [
-      "home",
-      "rates",
-      "services",
-      "agents",
-      "contact",
-    ];
-
+  useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.innerWidth < 768) return;
 
-      for (const sectionId of buttons) {
+      for (const sectionId of NAVBAR_BUTTON_NAMES) {
         const section: HTMLElement | null = document.getElementById(sectionId);
         if (!section) continue;
 

@@ -8,7 +8,6 @@ import ScrollIndicator from "@/app/components/scrollIndicator";
 import Contact from "@/app/components/sections/contact";
 import { SessionProvider } from "@/app/components/providers";
 import Head from "next/head";
-import React from "react";
 import { cn } from "@/app/lib/utils";
 
 import "@/app/styles/globals.css";

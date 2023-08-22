@@ -1,8 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
-// Import react for state and effect
-import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SessionProvider } from "next-auth/react";

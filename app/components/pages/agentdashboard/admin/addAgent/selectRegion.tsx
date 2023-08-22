@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-
+import { useState } from "react";
 import { Agent, Region } from "@/app/lib/types";
 import { ObjectState } from "@/app/lib/state";
 
@@ -14,7 +13,7 @@ interface SelectRegionProps {
   region: ObjectState<Region | null>;
 }
 export default function SelectRegion(props: SelectRegionProps): JSX.Element {
-  const [geo, setGeo] = React.useState<any[]>([]);
+  const [geo, setGeo] = useState<any[]>([]);
 
   const onSearch = (): void => {
     const input = document.getElementById("region") as HTMLInputElement;

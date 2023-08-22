@@ -1,8 +1,5 @@
 "use client";
-
-import React from "react";
 import Link from "next/link";
-import { SetState } from "@/app/lib/types";
 import { ObjectState } from "@/app/lib/state";
 
 /**

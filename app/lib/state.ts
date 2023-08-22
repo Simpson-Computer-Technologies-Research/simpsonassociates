@@ -1,5 +1,5 @@
-import React from "react";
 import { SetState } from "./types";
+import { useState } from "react";
 
 /**
  * Interface for a React object state.
@@ -28,7 +28,7 @@ export class ObjectState<T> implements ReactObjectState<T> {
   set: SetState<T>;
 
   constructor(initialValue: T) {
-    const [value, set] = React.useState<T>(initialValue);
+    const [value, set] = useState<T>(initialValue);
     this.value = value;
     this.set = set;
   }

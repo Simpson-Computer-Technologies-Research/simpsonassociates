@@ -1,16 +1,16 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Scroll Indicator Component
  * @returns JSX.Element
  */
 export default function ScrollIndicator(): JSX.Element {
-  const [scrollPercent, setScrollPercent] = React.useState<number>(0);
+  const [scrollPercent, setScrollPercent] = useState<number>(0);
 
   // Set the window listener
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener("scroll", () => {
       const winScroll: number =
         document.body.scrollTop || document.documentElement.scrollTop;

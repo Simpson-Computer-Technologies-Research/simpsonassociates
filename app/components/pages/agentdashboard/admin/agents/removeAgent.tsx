@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { Agent, SetState, User } from "@/app/lib/types";
 import { generateAuthorization } from "@/app/lib/auth";
 import { ObjectState } from "@/app/lib/state";
@@ -20,7 +20,7 @@ export default function RemoveAgentButton(
 ): JSX.Element {
   if (!props.agent) return <></>;
 
-  const [confirmation, setConfirmation] = React.useState<boolean>(false);
+  const [confirmation, setConfirmation] = useState<boolean>(false);
 
   return confirmation ? (
     <RemoveConfirmation setConfirmation={setConfirmation} {...props} />

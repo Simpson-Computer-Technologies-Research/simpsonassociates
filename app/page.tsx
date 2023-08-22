@@ -1,8 +1,5 @@
 "use client";
-
-import React from "react";
 import Landing from "@/app/components/sections/landing";
-import LoadingCenter from "@/app/components/loading";
 import Cards from "@/app/components/sections/cards";
 import Services from "@/app/components/sections/services";
 import Navbar from "@/app/components/navbar/navbar";
@@ -18,24 +15,6 @@ import ScrollIndicator from "@/app/components/scrollIndicator";
  * Home Page Component
  */
 export default function Home() {
-  // Create state for loading
-  const [loading, setLoading] = React.useState(true);
-
-  // On mount
-  React.useEffect(() => {
-    setTimeout(() => setLoading(false), 200);
-  }, []);
-
-  // Return the loading component if loading
-  if (loading)
-    return (
-      <section>
-        <Navbar />
-        <LoadingCenter />
-      </section>
-    );
-
-  // Return the landing page if not loading
   return (
     <main>
       <Navbar />

@@ -1,9 +1,7 @@
 "use client";
 
 import { signIn, useSession, SessionProvider } from "next-auth/react";
-
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import LoadingCenter from "@/app/components/loading";
 import "@/app/styles/globals.css";
@@ -15,12 +13,12 @@ export default function Login(props: {
   session: any;
   redirect: string;
 }): JSX.Element {
-  const [redirect, setRedirect] = React.useState<string | null>(null);
+  const [redirect, setRedirect] = useState<string | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search);
     setRedirect(params.get("redirect"));
-  }, []);
+  }, [setRedirect]);
 
   return (
     <SessionProvider session={props.session}>
@@ -40,7 +38,7 @@ const LoginPage = (props: { redirect: string | null }): JSX.Element => {
     if (status === "unauthenticated") {
       signIn("google");
     }
-  }, [session]);
+  }, [status]);
 
   if (status === "authenticated") {
     if (props.redirect) window.location.href = props.redirect;

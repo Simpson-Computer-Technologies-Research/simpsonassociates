@@ -1,5 +1,4 @@
-import React from "react";
-
+import { useEffect } from "react";
 import { generateAuthorization } from "@/app/lib/auth";
 import { useSession } from "next-auth/react";
 import { SessionProvider } from "@/app/components/providers";
@@ -46,12 +45,12 @@ function _PermissionMiddleware({
   const fetchedPermissions = new ObjectState<boolean>(false);
   const updatedAuth = new ObjectState<boolean>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === "unauthenticated") {
       window.location.href = "/login?redirect=/agents/dashboard";
       return;
     }
-  }, [session]);
+  }, [status]);
 
   // Fetch the users permissions
   if (!fetchedPermissions.value && status === "authenticated") {
@@ -65,7 +64,6 @@ function _PermissionMiddleware({
   }
 
   // If the session is loading or not authenticated, return a loading component
-  // This should be already handled with the above useEffect, but just in case.
   if (status !== "authenticated" || !fetchedPermissions.value)
     return <LoadingCenter />;
 
