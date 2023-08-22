@@ -151,12 +151,14 @@ const deleteEvent = async (user: User, event_id: string): Promise<boolean> => {
     user.email || "",
   );
 
-  return fetch("/api/agents/events", {
+  return await fetch("/api/agents/events", {
     method: "DELETE",
     headers: {
       authorization,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ event_id }),
-  }).then((res) => res.status === 200);
+  })
+    .then((res) => res.status === 200)
+    .catch(() => false);
 };
