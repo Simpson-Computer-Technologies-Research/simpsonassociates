@@ -1,17 +1,16 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/app/lib/utils";
-import { SetState } from "@/app/lib/types";
 import {
   DEFAULT_CONTACT_EMAIL,
   DEFAULT_CONTACT_IMAGES,
 } from "@/app/lib/constants";
 import { ObjectState } from "@/app/lib/state";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Contact Component
@@ -373,7 +372,7 @@ const postEmail = async (
     body: JSON.stringify({ email_to: emailTo, name, email, phone, message }),
   })
     .then((res) => {
-      if (res.status === 200) {
+      if (isSuccess(res.status)) {
         clearFormValues();
         return "ok";
       }

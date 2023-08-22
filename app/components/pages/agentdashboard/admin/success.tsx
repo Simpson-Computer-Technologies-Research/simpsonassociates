@@ -7,6 +7,7 @@ import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import UpdateAgent from "./addAgent/addAgent";
 import { ObjectState } from "@/app/lib/state";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Fetch the agents
@@ -14,7 +15,7 @@ import { ObjectState } from "@/app/lib/state";
  */
 const fetchAgents = async () => {
   return await fetch("/api/agents")
-    .then((res) => (res.status === 200 ? res.json() : { result: [] }))
+    .then((res) => (isSuccess(res.status) ? res.json() : { result: [] }))
     .then((json) => json.result)
     .catch((_: Error) => []);
 };

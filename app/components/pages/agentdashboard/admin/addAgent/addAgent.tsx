@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { generateAuthorization } from "@/app/lib/auth";
 import { User, Agent, Region } from "@/app/lib/types";
@@ -12,6 +11,7 @@ import PermissionsChecklist, {
   PriorityCheckbox,
   TeamChecklist,
 } from "./checklists";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Add Agent Component
@@ -114,7 +114,7 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       body: JSON.stringify(body),
     })
       .then((res) => {
-        if (res.status === 200) {
+        if (isSuccess(res.status)) {
           clearInput();
 
           props.agents.value = [...props.agents.value, inputValues];

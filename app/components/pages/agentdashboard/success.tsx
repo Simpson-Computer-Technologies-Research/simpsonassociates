@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { User, Event } from "@/app/lib/types";
 
@@ -8,6 +7,7 @@ import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 import { generateAuthorization } from "@/app/lib/auth";
 import { ObjectState } from "@/app/lib/state";
 import { epochToDate } from "@/app/lib/date";
+import { isSuccess } from "@/app/lib/http";
 
 /**
  * Success section
@@ -153,6 +153,6 @@ const deleteEvent = async (user: User, event_id: string): Promise<boolean> => {
     },
     body: JSON.stringify({ event_id }),
   })
-    .then((res) => res.status === 200)
+    .then((res) => isSuccess(res.status))
     .catch((_: Error) => false);
 };
