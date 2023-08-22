@@ -166,8 +166,8 @@ const leadershipTeam: Agent[] = [
     title: "Vice President",
   } as Agent,
   {
-    name: "Pat Tremblay",
-    email: "pat@dansimpson.ca",
+    name: "Patrick Tremblay",
+    email: "patrick.tremblay@dominionlending.ca",
     photo: "/images/agents/patrick_headshot.png",
     title: "Vice President",
   } as Agent,
