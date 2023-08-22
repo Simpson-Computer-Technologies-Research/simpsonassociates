@@ -52,3 +52,9 @@ export interface Rate {
   updated_at: string;
   TermsMonth: string;
 }
+
+export interface Location {
+  location: string;
+  lat: number;
+  lon: number;
+}
