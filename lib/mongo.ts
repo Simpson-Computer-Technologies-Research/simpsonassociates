@@ -62,7 +62,6 @@ export class Database {
       .connect()
       .catch((_: Error) => {
         console.error("Database connection failed");
-        this.client.close();
       })
       .then(() => {
         console.log("Database connected");
