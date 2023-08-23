@@ -92,7 +92,7 @@ const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ message: "Success", result: finalResults });
   }).catch((_: any) =>
-    res.status(500).json({ message: "Failed to fetch events", result: null }),
+    res.status(500).json({ message: "Failed to fetch events" }),
   );
 };
 

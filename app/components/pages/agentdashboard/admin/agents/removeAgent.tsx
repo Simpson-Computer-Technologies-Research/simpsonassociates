@@ -18,8 +18,6 @@ interface RemoveAgentButtonProps {
 export default function RemoveAgentButton(
   props: RemoveAgentButtonProps,
 ): JSX.Element {
-  if (!props.agent) return <></>;
-
   const [confirmation, setConfirmation] = useState<boolean>(false);
 
   return confirmation ? (
@@ -111,6 +109,6 @@ const removeAgent = async (
     }),
   })
     .then((res) => res.json())
-    .then((json) => json && json.result && json.result.acknowledged)
+    .then((json) => json.result && json.result.acknowledged)
     .catch((_: Error) => false);
 };

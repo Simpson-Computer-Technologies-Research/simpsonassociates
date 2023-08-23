@@ -95,9 +95,7 @@ const fetchAgentsFromDatabase = async (): Promise<Document[]> =>
  */
 const addAgent = async (req: any, res: any) => {
   if (!isValidAgentBody(req.body)) {
-    return res
-      .status(400)
-      .json({ message: "Missing required fields", result: null });
+    return res.status(400).json({ message: "Missing required fields" });
   }
 
   await Database.context(async (database: Db) => {
@@ -105,9 +103,7 @@ const addAgent = async (req: any, res: any) => {
 
     const { photo } = req.body;
     if (!photo) {
-      return res
-        .status(400)
-        .json({ message: "Missing required fields", result: null });
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
     // Upload the photo to the google cloud storage
@@ -125,9 +121,7 @@ const addAgent = async (req: any, res: any) => {
 
     await collection.insertOne(data).then((result) => {
       if (!result.acknowledged) {
-        return res
-          .status(409)
-          .json({ message: "Failed to add agent", result: null });
+        return res.status(409).json({ message: "Failed to add agent" });
       }
 
       AgentsCache.add(data);
@@ -145,9 +139,7 @@ const addAgent = async (req: any, res: any) => {
 const deleteAgent = async (req: any, res: any): Promise<void> => {
   const { user_id } = req.body;
   if (!user_id) {
-    return res
-      .status(400)
-      .json({ message: "Missing required fields", result: null });
+    return res.status(400).json({ message: "Missing required fields" });
   }
 
   await Database.context(async (database: Db) => {
@@ -157,20 +149,18 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
     const agent: Document | null = await collection.findOne({
       user_id,
     });
+
     if (!agent) {
-      return res
-        .status(409)
-        .json({ message: "Agent does not exist", result: null });
+      return res.status(409).json({ message: "Agent does not exist" });
     }
 
     // Delete the agent from the database
     const result: DeleteResult = await collection.deleteOne({
       user_id,
     });
+
     if (!result.acknowledged) {
-      return res
-        .status(409)
-        .json({ message: "Failed to delete agent", result: null });
+      return res.status(409).json({ message: "Failed to delete agent" });
     }
 
     // Delete the agent photo from the google cloud storage

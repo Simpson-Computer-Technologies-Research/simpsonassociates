@@ -7,7 +7,6 @@ import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
 import AddAgent from "./addAgent/addAgent";
 import { ObjectState } from "@/lib/state";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Fetch the agents
@@ -15,8 +14,8 @@ import { isSuccess } from "@/lib/http";
  */
 const fetchAgents = async () => {
   return await fetch("/api/agents")
-    .then((res) => (isSuccess(res.status) ? res.json() : { result: [] }))
-    .then((json) => json.result)
+    .then((res) => res.json())
+    .then((json) => json.result || [])
     .catch((_: Error) => []);
 };
 
@@ -44,7 +43,9 @@ function _Success(props: { user: User }): JSX.Element {
   const agents = new ObjectState<Agent[]>([]);
 
   if (!agents.updated) {
-    fetchAgents().then((result: Agent[]) => agents.set(result));
+    fetchAgents().then((result: Agent[]) => {
+      if (result.length) agents.set(result);
+    });
   }
 
   return (

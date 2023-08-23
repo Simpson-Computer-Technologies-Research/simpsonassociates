@@ -16,7 +16,6 @@ import { Agent, AgentLocation } from "@/lib/types";
 import Fuse from "fuse.js";
 import { ObjectState } from "@/lib/state";
 import Image from "next/image";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Fetch the agents from the api
@@ -24,8 +23,8 @@ import { isSuccess } from "@/lib/http";
  */
 export const fetchAgents = async () => {
   return await fetch("/api/agents")
-    .then((res) => (isSuccess(res.status) ? res.json() : { result: [] }))
-    .then((json) => json.result)
+    .then((res) => res.json())
+    .then((json) => json.result || [])
     .catch(() => []);
 };
 
@@ -72,7 +71,10 @@ export default function AgentsPage(): JSX.Element {
     if (query && !initialQuery.value) initialQuery.set(query);
 
     if (!agents.updated) {
-      fetchAgents().then((res) => agents.set(randomized(res)));
+      fetchAgents().then((res) => {
+        if (!res.length) return;
+        agents.set(randomized(res));
+      });
     }
   }, [initialQuery, agents]);
 

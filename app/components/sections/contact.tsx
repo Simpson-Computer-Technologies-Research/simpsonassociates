@@ -371,7 +371,7 @@ const postEmail = async (
     .then((res) => {
       if (isSuccess(res.status)) {
         clearFormValues();
-        return "ok";
+        return "Email sent successfully";
       }
       return "Failed to send email";
     })

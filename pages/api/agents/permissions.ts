@@ -27,9 +27,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method !== "GET") {
-    return res
-      .status(405)
-      .json({ message: "Method not allowed", permissions: [] });
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   if (await rateLimit(req, res)) {
@@ -38,12 +36,12 @@ export default async function handler(
 
   const { authorization } = req.headers;
   if (!authorization) {
-    return res.status(401).json({ message: "Unauthorized", permissions: [] });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   const decoded = await decodeAuthorization(authorization);
   if (!decoded || !decoded.email || !decoded.accessToken) {
-    return res.status(401).json({ message: "Unauthorized", permissions: [] });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   await Database.context(async (database: Db) => {
@@ -58,7 +56,7 @@ export default async function handler(
 
     const agent: any = result[0];
     if (!agent) {
-      return res.status(401).json({ message: "Unauthorized", permissions: [] });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     res.status(200).json({ message: "ok", permissions: agent.permissions });
