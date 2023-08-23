@@ -26,7 +26,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // If the requestg method is not a PUT
   if (req.method !== "POST") {
     return res.status(400).json({ message: "Method not allowed" });
   }
