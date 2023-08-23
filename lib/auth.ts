@@ -13,12 +13,9 @@ export async function generateId() {
  * Generate a new authorization token
  */
 export const generateAuthorization = async (
-  accessToken: string,
-  email: string | undefined | null,
-): Promise<string> =>
-  base64encode(
-    JSON.stringify({ access_token: accessToken, email: email || "" }),
-  );
+  access_token: string | null,
+  email: string | null,
+): Promise<string> => base64encode(JSON.stringify({ access_token, email }));
 
 /**
  * Decode an authorization token

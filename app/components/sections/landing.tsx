@@ -30,8 +30,8 @@ export default function Landing(): JSX.Element {
       <Image
         priority={true}
         key={Math.random()}
-        width={800}
-        height={800}
+        width={1600}
+        height={1600}
         src={schema.image}
         loading="eager"
         className="absolute left-[50%] top-[65%] z-[2] h-72 w-72 rounded-full shadow-xl xs:left-[54%] xs:top-[54%] sm:left-[52%] sm:top-[45%] sm:h-96 sm:w-96 md:left-[50%] lg:relative lg:left-0 lg:top-1/4 lg:mr-32 lg:mt-12 lg:h-[60%] lg:w-[60%] lg:blur-none xl:mr-24 xl:mt-7 xl:h-[35rem] xl:w-[35rem]"

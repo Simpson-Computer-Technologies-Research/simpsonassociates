@@ -30,8 +30,9 @@ export default function Navbar() {
         const pos: number = window.scrollY;
 
         const atSection: boolean = pos >= top && pos < btm;
-        if (atSection && sectionId !== underlined.value)
+        if (atSection && sectionId !== underlined.value) {
           underlined.set(sectionId);
+        }
       }
     });
   }, [underlined]);

@@ -60,12 +60,13 @@ const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
               props.agent.user_id,
             );
 
-            if (result) {
-              const filteredAgents = props.agents.value.filter((agent) => {
+            if (!result) return;
+
+            props.agents.set(
+              props.agents.value.filter((agent) => {
                 if (agent !== props.agent) return agent;
-              });
-              props.agents.set(filteredAgents);
-            }
+              }),
+            );
           }}
           className="mx-2 rounded-md bg-white px-10 py-2 font-medium text-primary"
         >
@@ -87,8 +88,8 @@ const RemoveConfirmation = (props: RemoveConfirmationProps): JSX.Element => {
  * @returns boolean for success/failure
  */
 const removeAgent = async (
-  accessToken: string,
-  accessEmail: string,
+  accessToken: string | null,
+  accessEmail: string | null,
   user_id: string,
 ): Promise<boolean> => {
   if (!accessToken || !accessEmail || !user_id) {

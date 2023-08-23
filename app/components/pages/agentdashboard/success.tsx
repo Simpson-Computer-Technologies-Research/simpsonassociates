@@ -29,17 +29,18 @@ export default function Success(user: User): JSX.Element {
  * @returns JSX.Element
  */
 const Events = (props: { user: User }): JSX.Element => {
-  const events = new ObjectState<Event[] | null>(null);
+  const events = new ObjectState<Event[]>([]);
 
   useEffect(() => {
-    if (events.value) return;
+    if (events.updated) return;
 
     generateAuthorization(props.user.accessToken, props.user.email).then(
       async (auth: string) => {
         const result: Event[] = await fetchEvents(auth);
-        if (result && result.length) {
-          events.set(result.sort((a, b) => b.date - a.date));
-        }
+
+        if (!result || !result.length) return;
+
+        events.set(result.sort((a, b) => b.date - a.date));
       },
     );
   }, [props.user]);
@@ -52,10 +53,9 @@ const Events = (props: { user: User }): JSX.Element => {
       </p>
       <PostEventCard user={props.user} events={events} />
       <div className="flex flex-wrap gap-4 lg:grid lg:grid-cols-2">
-        {events.value &&
-          events.value.map((event: any) => (
-            <EventCard user={props.user} event={event} events={events} />
-          ))}
+        {events.value.map((event: any) => (
+          <EventCard user={props.user} event={event} events={events} />
+        ))}
       </div>
     </section>
   );
@@ -67,7 +67,7 @@ const Events = (props: { user: User }): JSX.Element => {
 const EventCard = (props: {
   user: User;
   event: Event;
-  events: ObjectState<Event[] | null>;
+  events: ObjectState<Event[]>;
 }): JSX.Element => {
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -90,15 +90,14 @@ const EventCard = (props: {
           const eventId: string = props.event.event_id || "";
           if (!eventId) return;
 
-          const events: Event[] = props.events.value || [];
-          if (!events.length) return;
+          if (!props.events.value.length) return;
           setDisabled(true);
 
           const result: boolean = await deleteEvent(props.user, eventId);
           setDisabled(false);
 
           if (!result || !props.event.event_id) return;
-          props.events.set(filterEvents(events, eventId));
+          props.events.set(filterEvents(props.events.value, eventId));
         }}
       >
         Delete

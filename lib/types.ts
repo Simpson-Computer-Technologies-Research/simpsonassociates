@@ -22,16 +22,16 @@ export interface Agent {
 }
 
 export interface User {
-  email: string;
-  name: string;
-  image: string;
-  accessToken: string;
+  email: string | null;
+  name: string | null;
+  image: string | null;
+  accessToken: string | null;
   permissions: string[];
 }
 
 export interface Event {
-  event_id?: string;
-  notify_agents?: boolean;
+  event_id?: string | undefined;
+  notify_agents?: boolean | undefined;
   title: string;
   description: string;
   date: number;

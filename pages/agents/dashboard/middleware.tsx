@@ -41,8 +41,8 @@ function _PermissionMiddleware({
   success,
 }: any): JSX.Element {
   const { data: session, status } = useSession();
+
   const permissions = new ObjectState<string[]>([]);
-  const fetchedPermissions = new ObjectState<boolean>(false);
   const updatedAuth = new ObjectState<boolean>(false);
 
   useEffect(() => {
@@ -53,18 +53,23 @@ function _PermissionMiddleware({
   }, [status]);
 
   // Fetch the users permissions
-  if (!fetchedPermissions.value && status === "authenticated") {
-    generateAuthorization(session?.accessToken, session?.user?.email).then(
+  if (!permissions.updated && status === "authenticated") {
+    generateAuthorization(session.user.accessToken, session.user.email).then(
       (auth: string) =>
-        fetchPermissions(auth).then((result: string[]) => {
-          permissions.set(result);
-          fetchedPermissions.set(true);
-        }),
+        fetchPermissions(auth).then((result: string[]) =>
+          permissions.set(result),
+        ),
     );
   }
 
   // If the session is loading or not authenticated, return a loading component
-  if (status !== "authenticated" || !fetchedPermissions.value)
+  if (
+    status !== "authenticated" ||
+    !permissions.updated ||
+    !session ||
+    !session.user ||
+    !session.user.accessToken
+  )
     return <LoadingCenter />;
 
   // Now that we know the user has been authenticated (via google auth),
@@ -77,7 +82,7 @@ function _PermissionMiddleware({
 
   // Update the users authorization token
   if (!updatedAuth.value) {
-    generateAuthorization(session?.accessToken, session?.user?.email).then(
+    generateAuthorization(session.user.accessToken, session.user.email).then(
       async (auth) => {
         await updateAuthorization(auth);
         updatedAuth.set(true);
@@ -87,10 +92,7 @@ function _PermissionMiddleware({
 
   // Return the success component
   const user: User = {
-    email: session?.user?.email || "",
-    accessToken: session?.accessToken,
-    name: session?.user?.name || "",
-    image: session?.user?.image || "",
+    ...session.user,
     permissions: permissions.value,
   };
   return success(user);
@@ -123,10 +125,8 @@ export const fetchPermissions = async (auth: string): Promise<string[]> => {
  * @returns void
  */
 export const updateAuthorization = async (
-  authorization: string | null | undefined,
-): Promise<void> => {
-  if (!authorization) return;
-
+  authorization: string,
+): Promise<Response> =>
   await fetch("/api/agents/authorization", {
     method: "POST",
     headers: {
@@ -134,4 +134,3 @@ export const updateAuthorization = async (
       authorization,
     },
   });
-};
