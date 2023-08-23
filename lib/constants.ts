@@ -31,13 +31,13 @@ export const LEADERSHIP_TEAM: Agent[] = [
     name: "Dave Mota",
     email: "dave@dansimpson.ca",
     photo: "/images/agents/dave_headshot.png",
-    title: "Vice President Waterloo Region",
+    title: "Vice President Residential Lending",
   } as Agent,
   {
     name: "Patrick Tremblay",
     email: "patrick.tremblay@dominionlending.ca",
     photo: "/images/agents/patrick_headshot.png",
-    title: "Vice President Residential Lending Ontario",
+    title: "Vice President Residential Lending - Ontario",
   } as Agent,
 ];
 
