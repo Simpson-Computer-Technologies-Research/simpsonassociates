@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import "@/app/styles/globals.css";
 import { Agent } from "@/lib/types";
 import { ObjectState } from "@/lib/state";
+import { SUPPORT_TEAM, LEADERSHIP_TEAM } from "@/lib/constants";
 
 export default function TeamPage(): JSX.Element {
   const emailTo = new ObjectState<string>("");
@@ -64,7 +65,7 @@ const LeadershipTeam = (props: {
       tirelessly to exceed their expectations.
     </p>
     <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
-      {leadershipTeam.map((agent: Agent, i: number) => (
+      {LEADERSHIP_TEAM.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
           agent={agent}
@@ -97,7 +98,7 @@ const SupportTeam = (props: {
       ensuring that their needs are met with promptness and care.
     </p>
     <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
-      {supportTeam.map((agent: Agent, i: number) => (
+      {SUPPORT_TEAM.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
           agent={agent}
@@ -153,55 +154,3 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
     </div>
   </Link>
 );
-
-const leadershipTeam: Agent[] = [
-  {
-    name: "Dan Simpson",
-    email: "dan@dansimpson.ca",
-    photo: "/images/agents/dan_headshot.png",
-    title: "Founder",
-  } as Agent,
-  {
-    name: "Dave Mota",
-    email: "dave@dansimpson.ca",
-    photo: "/images/agents/dave_headshot.png",
-    title: "Vice President",
-  } as Agent,
-  {
-    name: "Patrick Tremblay",
-    email: "patrick.tremblay@dominionlending.ca",
-    photo: "/images/agents/patrick_headshot.png",
-    title: "Vice President Residential Lending",
-  } as Agent,
-];
-
-const supportTeam: Agent[] = [
-  {
-    name: "Fil Vieira-Lee",
-    email: "fil@dansimpson.ca",
-    photo: "/images/agents/fil_headshot.png",
-    title: "Customer Care Coordinator",
-    lang: "English, Portuguese",
-  } as Agent,
-  {
-    name: "Celeste Bernard",
-    email: "celeste@dansimpson.ca",
-    photo: "/images/agents/celeste_headshot.png",
-    title: "Customer Care Coordinator",
-    lang: "English",
-  } as Agent,
-  {
-    name: "Paula Freitas",
-    email: "paula@dansimpson.ca",
-    photo: "/images/agents/paulafreitas_headshot.png",
-    title: "Senior Underwriter",
-    lang: "English, Portuguese",
-  } as Agent,
-  {
-    name: "Debbie Kitchen",
-    email: "debbiekitchen@dansimpson.ca",
-    photo: "/images/agents/debbie_headshot.png",
-    title: "Onboarding Manager",
-    lang: "English",
-  } as Agent,
-];

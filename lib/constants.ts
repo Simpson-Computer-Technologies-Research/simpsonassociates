@@ -1,4 +1,4 @@
-import { Lender, Testimonial } from "./types";
+import { Agent, Lender, Testimonial } from "./types";
 
 export const ONE_DAY_IN_MILLISECONDS: number = 86400000;
 export const DEFAULT_CONTACT_EMAIL: string = "contact@dansimpson.ca";
@@ -18,6 +18,58 @@ export const NAVBAR_BUTTON_SECTION_IDS: string[] = [
   "services",
   "agents",
   "contact",
+];
+
+export const LEADERSHIP_TEAM: Agent[] = [
+  {
+    name: "Dan Simpson",
+    email: "dan@dansimpson.ca",
+    photo: "/images/agents/dan_headshot.png",
+    title: "Founder",
+  } as Agent,
+  {
+    name: "Dave Mota",
+    email: "dave@dansimpson.ca",
+    photo: "/images/agents/dave_headshot.png",
+    title: "Vice President Residential Lending",
+  } as Agent,
+  {
+    name: "Patrick Tremblay",
+    email: "patrick.tremblay@dominionlending.ca",
+    photo: "/images/agents/patrick_headshot.png",
+    title: "Vice President Residential Lending - Ontario",
+  } as Agent,
+];
+
+export const SUPPORT_TEAM: Agent[] = [
+  {
+    name: "Fil Vieira-Lee",
+    email: "fil@dansimpson.ca",
+    photo: "/images/agents/fil_headshot.png",
+    title: "Customer Care Coordinator",
+    lang: "English, Portuguese",
+  } as Agent,
+  {
+    name: "Celeste Bernard",
+    email: "celeste@dansimpson.ca",
+    photo: "/images/agents/celeste_headshot.png",
+    title: "Customer Care Coordinator",
+    lang: "English",
+  } as Agent,
+  {
+    name: "Paula Freitas",
+    email: "paula@dansimpson.ca",
+    photo: "/images/agents/paulafreitas_headshot.png",
+    title: "Senior Underwriter",
+    lang: "English, Portuguese",
+  } as Agent,
+  {
+    name: "Debbie Kitchen",
+    email: "debbiekitchen@dansimpson.ca",
+    photo: "/images/agents/debbie_headshot.png",
+    title: "Onboarding Manager",
+    lang: "English",
+  } as Agent,
 ];
 
 export const LENDERS: Lender[] = [
