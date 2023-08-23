@@ -64,8 +64,8 @@ const LeadershipTeam = (props: {
       understand that our clients are the heartbeat of our success and work
       tirelessly to exceed their expectations.
     </p>
-    <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
-      {LEADERSHIP_TEAM.map((agent: Agent, i: number) => (
+    <div className="mt-7 flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
+      {LEADERSHIP_TEAM.map((agent, i: number) => (
         <AgentCard
           key={i}
           agent={agent}
@@ -97,7 +97,7 @@ const SupportTeam = (props: {
       group of individuals, they are the frontline advocates for our clients,
       ensuring that their needs are met with promptness and care.
     </p>
-    <div className="flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
+    <div className="mt-7 flex flex-wrap items-center justify-center gap-6 px-4 md:gap-12">
       {SUPPORT_TEAM.map((agent: Agent, i: number) => (
         <AgentCard
           key={i}
@@ -116,7 +116,7 @@ const SupportTeam = (props: {
  * @returns JSX.Element
  */
 interface AgentCardProps {
-  agent: Agent;
+  agent: any;
   emailTo: ObjectState<string>;
   contactPhoto: ObjectState<string>;
   className?: string;
@@ -129,28 +129,25 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
       props.contactPhoto.set(props.agent.photo);
     }}
     className={cn(
-      "group mt-7 flex flex-col items-center justify-center p-6 duration-500 ease-in-out hover:scale-105 lg:flex-row",
+      "group relative flex h-[31.5rem] flex-col items-center  p-6 duration-500 ease-in-out hover:scale-105",
       props.className,
     )}
   >
-    <div className="flex flex-col items-center justify-center">
-      <Image
-        src={props.agent.photo}
-        alt="..."
-        width={600}
-        height={600}
-        className="h-72 w-72 rounded-full object-cover duration-500 ease-in-out"
-      />
-      <h1 className="mt-3 text-3xl font-extrabold tracking-wide text-primary">
-        {props.agent.name}
-      </h1>
-      <p className="mt-1 text-lg italic text-primary">{props.agent.title}</p>
-      <p className="mb-4 mt-1 text-base text-primary">
-        {props.agent.lang || ""}
-      </p>
-      <button className="w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
-        Get in touch
-      </button>
-    </div>
+    <Image
+      src={props.agent.photo}
+      alt="..."
+      width={600}
+      height={600}
+      className="h-72 w-72 rounded-full object-cover duration-500 ease-in-out"
+    />
+    <h1 className="mt-3 text-3xl font-extrabold tracking-wide text-primary">
+      {props.agent.name}
+    </h1>
+    <p className="mt-1 text-lg italic text-primary">{props.agent.title}</p>
+    <p className="mt-1 text-base text-primary">{props.agent.location || ""}</p>
+    <p className="mb-4 mt-1 text-base text-primary">{props.agent.lang || ""}</p>
+    <button className="absolute bottom-4 w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+      Get in touch
+    </button>
   </Link>
 );
