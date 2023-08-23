@@ -201,7 +201,7 @@ const emailAllAgents = async (event: any) => {
         to: agent.email,
         subject: `Simpson Associates Event Notification`,
         text: `Event Information:\nTitle: ${event.title}\nDescription: ${event.description}\nDate: ${date}\nPosted by: ${event.posted_by}\nNote:\n${event.note}`,
-        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${date}<br/><strong>Posted by:</strong><br/>${event.posted_by}<br/><strong>Note:</strong><br/>${event.note}`,
+        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${date}<br/><strong>Posted by:</strong> ${event.posted_by}<br/><strong>Note:</strong><br/>${event.note}`,
       };
 
       await sendEmail(
