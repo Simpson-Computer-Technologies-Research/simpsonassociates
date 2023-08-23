@@ -114,7 +114,7 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data: any = await generateInsertionData(req.body);
     const result = await collection.insertOne(data);
-    if (notify_agents) emailAllAgents(data);
+    if (notify_agents) await emailAllAgents(data);
 
     res.status(200).json({ message: "Success", result });
   }).catch((err: Error) => res.status(500).json({ message: err.message }));
