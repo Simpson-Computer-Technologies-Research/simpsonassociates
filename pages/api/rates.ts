@@ -55,6 +55,7 @@ const fetchRates = async () => {
     .then((resp) => resp.json())
     .then((json) => {
       if (!json.Rates) throw new Error("No rates found");
+
       RatesCache.set(json.Rates);
       return json.Rates;
     });

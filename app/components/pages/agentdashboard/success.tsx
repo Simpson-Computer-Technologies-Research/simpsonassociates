@@ -38,9 +38,9 @@ const Events = (props: { user: User }): JSX.Element => {
       async (auth: string) => {
         const result: Event[] = await fetchEvents(auth);
 
-        if (!result || !result.length) return;
-
-        events.set(result.sort((a, b) => b.date - a.date));
+        if (result.length) {
+          events.set(result.sort((a, b) => b.date - a.date));
+        }
       },
     );
   }, [props.user]);
@@ -128,7 +128,7 @@ const fetchEvents = async (authorization: string): Promise<Event[]> => {
     },
   })
     .then((res) => res.json())
-    .then((json) => json.result)
+    .then((json) => json.result || [])
     .catch((_: Error) => []);
 };
 

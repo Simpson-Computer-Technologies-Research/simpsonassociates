@@ -92,7 +92,7 @@ const getEvents = async (_: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ message: "Success", result: finalResults });
   }).catch((_: any) =>
-    res.status(500).json({ message: "Failed to fetch events", result: null }),
+    res.status(500).json({ message: "Failed to fetch events" }),
   );
 };
 
@@ -114,7 +114,7 @@ const createEvent = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data: any = await generateInsertionData(req.body);
     const result = await collection.insertOne(data);
-    if (notify_agents) emailAllAgents(data);
+    if (notify_agents) await emailAllAgents(data);
 
     res.status(200).json({ message: "Success", result });
   }).catch((err: Error) => res.status(500).json({ message: err.message }));
@@ -200,8 +200,8 @@ const emailAllAgents = async (event: any) => {
         from: "Simpson Associates Event Notification",
         to: agent.email,
         subject: `Simpson Associates Event Notification`,
-        text: `Event Information:\nTitle: ${event.title}\nDescription: ${event.description}\nDate: ${date}\nPosted by:\n${event.posted_by}\nNote:\n${event.note}`,
-        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${date}<br/><strong>Posted by:</strong><br/>${event.posted_by}<br/><strong>Note:</strong><br/>${event.note}`,
+        text: `Event Information:\nTitle: ${event.title}\nDescription: ${event.description}\nDate: ${date}\nPosted by: ${event.posted_by}\nNote:\n${event.note}`,
+        html: `<h3>Event Information:</h3><strong>Title:</strong> ${event.title}<br/><strong>Description:</strong> ${event.description}<br/><strong>Date:</strong> ${date}<br/><strong>Posted by:</strong> ${event.posted_by}<br/><strong>Note:</strong><br/>${event.note}`,
       };
 
       await sendEmail(

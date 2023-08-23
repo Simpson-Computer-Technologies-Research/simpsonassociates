@@ -115,16 +115,13 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       body: JSON.stringify(body),
     })
       .then((res) => {
-        if (isSuccess(res.status)) {
-          clearInput();
-
-          props.agents.set([...props.agents.value, body]);
-          props.error.set("");
-
-          return;
+        if (!isSuccess(res.status)) {
+          return props.error.set("Failed to add agent.");
         }
 
-        props.error.set("Failed to add agent.");
+        clearInput();
+        props.agents.set([...props.agents.value, body]);
+        props.error.set("");
       })
       .catch((err: Error) => props.error.set(err.message))
       .finally(() => setDisabled(false));
