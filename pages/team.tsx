@@ -53,7 +53,7 @@ const LeadershipTeam = (props: {
   emailTo: ObjectState<string>;
   contactPhoto: ObjectState<string>;
 }): JSX.Element => (
-  <section className="flex flex-col items-center justify-center bg-slate-50 pb-14 pt-44 text-center lg:pt-52">
+  <section className="flex flex-col items-center justify-center bg-slate-50 px-2 pb-14 pt-40 text-center xs:pt-44 lg:pt-52">
     <h3 className="text-4xl font-extrabold text-primary lg:text-5xl">
       Leadership Team
     </h3>
@@ -143,10 +143,10 @@ const AgentCard = (props: AgentCardProps): JSX.Element => (
     <h1 className="mt-3 text-3xl font-extrabold tracking-wide text-primary">
       {props.agent.name}
     </h1>
-    <p className="mt-1 text-lg italic text-primary">{props.agent.title}</p>
+    <p className="mx-4 mt-1 text-lg italic text-primary">{props.agent.title}</p>
     <p className="mt-1 text-base text-primary">{props.agent.location || ""}</p>
     <p className="mb-4 mt-1 text-base text-primary">{props.agent.lang || ""}</p>
-    <button className="absolute bottom-4 w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110">
+    <button className="w-44 rounded-full bg-secondary px-10 py-3 text-center text-sm text-white duration-500 ease-in-out hover:animate-pulse hover:brightness-110 md:absolute md:bottom-4">
       Get in touch
     </button>
   </Link>
