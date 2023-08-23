@@ -5,7 +5,7 @@ import { User, Agent } from "@/lib/types";
 
 import Agents from "./agents/agents";
 import SideMenu from "./adminSideMenu";
-import UpdateAgent from "./addAgent/addAgent";
+import AddAgent from "./addAgent/addAgent";
 import { ObjectState } from "@/lib/state";
 import { isSuccess } from "@/lib/http";
 
@@ -43,13 +43,13 @@ export default function Success(user: User): JSX.Element {
 function _Success(props: { user: User }): JSX.Element {
   const agents = new ObjectState<Agent[]>([]);
 
-  if (!agents.value.length) {
+  if (!agents.updated) {
     fetchAgents().then((result: Agent[]) => agents.set(result));
   }
 
   return (
     <>
-      <UpdateAgent user={props.user} agents={agents} />
+      <AddAgent user={props.user} agents={agents} />
       <Agents agents={agents} user={props.user} />
     </>
   );

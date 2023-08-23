@@ -44,7 +44,7 @@ export default function AddAgent(props: AddAgentProps): JSX.Element {
         <Input placeholder="Title" id="title" />
         <Input placeholder="Language" id="lang" />
         <Input placeholder="License #" id="license" />
-        <SelectRegion region={region} agent={null} />
+        <SelectRegion region={region} />
       </div>
 
       <div className="flex flex-row gap-6">
@@ -118,7 +118,7 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
         if (isSuccess(res.status)) {
           clearInput();
 
-          props.agents.value = [...props.agents.value, inputValues];
+          props.agents.set([...props.agents.value, body]);
           props.error.set("");
 
           return;

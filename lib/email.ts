@@ -17,8 +17,8 @@ export const sendEmail = async (
     port: 465,
     host: "smtp.gmail.com",
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD,
+      user: process.env.CONTACT_EMAIL,
+      pass: process.env.CONTACT_EMAIL_PASSWORD,
     },
     secure: true,
   });

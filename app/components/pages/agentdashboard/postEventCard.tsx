@@ -13,7 +13,7 @@ import { isSuccess } from "@/lib/http";
  */
 export default function PostEventCard(props: {
   user: User;
-  events: ObjectState<Event[] | null>;
+  events: ObjectState<Event[]>;
 }): JSX.Element {
   if (!props.user.permissions.includes("manage_events")) return <></>;
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -69,7 +69,7 @@ export default function PostEventCard(props: {
           if (!result) return;
 
           const values: Event = getInputValues(props.user);
-          props.events.set([...(props.events.value || []), values]);
+          props.events.set([...props.events.value, values]);
         }}
       >
         Post
@@ -132,6 +132,6 @@ const getInputValues = (user: User): Event => {
     description,
     date: dateNumber,
     note,
-    posted_by: user.email,
+    posted_by: user.email || "Unknown",
   };
 };

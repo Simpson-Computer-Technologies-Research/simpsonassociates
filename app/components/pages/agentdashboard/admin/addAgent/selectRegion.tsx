@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Agent, Region } from "@/lib/types";
+import { Region } from "@/lib/types";
 import { ObjectState } from "@/lib/state";
 
 /**
@@ -9,7 +9,6 @@ import { ObjectState } from "@/lib/state";
  * @returns JSX.Element
  */
 interface SelectRegionProps {
-  agent: Agent | null;
   region: ObjectState<Region | null>;
 }
 export default function SelectRegion(props: SelectRegionProps): JSX.Element {

@@ -63,7 +63,7 @@ const getUrlQueryParam = () =>
  */
 export default function AgentsPage(): JSX.Element {
   const initialQuery = new ObjectState<string>("");
-  const agents = new ObjectState<Agent[] | null>(null);
+  const agents = new ObjectState<Agent[]>([]);
   const emailTo = new ObjectState<string>("");
   const image = new ObjectState<string>("");
 
@@ -71,12 +71,12 @@ export default function AgentsPage(): JSX.Element {
     const query = getUrlQueryParam();
     if (query && !initialQuery.value) initialQuery.set(query);
 
-    if (!agents.value) {
+    if (!agents.updated) {
       fetchAgents().then((res) => agents.set(randomized(res)));
     }
   }, [initialQuery, agents]);
 
-  if (!agents.value) {
+  if (!agents.updated) {
     return (
       <>
         <Head>

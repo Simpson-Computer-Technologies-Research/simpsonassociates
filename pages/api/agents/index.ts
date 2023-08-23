@@ -118,8 +118,9 @@ const addAgent = async (req: any, res: any) => {
         .then((photo: string) => (data.photo = photo))
         .catch((err: Error) => err);
 
-      if (result instanceof Error)
+      if (result instanceof Error) {
         return res.status(500).json({ message: res.message });
+      }
     }
 
     await collection.insertOne(data).then((result) => {
@@ -174,12 +175,14 @@ const deleteAgent = async (req: any, res: any): Promise<void> => {
 
     // Delete the agent photo from the google cloud storage
     if (agent.photo !== defaultAgentHeadshotPhoto) {
-      const deleteResult = await deleteAgentPhotoGCP(agent.photo, agent.user_id)
-        .then(() => {})
-        .catch((err: Error) => err);
+      let result: any | Error = await deleteAgentPhotoGCP(
+        agent.name,
+        agent.user_id,
+      ).catch((err: Error) => err);
 
-      if (deleteResult instanceof Error)
-        return res.status(500).json({ message: res.message });
+      if (result instanceof Error) {
+        return res.status(500).json({ message: result.message });
+      }
     }
 
     AgentsCache.delete(user_id);

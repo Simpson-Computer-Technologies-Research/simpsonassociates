@@ -10,7 +10,10 @@ import { useState } from "react";
  */
 export interface ReactObjectState<T> {
   value: T;
-  set: SetState<T>;
+  updated: boolean;
+  set: (value: T) => void;
+  // private readonly _set: SetState<T>;
+  // private readonly setUpdated: SetState<boolean>;
 }
 
 /**
@@ -24,12 +27,24 @@ export interface ReactObjectState<T> {
  * @returns A React object state.
  */
 export class ObjectState<T> implements ReactObjectState<T> {
-  value: T;
-  set: SetState<T>;
+  public readonly value: T;
+  private readonly _set: SetState<T>;
+
+  public readonly updated: boolean = false;
+  private readonly _setUpdated: SetState<boolean> = () => {};
+
+  public readonly set = (value: T) => {
+    this._set(value);
+    if (!this.updated) this._setUpdated(true);
+  };
 
   constructor(initialValue: T) {
-    const [value, set] = useState<T>(initialValue);
+    const [value, _set] = useState<T>(initialValue);
     this.value = value;
-    this.set = set;
+    this._set = _set;
+
+    const [updated, _setUpdated] = useState<boolean>(false);
+    this.updated = updated;
+    this._setUpdated = _setUpdated;
   }
 }
