@@ -20,25 +20,28 @@ export const NAVBAR_BUTTON_SECTION_IDS: string[] = [
   "contact",
 ];
 
-export const LEADERSHIP_TEAM: Agent[] = [
+export const LEADERSHIP_TEAM = [
   {
     name: "Dan Simpson",
     email: "dan@dansimpson.ca",
     photo: "/images/agents/dan_headshot.png",
     title: "Founder",
-  } as Agent,
+    location: "",
+  },
+  {
+    name: "Patrick Tremblay",
+    email: "patrick.tremblay@dominionlending.ca",
+    photo: "/images/agents/patrick_headshot.png",
+    title: "Vice President Residential Lending",
+    location: "Ontario",
+  },
   {
     name: "Dave Mota",
     email: "dave@dansimpson.ca",
     photo: "/images/agents/dave_headshot.png",
     title: "Vice President Residential Lending",
-  } as Agent,
-  {
-    name: "Patrick Tremblay",
-    email: "patrick.tremblay@dominionlending.ca",
-    photo: "/images/agents/patrick_headshot.png",
-    title: "Vice President Residential Lending - Ontario",
-  } as Agent,
+    location: "Waterloo Region",
+  },
 ];
 
 export const SUPPORT_TEAM: Agent[] = [
