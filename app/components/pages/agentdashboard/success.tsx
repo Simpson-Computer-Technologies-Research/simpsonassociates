@@ -7,7 +7,6 @@ import PostEventCard from "@/app/components/pages/agentdashboard/postEventCard";
 import { generateAuthorization } from "@/lib/auth";
 import { ObjectState } from "@/lib/state";
 import { epochToDate } from "@/lib/date";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Success section
@@ -151,6 +150,6 @@ const deleteEvent = async (user: User, event_id: string): Promise<boolean> => {
     },
     body: JSON.stringify({ event_id }),
   })
-    .then((res) => isSuccess(res.status))
+    .then((res) => res.ok)
     .catch((_: Error) => false);
 };

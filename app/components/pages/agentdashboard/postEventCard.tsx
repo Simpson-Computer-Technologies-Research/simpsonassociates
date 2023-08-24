@@ -4,7 +4,6 @@ import { User } from "@/lib/types";
 import { generateAuthorization } from "@/lib/auth";
 import { Event } from "@/lib/types";
 import { ObjectState } from "@/lib/state";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Post event card
@@ -97,7 +96,7 @@ const createEvent = async (user: User): Promise<boolean> => {
     },
     body: JSON.stringify(body),
   })
-    .then((res) => isSuccess(res.status))
+    .then((res) => res.ok)
     .catch((_: Error) => false);
 };
 

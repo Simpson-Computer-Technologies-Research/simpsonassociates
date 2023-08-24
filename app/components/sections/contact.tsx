@@ -7,7 +7,6 @@ import { signOut, useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_IMAGES } from "@/lib/constants";
 import { ObjectState } from "@/lib/state";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Contact Component
@@ -369,7 +368,7 @@ const postEmail = async (
     body: JSON.stringify({ email_to: emailTo, name, email, phone, message }),
   })
     .then((res) => {
-      if (isSuccess(res.status)) {
+      if (res.ok) {
         clearFormValues();
         return "Email sent successfully";
       }
