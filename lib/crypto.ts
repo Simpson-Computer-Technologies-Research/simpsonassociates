@@ -17,8 +17,8 @@ export function base64encode(text: string) {
   for (let i = 0; i < text.length; i++) {
     buff.push(text.charCodeAt(i));
   }
-  const base64 = btoa(String.fromCharCode.apply(null, buff));
-  return base64;
+
+  return btoa(String.fromCharCode.apply(null, buff));
 }
 
 /**
@@ -30,5 +30,6 @@ export function base64decode(text: string) {
   for (let i = 0; i < buff.length; i++) {
     arr.push(buff.charCodeAt(i));
   }
+
   return String.fromCharCode.apply(null, arr);
 }

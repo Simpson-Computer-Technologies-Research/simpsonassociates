@@ -49,14 +49,14 @@ export const SUPPORT_TEAM: Agent[] = [
     name: "Fil Vieira-Lee",
     email: "fil@dansimpson.ca",
     photo: "/images/agents/fil_headshot.png",
-    title: "Customer Care Coordinator",
+    title: "Client Care Coordinator",
     lang: "English, Portuguese",
   } as Agent,
   {
     name: "Celeste Bernard",
     email: "celeste@dansimpson.ca",
     photo: "/images/agents/celeste_headshot.png",
-    title: "Customer Care Coordinator",
+    title: "Client Care Coordinator",
     lang: "English",
   } as Agent,
   {
