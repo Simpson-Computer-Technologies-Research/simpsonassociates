@@ -212,5 +212,6 @@ const generateInsertionData = async (body: any) => {
     permissions: body.permissions,
     user_id: userId,
     hidden: false,
+    notifications: true,
   };
 };

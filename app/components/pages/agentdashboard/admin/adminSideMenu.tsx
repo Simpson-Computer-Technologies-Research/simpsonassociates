@@ -2,8 +2,8 @@
 
 import { User } from "@/lib/types";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 
+import Image from "next/image";
 import Link from "next/link";
 
 /**

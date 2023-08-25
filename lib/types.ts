@@ -9,6 +9,7 @@ export interface Agent {
   priority: boolean;
   team: string;
   hidden: boolean;
+  notifications: boolean;
   lang: string;
   license: string;
   user_id: string;

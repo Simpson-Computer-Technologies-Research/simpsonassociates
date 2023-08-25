@@ -11,7 +11,6 @@ import PermissionsChecklist, {
   PriorityCheckbox,
   TeamChecklist,
 } from "./checklists";
-import { isSuccess } from "@/lib/http";
 
 /**
  * Add Agent Component
@@ -115,7 +114,7 @@ const AddAgentButton = (props: AddAgentButtonProps): JSX.Element => {
       body: JSON.stringify(body),
     })
       .then((res) => {
-        if (!isSuccess(res.status)) {
+        if (!res.ok) {
           return props.error.set("Failed to add agent.");
         }
 
