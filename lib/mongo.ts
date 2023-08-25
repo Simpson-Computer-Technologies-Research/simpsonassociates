@@ -126,6 +126,7 @@ export const publicAgentSearchConfig = {
   user_id: 1,
   permissions: 1,
   hidden: 1,
+  notifications: 1,
   priority: 1,
   team: 1,
 };

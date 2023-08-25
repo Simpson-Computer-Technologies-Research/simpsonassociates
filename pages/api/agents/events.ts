@@ -182,7 +182,7 @@ const emailAllAgents = async (event: any) => {
     const agents = await collection
       .find()
       .project({
-        hidden: 1,
+        notifications: 1,
         email: 1,
       })
       .toArray();
@@ -193,7 +193,7 @@ const emailAllAgents = async (event: any) => {
 
     // Send an email to all of the agents
     for (const agent of agents) {
-      if (agent.hidden) return;
+      if (!agent.notifications) return;
 
       const date: string = epochToDate(event.date);
       const data = {
