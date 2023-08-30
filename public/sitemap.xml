@@ -1,8 +1,12 @@
-<xml version="1.0" encoding="UTF-8">
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-     <url>
-       <loc>http://www.simpsonassociates.ca</loc>
-       <lastmod>2023-08-15</lastmod>
-     </url>
-   </urlset>
-</xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://www.simpsonassociates.ca</loc>
+  </url>
+  <url>
+    <loc>http://www.simpsonassociates.ca/agents</loc>
+  </url>
+  <url>
+    <loc>http://www.simpsonassociates.ca/team</loc>
+  </url>
+</urlset>
