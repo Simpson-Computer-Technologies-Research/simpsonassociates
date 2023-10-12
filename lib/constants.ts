@@ -66,6 +66,13 @@ export const SUPPORT_TEAM: Agent[] = [
     lang: "English, Portuguese",
   } as Agent,
   {
+    name: "Jill Melanson",
+    email: "jillmelanson@dominionlending.ca",
+    photo: "/images/agents/jill_headshot.png",
+    title: "Senior Underwriter",
+    lang: "English",
+  } as Agent,
+  {
     name: "Debbie Kitchen",
     email: "debbiekitchen@dansimpson.ca",
     photo: "/images/agents/debbie_headshot.png",
