@@ -79,6 +79,13 @@ export const SUPPORT_TEAM: Agent[] = [
     title: "Onboarding Manager",
     lang: "English",
   } as Agent,
+  {
+    name: "Ryan Roth",
+    email: "ryan@ryanrothmortgages.ca",
+    photo: "/images/agents/ryanroth_headshot.png",
+    title: "Onboarding Manager",
+    lang: "English",
+  } as Agent,
 ];
 
 export const LENDERS: Lender[] = [
